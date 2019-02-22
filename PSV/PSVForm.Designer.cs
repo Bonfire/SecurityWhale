@@ -43,11 +43,13 @@
 			this.graphTab = new System.Windows.Forms.TabPage();
 			this.viewTree = new System.Windows.Forms.TreeView();
 			this.vulnChart = new LiveCharts.WinForms.CartesianChart();
+			this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
 			this.tabControl.SuspendLayout();
 			this.scanPage.SuspendLayout();
 			this.viewPage.SuspendLayout();
 			this.graphicTabControl.SuspendLayout();
 			this.chartTab.SuspendLayout();
+			this.graphTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl
@@ -169,6 +171,7 @@
 			// 
 			// graphTab
 			// 
+			this.graphTab.Controls.Add(this.vulnGraph);
 			this.graphTab.Location = new System.Drawing.Point(4, 22);
 			this.graphTab.Name = "graphTab";
 			this.graphTab.Padding = new System.Windows.Forms.Padding(3);
@@ -192,6 +195,14 @@
 			this.vulnChart.TabIndex = 0;
 			this.vulnChart.Text = "vulnChart";
 			// 
+			// vulnGraph
+			// 
+			this.vulnGraph.Location = new System.Drawing.Point(6, 6);
+			this.vulnGraph.Name = "vulnGraph";
+			this.vulnGraph.Size = new System.Drawing.Size(608, 367);
+			this.vulnGraph.TabIndex = 0;
+			this.vulnGraph.Text = "Vulnerability Graph";
+			// 
 			// PSVForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,6 +221,7 @@
 			this.viewPage.ResumeLayout(false);
 			this.graphicTabControl.ResumeLayout(false);
 			this.chartTab.ResumeLayout(false);
+			this.graphTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -231,6 +243,7 @@
 		private System.Windows.Forms.TabPage chartTab;
 		private System.Windows.Forms.TabPage graphTab;
 		private LiveCharts.WinForms.CartesianChart vulnChart;
+		private LiveCharts.WinForms.CartesianChart vulnGraph;
 	}
 }
 
