@@ -1,6 +1,6 @@
 ﻿namespace PSV
 {
-	partial class Form1
+	partial class PSVForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -30,22 +30,24 @@
 		{
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.scanPage = new System.Windows.Forms.TabPage();
-			this.viewPage = new System.Windows.Forms.TabPage();
-			this.scanTree = new System.Windows.Forms.TreeView();
-			this.openProjectButton = new System.Windows.Forms.Button();
-			this.projectTextBox = new System.Windows.Forms.TextBox();
-			this.projectLabel = new System.Windows.Forms.Label();
-			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
-			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
 			this.beginScanButton = new System.Windows.Forms.Button();
-			this.viewTree = new System.Windows.Forms.TreeView();
+			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
+			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
+			this.projectLabel = new System.Windows.Forms.Label();
+			this.projectTextBox = new System.Windows.Forms.TextBox();
+			this.openProjectButton = new System.Windows.Forms.Button();
+			this.scanTree = new System.Windows.Forms.TreeView();
+			this.viewPage = new System.Windows.Forms.TabPage();
 			this.graphicTabControl = new System.Windows.Forms.TabControl();
 			this.chartTab = new System.Windows.Forms.TabPage();
 			this.graphTab = new System.Windows.Forms.TabPage();
+			this.viewTree = new System.Windows.Forms.TreeView();
+			this.vulnChart = new LiveCharts.WinForms.CartesianChart();
 			this.tabControl.SuspendLayout();
 			this.scanPage.SuspendLayout();
 			this.viewPage.SuspendLayout();
 			this.graphicTabControl.SuspendLayout();
+			this.chartTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl
@@ -75,6 +77,63 @@
 			this.scanPage.Text = "Scan";
 			this.scanPage.UseVisualStyleBackColor = true;
 			// 
+			// beginScanButton
+			// 
+			this.beginScanButton.Location = new System.Drawing.Point(686, 388);
+			this.beginScanButton.Name = "beginScanButton";
+			this.beginScanButton.Size = new System.Drawing.Size(110, 23);
+			this.beginScanButton.TabIndex = 6;
+			this.beginScanButton.Text = "Begin Scan";
+			this.beginScanButton.UseVisualStyleBackColor = true;
+			// 
+			// scanProgressBar
+			// 
+			this.scanProgressBar.Location = new System.Drawing.Point(230, 388);
+			this.scanProgressBar.Name = "scanProgressBar";
+			this.scanProgressBar.Size = new System.Drawing.Size(450, 23);
+			this.scanProgressBar.TabIndex = 5;
+			// 
+			// settingsGroupBox
+			// 
+			this.settingsGroupBox.Location = new System.Drawing.Point(230, 3);
+			this.settingsGroupBox.Name = "settingsGroupBox";
+			this.settingsGroupBox.Size = new System.Drawing.Size(566, 379);
+			this.settingsGroupBox.TabIndex = 4;
+			this.settingsGroupBox.TabStop = false;
+			this.settingsGroupBox.Text = "Scan Settings";
+			// 
+			// projectLabel
+			// 
+			this.projectLabel.AutoSize = true;
+			this.projectLabel.Location = new System.Drawing.Point(6, 9);
+			this.projectLabel.Name = "projectLabel";
+			this.projectLabel.Size = new System.Drawing.Size(82, 13);
+			this.projectLabel.TabIndex = 3;
+			this.projectLabel.Text = "GitHub Project: ";
+			// 
+			// projectTextBox
+			// 
+			this.projectTextBox.Location = new System.Drawing.Point(94, 6);
+			this.projectTextBox.Name = "projectTextBox";
+			this.projectTextBox.Size = new System.Drawing.Size(130, 20);
+			this.projectTextBox.TabIndex = 2;
+			// 
+			// openProjectButton
+			// 
+			this.openProjectButton.Location = new System.Drawing.Point(6, 29);
+			this.openProjectButton.Name = "openProjectButton";
+			this.openProjectButton.Size = new System.Drawing.Size(218, 23);
+			this.openProjectButton.TabIndex = 1;
+			this.openProjectButton.Text = "Open Project";
+			this.openProjectButton.UseVisualStyleBackColor = true;
+			// 
+			// scanTree
+			// 
+			this.scanTree.Location = new System.Drawing.Point(6, 58);
+			this.scanTree.Name = "scanTree";
+			this.scanTree.Size = new System.Drawing.Size(218, 353);
+			this.scanTree.TabIndex = 0;
+			// 
 			// viewPage
 			// 
 			this.viewPage.Controls.Add(this.graphicTabControl);
@@ -86,70 +145,6 @@
 			this.viewPage.TabIndex = 1;
 			this.viewPage.Text = "View";
 			this.viewPage.UseVisualStyleBackColor = true;
-			// 
-			// scanTree
-			// 
-			this.scanTree.Location = new System.Drawing.Point(6, 58);
-			this.scanTree.Name = "scanTree";
-			this.scanTree.Size = new System.Drawing.Size(218, 353);
-			this.scanTree.TabIndex = 0;
-			// 
-			// openProjectButton
-			// 
-			this.openProjectButton.Location = new System.Drawing.Point(6, 29);
-			this.openProjectButton.Name = "openProjectButton";
-			this.openProjectButton.Size = new System.Drawing.Size(218, 23);
-			this.openProjectButton.TabIndex = 1;
-			this.openProjectButton.Text = "Open Project";
-			this.openProjectButton.UseVisualStyleBackColor = true;
-			// 
-			// projectTextBox
-			// 
-			this.projectTextBox.Location = new System.Drawing.Point(94, 6);
-			this.projectTextBox.Name = "projectTextBox";
-			this.projectTextBox.Size = new System.Drawing.Size(130, 20);
-			this.projectTextBox.TabIndex = 2;
-			// 
-			// projectLabel
-			// 
-			this.projectLabel.AutoSize = true;
-			this.projectLabel.Location = new System.Drawing.Point(6, 9);
-			this.projectLabel.Name = "projectLabel";
-			this.projectLabel.Size = new System.Drawing.Size(82, 13);
-			this.projectLabel.TabIndex = 3;
-			this.projectLabel.Text = "GitHub Project: ";
-			// 
-			// settingsGroupBox
-			// 
-			this.settingsGroupBox.Location = new System.Drawing.Point(230, 3);
-			this.settingsGroupBox.Name = "settingsGroupBox";
-			this.settingsGroupBox.Size = new System.Drawing.Size(566, 379);
-			this.settingsGroupBox.TabIndex = 4;
-			this.settingsGroupBox.TabStop = false;
-			this.settingsGroupBox.Text = "Scan Settings";
-			// 
-			// scanProgressBar
-			// 
-			this.scanProgressBar.Location = new System.Drawing.Point(230, 388);
-			this.scanProgressBar.Name = "scanProgressBar";
-			this.scanProgressBar.Size = new System.Drawing.Size(450, 23);
-			this.scanProgressBar.TabIndex = 5;
-			// 
-			// beginScanButton
-			// 
-			this.beginScanButton.Location = new System.Drawing.Point(686, 388);
-			this.beginScanButton.Name = "beginScanButton";
-			this.beginScanButton.Size = new System.Drawing.Size(110, 23);
-			this.beginScanButton.TabIndex = 6;
-			this.beginScanButton.Text = "Begin Scan";
-			this.beginScanButton.UseVisualStyleBackColor = true;
-			// 
-			// viewTree
-			// 
-			this.viewTree.Location = new System.Drawing.Point(6, 6);
-			this.viewTree.Name = "viewTree";
-			this.viewTree.Size = new System.Drawing.Size(156, 405);
-			this.viewTree.TabIndex = 0;
 			// 
 			// graphicTabControl
 			// 
@@ -163,6 +158,7 @@
 			// 
 			// chartTab
 			// 
+			this.chartTab.Controls.Add(this.vulnChart);
 			this.chartTab.Location = new System.Drawing.Point(4, 22);
 			this.chartTab.Name = "chartTab";
 			this.chartTab.Padding = new System.Windows.Forms.Padding(3);
@@ -176,12 +172,27 @@
 			this.graphTab.Location = new System.Drawing.Point(4, 22);
 			this.graphTab.Name = "graphTab";
 			this.graphTab.Padding = new System.Windows.Forms.Padding(3);
-			this.graphTab.Size = new System.Drawing.Size(620, 350);
+			this.graphTab.Size = new System.Drawing.Size(620, 379);
 			this.graphTab.TabIndex = 1;
 			this.graphTab.Text = "Graph";
 			this.graphTab.UseVisualStyleBackColor = true;
 			// 
-			// Form1
+			// viewTree
+			// 
+			this.viewTree.Location = new System.Drawing.Point(6, 6);
+			this.viewTree.Name = "viewTree";
+			this.viewTree.Size = new System.Drawing.Size(156, 405);
+			this.viewTree.TabIndex = 0;
+			// 
+			// vulnChart
+			// 
+			this.vulnChart.Location = new System.Drawing.Point(6, 6);
+			this.vulnChart.Name = "vulnChart";
+			this.vulnChart.Size = new System.Drawing.Size(608, 367);
+			this.vulnChart.TabIndex = 0;
+			this.vulnChart.Text = "vulnChart";
+			// 
+			// PSVForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -190,13 +201,15 @@
 			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(850, 500);
 			this.MinimumSize = new System.Drawing.Size(850, 500);
-			this.Name = "Form1";
+			this.Name = "PSVForm";
 			this.Text = "PSV";
+			this.Load += new System.EventHandler(this.PSVForm_Load);
 			this.tabControl.ResumeLayout(false);
 			this.scanPage.ResumeLayout(false);
 			this.scanPage.PerformLayout();
 			this.viewPage.ResumeLayout(false);
 			this.graphicTabControl.ResumeLayout(false);
+			this.chartTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -217,6 +230,7 @@
 		private System.Windows.Forms.TabControl graphicTabControl;
 		private System.Windows.Forms.TabPage chartTab;
 		private System.Windows.Forms.TabPage graphTab;
+		private LiveCharts.WinForms.CartesianChart vulnChart;
 	}
 }
 
