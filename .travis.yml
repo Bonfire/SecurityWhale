@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dotnet: 2.2.104
+dotnet: 2.0.0
 solution: PSV.sln
 
 script:
