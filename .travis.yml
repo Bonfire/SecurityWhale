@@ -1,2 +1,6 @@
 language: csharp
 solution: PSV.sln
+install:
+  - nuget restore PSV.sln
+script:
+ 	- msbuild /p:Configuration=Release PSV.sln
