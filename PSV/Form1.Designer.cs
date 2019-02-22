@@ -31,17 +31,21 @@
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.scanPage = new System.Windows.Forms.TabPage();
 			this.viewPage = new System.Windows.Forms.TabPage();
-			this.fileTree = new System.Windows.Forms.TreeView();
+			this.scanTree = new System.Windows.Forms.TreeView();
 			this.openProjectButton = new System.Windows.Forms.Button();
 			this.projectTextBox = new System.Windows.Forms.TextBox();
 			this.projectLabel = new System.Windows.Forms.Label();
 			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
 			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
 			this.beginScanButton = new System.Windows.Forms.Button();
-			this.updateButton = new System.Windows.Forms.Button();
-			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.viewTree = new System.Windows.Forms.TreeView();
+			this.graphicTabControl = new System.Windows.Forms.TabControl();
+			this.chartTab = new System.Windows.Forms.TabPage();
+			this.graphTab = new System.Windows.Forms.TabPage();
 			this.tabControl.SuspendLayout();
 			this.scanPage.SuspendLayout();
+			this.viewPage.SuspendLayout();
+			this.graphicTabControl.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl
@@ -51,7 +55,7 @@
 			this.tabControl.Location = new System.Drawing.Point(12, 6);
 			this.tabControl.Name = "tabControl";
 			this.tabControl.SelectedIndex = 0;
-			this.tabControl.Size = new System.Drawing.Size(810, 455);
+			this.tabControl.Size = new System.Drawing.Size(810, 443);
 			this.tabControl.TabIndex = 0;
 			// 
 			// scanPage
@@ -62,31 +66,33 @@
 			this.scanPage.Controls.Add(this.projectLabel);
 			this.scanPage.Controls.Add(this.projectTextBox);
 			this.scanPage.Controls.Add(this.openProjectButton);
-			this.scanPage.Controls.Add(this.fileTree);
+			this.scanPage.Controls.Add(this.scanTree);
 			this.scanPage.Location = new System.Drawing.Point(4, 22);
 			this.scanPage.Name = "scanPage";
 			this.scanPage.Padding = new System.Windows.Forms.Padding(3);
-			this.scanPage.Size = new System.Drawing.Size(802, 429);
+			this.scanPage.Size = new System.Drawing.Size(802, 417);
 			this.scanPage.TabIndex = 0;
 			this.scanPage.Text = "Scan";
 			this.scanPage.UseVisualStyleBackColor = true;
 			// 
 			// viewPage
 			// 
+			this.viewPage.Controls.Add(this.graphicTabControl);
+			this.viewPage.Controls.Add(this.viewTree);
 			this.viewPage.Location = new System.Drawing.Point(4, 22);
 			this.viewPage.Name = "viewPage";
 			this.viewPage.Padding = new System.Windows.Forms.Padding(3);
-			this.viewPage.Size = new System.Drawing.Size(802, 411);
+			this.viewPage.Size = new System.Drawing.Size(802, 417);
 			this.viewPage.TabIndex = 1;
 			this.viewPage.Text = "View";
 			this.viewPage.UseVisualStyleBackColor = true;
 			// 
-			// fileTree
+			// scanTree
 			// 
-			this.fileTree.Location = new System.Drawing.Point(6, 58);
-			this.fileTree.Name = "fileTree";
-			this.fileTree.Size = new System.Drawing.Size(218, 353);
-			this.fileTree.TabIndex = 0;
+			this.scanTree.Location = new System.Drawing.Point(6, 58);
+			this.scanTree.Name = "scanTree";
+			this.scanTree.Size = new System.Drawing.Size(218, 353);
+			this.scanTree.TabIndex = 0;
 			// 
 			// openProjectButton
 			// 
@@ -138,41 +144,60 @@
 			this.beginScanButton.Text = "Begin Scan";
 			this.beginScanButton.UseVisualStyleBackColor = true;
 			// 
-			// updateButton
+			// viewTree
 			// 
-			this.updateButton.Location = new System.Drawing.Point(702, 463);
-			this.updateButton.Name = "updateButton";
-			this.updateButton.Size = new System.Drawing.Size(116, 19);
-			this.updateButton.TabIndex = 1;
-			this.updateButton.Text = "Update";
-			this.updateButton.UseVisualStyleBackColor = true;
+			this.viewTree.Location = new System.Drawing.Point(6, 6);
+			this.viewTree.Name = "viewTree";
+			this.viewTree.Size = new System.Drawing.Size(156, 405);
+			this.viewTree.TabIndex = 0;
 			// 
-			// statusStrip1
+			// graphicTabControl
 			// 
-			this.statusStrip1.Location = new System.Drawing.Point(0, 464);
-			this.statusStrip1.Name = "statusStrip1";
-			this.statusStrip1.Size = new System.Drawing.Size(834, 22);
-			this.statusStrip1.TabIndex = 2;
-			this.statusStrip1.Text = "statusStrip1";
+			this.graphicTabControl.Controls.Add(this.chartTab);
+			this.graphicTabControl.Controls.Add(this.graphTab);
+			this.graphicTabControl.Location = new System.Drawing.Point(168, 6);
+			this.graphicTabControl.Name = "graphicTabControl";
+			this.graphicTabControl.SelectedIndex = 0;
+			this.graphicTabControl.Size = new System.Drawing.Size(628, 405);
+			this.graphicTabControl.TabIndex = 2;
+			// 
+			// chartTab
+			// 
+			this.chartTab.Location = new System.Drawing.Point(4, 22);
+			this.chartTab.Name = "chartTab";
+			this.chartTab.Padding = new System.Windows.Forms.Padding(3);
+			this.chartTab.Size = new System.Drawing.Size(620, 379);
+			this.chartTab.TabIndex = 0;
+			this.chartTab.Text = "Chart";
+			this.chartTab.UseVisualStyleBackColor = true;
+			// 
+			// graphTab
+			// 
+			this.graphTab.Location = new System.Drawing.Point(4, 22);
+			this.graphTab.Name = "graphTab";
+			this.graphTab.Padding = new System.Windows.Forms.Padding(3);
+			this.graphTab.Size = new System.Drawing.Size(620, 350);
+			this.graphTab.TabIndex = 1;
+			this.graphTab.Text = "Graph";
+			this.graphTab.UseVisualStyleBackColor = true;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(834, 486);
-			this.Controls.Add(this.updateButton);
-			this.Controls.Add(this.statusStrip1);
+			this.ClientSize = new System.Drawing.Size(834, 461);
 			this.Controls.Add(this.tabControl);
 			this.MaximizeBox = false;
-			this.MaximumSize = new System.Drawing.Size(850, 525);
-			this.MinimumSize = new System.Drawing.Size(850, 525);
+			this.MaximumSize = new System.Drawing.Size(850, 500);
+			this.MinimumSize = new System.Drawing.Size(850, 500);
 			this.Name = "Form1";
 			this.Text = "PSV";
 			this.tabControl.ResumeLayout(false);
 			this.scanPage.ResumeLayout(false);
 			this.scanPage.PerformLayout();
+			this.viewPage.ResumeLayout(false);
+			this.graphicTabControl.ResumeLayout(false);
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -186,10 +211,12 @@
 		private System.Windows.Forms.Label projectLabel;
 		private System.Windows.Forms.TextBox projectTextBox;
 		private System.Windows.Forms.Button openProjectButton;
-		private System.Windows.Forms.TreeView fileTree;
+		private System.Windows.Forms.TreeView scanTree;
 		private System.Windows.Forms.TabPage viewPage;
-		private System.Windows.Forms.Button updateButton;
-		private System.Windows.Forms.StatusStrip statusStrip1;
+		private System.Windows.Forms.TreeView viewTree;
+		private System.Windows.Forms.TabControl graphicTabControl;
+		private System.Windows.Forms.TabPage chartTab;
+		private System.Windows.Forms.TabPage graphTab;
 	}
 }
 
