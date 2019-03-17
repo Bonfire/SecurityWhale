@@ -34,13 +34,22 @@ namespace PSV
 
 		private void openProjectButton_Click(object sender, EventArgs e)
 		{
-			if (IsGitURLValid() && IsPathValid())
-			{ 
-				Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
-
-				var rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
-				scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
+			if (!IsGitURLValid())
+			{
+				MessageBox.Show("Git URL is not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
 			}
+
+			if (!IsPathValid())
+			{
+				MessageBox.Show("Folder in path is not empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
+
+			var rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
+			scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
 		}
 
