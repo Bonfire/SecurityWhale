@@ -142,9 +142,9 @@
 			// 
 			// openProjectButton
 			// 
-			this.openProjectButton.Location = new System.Drawing.Point(9, 59);
+			this.openProjectButton.Location = new System.Drawing.Point(6, 59);
 			this.openProjectButton.Name = "openProjectButton";
-			this.openProjectButton.Size = new System.Drawing.Size(303, 23);
+			this.openProjectButton.Size = new System.Drawing.Size(306, 23);
 			this.openProjectButton.TabIndex = 1;
 			this.openProjectButton.Text = "Open Project";
 			this.openProjectButton.UseVisualStyleBackColor = true;
@@ -235,7 +235,6 @@
 			this.MinimumSize = new System.Drawing.Size(850, 500);
 			this.Name = "PSVForm";
 			this.Text = "PSV";
-			this.Load += new System.EventHandler(this.PSVForm_Load);
 			this.tabControl.ResumeLayout(false);
 			this.scanPage.ResumeLayout(false);
 			this.scanPage.PerformLayout();

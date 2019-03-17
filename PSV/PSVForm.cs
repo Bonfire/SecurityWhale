@@ -1,12 +1,7 @@
-﻿using LiveCharts; //Core of the library
-using LiveCharts.Wpf; //The WPF controls
-using LiveCharts.WinForms; //the WinForm wrappers
-using System;
+﻿using System;
 using System.Windows.Forms;
-using Octokit;
-using LibGit2Sharp;
-using System.Collections.Generic;
 using System.IO;
+using LibGit2Sharp;
 
 namespace PSV
 {
@@ -17,14 +12,9 @@ namespace PSV
 			InitializeComponent();
 		}
 
-		private void PSVForm_Load(object sender, EventArgs e)
-		{
-
-		}
-
 		private void openProjectButton_Click(object sender, EventArgs e)
 		{
-			LibGit2Sharp.Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
+			Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
 
 			var rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
 			scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
