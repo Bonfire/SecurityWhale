@@ -17,3 +17,7 @@ Thomas Serrano - https://github.com/TomSerrano
 
 # Libraries
 ![Live Charts](https://github.com/Live-Charts/Live-Charts) - Simple, flexible, interactive & powerful charts, maps and gauges for .Net
+
+![OctoKit.NET](https://github.com/octokit/octokit.net) - A client library targeting .NET 4.5 and above that provides an easy way to interact with the GitHub API.
+
+![LibGit2Sharp](https://github.com/libgit2/libgit2sharp) - LibGit2Sharp brings all the might and speed of libgit2, a native Git implementation, to the managed world of .NET and Mono.
