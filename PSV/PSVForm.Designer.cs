@@ -30,25 +30,27 @@
 		{
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.scanPage = new System.Windows.Forms.TabPage();
+			this.pathToCloneTextBox = new System.Windows.Forms.TextBox();
+			this.projectNameLabel = new System.Windows.Forms.Label();
 			this.beginScanButton = new System.Windows.Forms.Button();
 			this.scanProgressBar = new System.Windows.Forms.ProgressBar();
 			this.settingsGroupBox = new System.Windows.Forms.GroupBox();
-			this.projectLabel = new System.Windows.Forms.Label();
-			this.projectTextBox = new System.Windows.Forms.TextBox();
+			this.projectURLLabel = new System.Windows.Forms.Label();
+			this.projectURLTextBox = new System.Windows.Forms.TextBox();
 			this.openProjectButton = new System.Windows.Forms.Button();
 			this.scanTree = new System.Windows.Forms.TreeView();
 			this.viewPage = new System.Windows.Forms.TabPage();
-			this.graphicTabControl = new System.Windows.Forms.TabControl();
-			this.chartTab = new System.Windows.Forms.TabPage();
+			this.infoTabControl = new System.Windows.Forms.TabControl();
+			this.tableTab = new System.Windows.Forms.TabPage();
+			this.listView1 = new System.Windows.Forms.ListView();
 			this.graphTab = new System.Windows.Forms.TabPage();
-			this.viewTree = new System.Windows.Forms.TreeView();
-			this.vulnChart = new LiveCharts.WinForms.CartesianChart();
 			this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
+			this.viewTree = new System.Windows.Forms.TreeView();
 			this.tabControl.SuspendLayout();
 			this.scanPage.SuspendLayout();
 			this.viewPage.SuspendLayout();
-			this.graphicTabControl.SuspendLayout();
-			this.chartTab.SuspendLayout();
+			this.infoTabControl.SuspendLayout();
+			this.tableTab.SuspendLayout();
 			this.graphTab.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -64,11 +66,13 @@
 			// 
 			// scanPage
 			// 
+			this.scanPage.Controls.Add(this.pathToCloneTextBox);
+			this.scanPage.Controls.Add(this.projectNameLabel);
 			this.scanPage.Controls.Add(this.beginScanButton);
 			this.scanPage.Controls.Add(this.scanProgressBar);
 			this.scanPage.Controls.Add(this.settingsGroupBox);
-			this.scanPage.Controls.Add(this.projectLabel);
-			this.scanPage.Controls.Add(this.projectTextBox);
+			this.scanPage.Controls.Add(this.projectURLLabel);
+			this.scanPage.Controls.Add(this.projectURLTextBox);
 			this.scanPage.Controls.Add(this.openProjectButton);
 			this.scanPage.Controls.Add(this.scanTree);
 			this.scanPage.Location = new System.Drawing.Point(4, 22);
@@ -78,6 +82,22 @@
 			this.scanPage.TabIndex = 0;
 			this.scanPage.Text = "Scan";
 			this.scanPage.UseVisualStyleBackColor = true;
+			// 
+			// pathToCloneTextBox
+			// 
+			this.pathToCloneTextBox.Location = new System.Drawing.Point(106, 33);
+			this.pathToCloneTextBox.Name = "pathToCloneTextBox";
+			this.pathToCloneTextBox.Size = new System.Drawing.Size(206, 20);
+			this.pathToCloneTextBox.TabIndex = 8;
+			// 
+			// projectNameLabel
+			// 
+			this.projectNameLabel.AutoSize = true;
+			this.projectNameLabel.Location = new System.Drawing.Point(6, 36);
+			this.projectNameLabel.Name = "projectNameLabel";
+			this.projectNameLabel.Size = new System.Drawing.Size(94, 13);
+			this.projectNameLabel.TabIndex = 7;
+			this.projectNameLabel.Text = "Path To Clone To:";
 			// 
 			// beginScanButton
 			// 
@@ -90,55 +110,56 @@
 			// 
 			// scanProgressBar
 			// 
-			this.scanProgressBar.Location = new System.Drawing.Point(230, 388);
+			this.scanProgressBar.Location = new System.Drawing.Point(318, 388);
 			this.scanProgressBar.Name = "scanProgressBar";
-			this.scanProgressBar.Size = new System.Drawing.Size(450, 23);
+			this.scanProgressBar.Size = new System.Drawing.Size(362, 23);
 			this.scanProgressBar.TabIndex = 5;
 			// 
 			// settingsGroupBox
 			// 
-			this.settingsGroupBox.Location = new System.Drawing.Point(230, 3);
+			this.settingsGroupBox.Location = new System.Drawing.Point(318, 3);
 			this.settingsGroupBox.Name = "settingsGroupBox";
-			this.settingsGroupBox.Size = new System.Drawing.Size(566, 379);
+			this.settingsGroupBox.Size = new System.Drawing.Size(478, 379);
 			this.settingsGroupBox.TabIndex = 4;
 			this.settingsGroupBox.TabStop = false;
 			this.settingsGroupBox.Text = "Scan Settings";
 			// 
-			// projectLabel
+			// projectURLLabel
 			// 
-			this.projectLabel.AutoSize = true;
-			this.projectLabel.Location = new System.Drawing.Point(6, 9);
-			this.projectLabel.Name = "projectLabel";
-			this.projectLabel.Size = new System.Drawing.Size(82, 13);
-			this.projectLabel.TabIndex = 3;
-			this.projectLabel.Text = "GitHub Project: ";
+			this.projectURLLabel.AutoSize = true;
+			this.projectURLLabel.Location = new System.Drawing.Point(6, 9);
+			this.projectURLLabel.Name = "projectURLLabel";
+			this.projectURLLabel.Size = new System.Drawing.Size(87, 13);
+			this.projectURLLabel.TabIndex = 3;
+			this.projectURLLabel.Text = "Project Git URL: ";
 			// 
-			// projectTextBox
+			// projectURLTextBox
 			// 
-			this.projectTextBox.Location = new System.Drawing.Point(94, 6);
-			this.projectTextBox.Name = "projectTextBox";
-			this.projectTextBox.Size = new System.Drawing.Size(130, 20);
-			this.projectTextBox.TabIndex = 2;
+			this.projectURLTextBox.Location = new System.Drawing.Point(106, 6);
+			this.projectURLTextBox.Name = "projectURLTextBox";
+			this.projectURLTextBox.Size = new System.Drawing.Size(206, 20);
+			this.projectURLTextBox.TabIndex = 2;
 			// 
 			// openProjectButton
 			// 
-			this.openProjectButton.Location = new System.Drawing.Point(6, 29);
+			this.openProjectButton.Location = new System.Drawing.Point(9, 59);
 			this.openProjectButton.Name = "openProjectButton";
-			this.openProjectButton.Size = new System.Drawing.Size(218, 23);
+			this.openProjectButton.Size = new System.Drawing.Size(303, 23);
 			this.openProjectButton.TabIndex = 1;
 			this.openProjectButton.Text = "Open Project";
 			this.openProjectButton.UseVisualStyleBackColor = true;
+			this.openProjectButton.Click += new System.EventHandler(this.openProjectButton_Click);
 			// 
 			// scanTree
 			// 
-			this.scanTree.Location = new System.Drawing.Point(6, 58);
+			this.scanTree.Location = new System.Drawing.Point(6, 88);
 			this.scanTree.Name = "scanTree";
-			this.scanTree.Size = new System.Drawing.Size(218, 353);
+			this.scanTree.Size = new System.Drawing.Size(306, 323);
 			this.scanTree.TabIndex = 0;
 			// 
 			// viewPage
 			// 
-			this.viewPage.Controls.Add(this.graphicTabControl);
+			this.viewPage.Controls.Add(this.infoTabControl);
 			this.viewPage.Controls.Add(this.viewTree);
 			this.viewPage.Location = new System.Drawing.Point(4, 22);
 			this.viewPage.Name = "viewPage";
@@ -148,26 +169,34 @@
 			this.viewPage.Text = "View";
 			this.viewPage.UseVisualStyleBackColor = true;
 			// 
-			// graphicTabControl
+			// infoTabControl
 			// 
-			this.graphicTabControl.Controls.Add(this.chartTab);
-			this.graphicTabControl.Controls.Add(this.graphTab);
-			this.graphicTabControl.Location = new System.Drawing.Point(168, 6);
-			this.graphicTabControl.Name = "graphicTabControl";
-			this.graphicTabControl.SelectedIndex = 0;
-			this.graphicTabControl.Size = new System.Drawing.Size(628, 405);
-			this.graphicTabControl.TabIndex = 2;
+			this.infoTabControl.Controls.Add(this.tableTab);
+			this.infoTabControl.Controls.Add(this.graphTab);
+			this.infoTabControl.Location = new System.Drawing.Point(168, 6);
+			this.infoTabControl.Name = "infoTabControl";
+			this.infoTabControl.SelectedIndex = 0;
+			this.infoTabControl.Size = new System.Drawing.Size(628, 405);
+			this.infoTabControl.TabIndex = 2;
 			// 
-			// chartTab
+			// tableTab
 			// 
-			this.chartTab.Controls.Add(this.vulnChart);
-			this.chartTab.Location = new System.Drawing.Point(4, 22);
-			this.chartTab.Name = "chartTab";
-			this.chartTab.Padding = new System.Windows.Forms.Padding(3);
-			this.chartTab.Size = new System.Drawing.Size(620, 379);
-			this.chartTab.TabIndex = 0;
-			this.chartTab.Text = "Chart";
-			this.chartTab.UseVisualStyleBackColor = true;
+			this.tableTab.Controls.Add(this.listView1);
+			this.tableTab.Location = new System.Drawing.Point(4, 22);
+			this.tableTab.Name = "tableTab";
+			this.tableTab.Padding = new System.Windows.Forms.Padding(3);
+			this.tableTab.Size = new System.Drawing.Size(620, 379);
+			this.tableTab.TabIndex = 0;
+			this.tableTab.Text = "Table";
+			this.tableTab.UseVisualStyleBackColor = true;
+			// 
+			// listView1
+			// 
+			this.listView1.Location = new System.Drawing.Point(0, 0);
+			this.listView1.Name = "listView1";
+			this.listView1.Size = new System.Drawing.Size(624, 383);
+			this.listView1.TabIndex = 0;
+			this.listView1.UseCompatibleStateImageBehavior = false;
 			// 
 			// graphTab
 			// 
@@ -180,21 +209,6 @@
 			this.graphTab.Text = "Graph";
 			this.graphTab.UseVisualStyleBackColor = true;
 			// 
-			// viewTree
-			// 
-			this.viewTree.Location = new System.Drawing.Point(6, 6);
-			this.viewTree.Name = "viewTree";
-			this.viewTree.Size = new System.Drawing.Size(156, 405);
-			this.viewTree.TabIndex = 0;
-			// 
-			// vulnChart
-			// 
-			this.vulnChart.Location = new System.Drawing.Point(6, 6);
-			this.vulnChart.Name = "vulnChart";
-			this.vulnChart.Size = new System.Drawing.Size(608, 367);
-			this.vulnChart.TabIndex = 0;
-			this.vulnChart.Text = "vulnChart";
-			// 
 			// vulnGraph
 			// 
 			this.vulnGraph.Location = new System.Drawing.Point(6, 6);
@@ -202,6 +216,13 @@
 			this.vulnGraph.Size = new System.Drawing.Size(608, 367);
 			this.vulnGraph.TabIndex = 0;
 			this.vulnGraph.Text = "Vulnerability Graph";
+			// 
+			// viewTree
+			// 
+			this.viewTree.Location = new System.Drawing.Point(6, 6);
+			this.viewTree.Name = "viewTree";
+			this.viewTree.Size = new System.Drawing.Size(156, 405);
+			this.viewTree.TabIndex = 0;
 			// 
 			// PSVForm
 			// 
@@ -219,8 +240,8 @@
 			this.scanPage.ResumeLayout(false);
 			this.scanPage.PerformLayout();
 			this.viewPage.ResumeLayout(false);
-			this.graphicTabControl.ResumeLayout(false);
-			this.chartTab.ResumeLayout(false);
+			this.infoTabControl.ResumeLayout(false);
+			this.tableTab.ResumeLayout(false);
 			this.graphTab.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -233,17 +254,19 @@
 		private System.Windows.Forms.Button beginScanButton;
 		private System.Windows.Forms.ProgressBar scanProgressBar;
 		private System.Windows.Forms.GroupBox settingsGroupBox;
-		private System.Windows.Forms.Label projectLabel;
-		private System.Windows.Forms.TextBox projectTextBox;
+		private System.Windows.Forms.Label projectURLLabel;
+		private System.Windows.Forms.TextBox projectURLTextBox;
 		private System.Windows.Forms.Button openProjectButton;
 		private System.Windows.Forms.TreeView scanTree;
 		private System.Windows.Forms.TabPage viewPage;
 		private System.Windows.Forms.TreeView viewTree;
-		private System.Windows.Forms.TabControl graphicTabControl;
-		private System.Windows.Forms.TabPage chartTab;
+		private System.Windows.Forms.TabControl infoTabControl;
+		private System.Windows.Forms.TabPage tableTab;
 		private System.Windows.Forms.TabPage graphTab;
-		private LiveCharts.WinForms.CartesianChart vulnChart;
 		private LiveCharts.WinForms.CartesianChart vulnGraph;
+		private System.Windows.Forms.ListView listView1;
+		private System.Windows.Forms.Label projectNameLabel;
+		private System.Windows.Forms.TextBox pathToCloneTextBox;
 	}
 }
 
