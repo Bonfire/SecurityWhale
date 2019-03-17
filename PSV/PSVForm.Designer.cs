@@ -46,6 +46,9 @@
 			this.graphTab = new System.Windows.Forms.TabPage();
 			this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
 			this.viewTree = new System.Windows.Forms.TreeView();
+			this.openFolderButton = new System.Windows.Forms.Button();
+			this.testURLButton = new System.Windows.Forms.Button();
+			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.tabControl.SuspendLayout();
 			this.scanPage.SuspendLayout();
 			this.viewPage.SuspendLayout();
@@ -66,6 +69,8 @@
 			// 
 			// scanPage
 			// 
+			this.scanPage.Controls.Add(this.testURLButton);
+			this.scanPage.Controls.Add(this.openFolderButton);
 			this.scanPage.Controls.Add(this.pathToCloneTextBox);
 			this.scanPage.Controls.Add(this.projectNameLabel);
 			this.scanPage.Controls.Add(this.beginScanButton);
@@ -110,16 +115,16 @@
 			// 
 			// scanProgressBar
 			// 
-			this.scanProgressBar.Location = new System.Drawing.Point(318, 388);
+			this.scanProgressBar.Location = new System.Drawing.Point(369, 388);
 			this.scanProgressBar.Name = "scanProgressBar";
-			this.scanProgressBar.Size = new System.Drawing.Size(362, 23);
+			this.scanProgressBar.Size = new System.Drawing.Size(311, 23);
 			this.scanProgressBar.TabIndex = 5;
 			// 
 			// settingsGroupBox
 			// 
-			this.settingsGroupBox.Location = new System.Drawing.Point(318, 3);
+			this.settingsGroupBox.Location = new System.Drawing.Point(369, 3);
 			this.settingsGroupBox.Name = "settingsGroupBox";
-			this.settingsGroupBox.Size = new System.Drawing.Size(478, 379);
+			this.settingsGroupBox.Size = new System.Drawing.Size(427, 379);
 			this.settingsGroupBox.TabIndex = 4;
 			this.settingsGroupBox.TabStop = false;
 			this.settingsGroupBox.Text = "Scan Settings";
@@ -137,14 +142,14 @@
 			// 
 			this.projectURLTextBox.Location = new System.Drawing.Point(106, 6);
 			this.projectURLTextBox.Name = "projectURLTextBox";
-			this.projectURLTextBox.Size = new System.Drawing.Size(206, 20);
+			this.projectURLTextBox.Size = new System.Drawing.Size(257, 20);
 			this.projectURLTextBox.TabIndex = 2;
 			// 
 			// openProjectButton
 			// 
-			this.openProjectButton.Location = new System.Drawing.Point(6, 59);
+			this.openProjectButton.Location = new System.Drawing.Point(186, 59);
 			this.openProjectButton.Name = "openProjectButton";
-			this.openProjectButton.Size = new System.Drawing.Size(306, 23);
+			this.openProjectButton.Size = new System.Drawing.Size(177, 23);
 			this.openProjectButton.TabIndex = 1;
 			this.openProjectButton.Text = "Open Project";
 			this.openProjectButton.UseVisualStyleBackColor = true;
@@ -154,7 +159,7 @@
 			// 
 			this.scanTree.Location = new System.Drawing.Point(6, 88);
 			this.scanTree.Name = "scanTree";
-			this.scanTree.Size = new System.Drawing.Size(306, 323);
+			this.scanTree.Size = new System.Drawing.Size(357, 323);
 			this.scanTree.TabIndex = 0;
 			// 
 			// viewPage
@@ -224,6 +229,26 @@
 			this.viewTree.Size = new System.Drawing.Size(156, 405);
 			this.viewTree.TabIndex = 0;
 			// 
+			// openFolderButton
+			// 
+			this.openFolderButton.Location = new System.Drawing.Point(318, 33);
+			this.openFolderButton.Name = "openFolderButton";
+			this.openFolderButton.Size = new System.Drawing.Size(45, 20);
+			this.openFolderButton.TabIndex = 9;
+			this.openFolderButton.Text = "...";
+			this.openFolderButton.UseVisualStyleBackColor = true;
+			this.openFolderButton.Click += new System.EventHandler(this.openFolderButton_Click);
+			// 
+			// testURLButton
+			// 
+			this.testURLButton.Location = new System.Drawing.Point(6, 59);
+			this.testURLButton.Name = "testURLButton";
+			this.testURLButton.Size = new System.Drawing.Size(177, 23);
+			this.testURLButton.TabIndex = 10;
+			this.testURLButton.Text = "Test URL";
+			this.testURLButton.UseVisualStyleBackColor = true;
+			this.testURLButton.Click += new System.EventHandler(this.testURLButton_Click);
+			// 
 			// PSVForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -266,6 +291,9 @@
 		private System.Windows.Forms.ListView listView1;
 		private System.Windows.Forms.Label projectNameLabel;
 		private System.Windows.Forms.TextBox pathToCloneTextBox;
+		private System.Windows.Forms.Button testURLButton;
+		private System.Windows.Forms.Button openFolderButton;
+		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 	}
 }
 
