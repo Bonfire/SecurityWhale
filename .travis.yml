@@ -1,6 +1,7 @@
 language: csharp
+mono: none
+dotnet: 2.0.0
 solution: PSV.sln
-install:
-  - nuget restore PSV.sln
+
 script:
-  - msbuild /p:Configuration=Release PSV.sln
+ - dotnet restore
