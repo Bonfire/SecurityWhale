@@ -28,8 +28,11 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PSVForm));
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.scanPage = new System.Windows.Forms.TabPage();
+			this.testURLButton = new System.Windows.Forms.Button();
+			this.openFolderButton = new System.Windows.Forms.Button();
 			this.pathToCloneTextBox = new System.Windows.Forms.TextBox();
 			this.projectNameLabel = new System.Windows.Forms.Label();
 			this.beginScanButton = new System.Windows.Forms.Button();
@@ -46,9 +49,11 @@
 			this.graphTab = new System.Windows.Forms.TabPage();
 			this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
 			this.viewTree = new System.Windows.Forms.TreeView();
-			this.openFolderButton = new System.Windows.Forms.Button();
-			this.testURLButton = new System.Windows.Forms.Button();
 			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+			this.severityColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.vulnColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.fileColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.dateTimeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.tabControl.SuspendLayout();
 			this.scanPage.SuspendLayout();
 			this.viewPage.SuspendLayout();
@@ -87,6 +92,26 @@
 			this.scanPage.TabIndex = 0;
 			this.scanPage.Text = "Scan";
 			this.scanPage.UseVisualStyleBackColor = true;
+			// 
+			// testURLButton
+			// 
+			this.testURLButton.Location = new System.Drawing.Point(6, 59);
+			this.testURLButton.Name = "testURLButton";
+			this.testURLButton.Size = new System.Drawing.Size(177, 23);
+			this.testURLButton.TabIndex = 10;
+			this.testURLButton.Text = "Test URL";
+			this.testURLButton.UseVisualStyleBackColor = true;
+			this.testURLButton.Click += new System.EventHandler(this.TestURLButton_Click);
+			// 
+			// openFolderButton
+			// 
+			this.openFolderButton.Location = new System.Drawing.Point(318, 33);
+			this.openFolderButton.Name = "openFolderButton";
+			this.openFolderButton.Size = new System.Drawing.Size(45, 20);
+			this.openFolderButton.TabIndex = 9;
+			this.openFolderButton.Text = "...";
+			this.openFolderButton.UseVisualStyleBackColor = true;
+			this.openFolderButton.Click += new System.EventHandler(this.OpenFolderButton_Click);
 			// 
 			// pathToCloneTextBox
 			// 
@@ -153,7 +178,7 @@
 			this.openProjectButton.TabIndex = 1;
 			this.openProjectButton.Text = "Open Project";
 			this.openProjectButton.UseVisualStyleBackColor = true;
-			this.openProjectButton.Click += new System.EventHandler(this.openProjectButton_Click);
+			this.openProjectButton.Click += new System.EventHandler(this.OpenProjectButton_Click);
 			// 
 			// scanTree
 			// 
@@ -197,11 +222,17 @@
 			// 
 			// listView1
 			// 
+			this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.severityColumn,
+            this.vulnColumn,
+            this.fileColumn,
+            this.dateTimeColumn});
 			this.listView1.Location = new System.Drawing.Point(0, 0);
 			this.listView1.Name = "listView1";
 			this.listView1.Size = new System.Drawing.Size(624, 383);
 			this.listView1.TabIndex = 0;
 			this.listView1.UseCompatibleStateImageBehavior = false;
+			this.listView1.View = System.Windows.Forms.View.Details;
 			// 
 			// graphTab
 			// 
@@ -229,25 +260,25 @@
 			this.viewTree.Size = new System.Drawing.Size(156, 405);
 			this.viewTree.TabIndex = 0;
 			// 
-			// openFolderButton
+			// severityColumn
 			// 
-			this.openFolderButton.Location = new System.Drawing.Point(318, 33);
-			this.openFolderButton.Name = "openFolderButton";
-			this.openFolderButton.Size = new System.Drawing.Size(45, 20);
-			this.openFolderButton.TabIndex = 9;
-			this.openFolderButton.Text = "...";
-			this.openFolderButton.UseVisualStyleBackColor = true;
-			this.openFolderButton.Click += new System.EventHandler(this.openFolderButton_Click);
+			this.severityColumn.Text = "Severity";
+			this.severityColumn.Width = 57;
 			// 
-			// testURLButton
+			// vulnColumn
 			// 
-			this.testURLButton.Location = new System.Drawing.Point(6, 59);
-			this.testURLButton.Name = "testURLButton";
-			this.testURLButton.Size = new System.Drawing.Size(177, 23);
-			this.testURLButton.TabIndex = 10;
-			this.testURLButton.Text = "Test URL";
-			this.testURLButton.UseVisualStyleBackColor = true;
-			this.testURLButton.Click += new System.EventHandler(this.testURLButton_Click);
+			this.vulnColumn.Text = "Vulnerability";
+			this.vulnColumn.Width = 178;
+			// 
+			// fileColumn
+			// 
+			this.fileColumn.Text = "File";
+			this.fileColumn.Width = 267;
+			// 
+			// dateTimeColumn
+			// 
+			this.dateTimeColumn.Text = "Date/Time";
+			this.dateTimeColumn.Width = 120;
 			// 
 			// PSVForm
 			// 
@@ -255,6 +286,7 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(834, 461);
 			this.Controls.Add(this.tabControl);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MaximumSize = new System.Drawing.Size(850, 500);
 			this.MinimumSize = new System.Drawing.Size(850, 500);
@@ -294,6 +326,10 @@
 		private System.Windows.Forms.Button testURLButton;
 		private System.Windows.Forms.Button openFolderButton;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+		private System.Windows.Forms.ColumnHeader severityColumn;
+		private System.Windows.Forms.ColumnHeader vulnColumn;
+		private System.Windows.Forms.ColumnHeader fileColumn;
+		private System.Windows.Forms.ColumnHeader dateTimeColumn;
 	}
 }
 

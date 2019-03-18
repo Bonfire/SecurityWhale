@@ -32,7 +32,7 @@ namespace PSV
 			return files.Length == 0 ? true : false;
 		}
 
-		private void openProjectButton_Click(object sender, EventArgs e)
+		private void OpenProjectButton_Click(object sender, EventArgs e)
 		{
 			if (!IsGitURLValid())
 			{
@@ -63,7 +63,7 @@ namespace PSV
 			return directoryNode;
 		}
 
-		private void openFolderButton_Click(object sender, EventArgs e)
+		private void OpenFolderButton_Click(object sender, EventArgs e)
 		{
 			DialogResult openFolderDialogResult = folderBrowserDialog.ShowDialog();
 			if(openFolderDialogResult == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog.SelectedPath))
@@ -72,7 +72,7 @@ namespace PSV
 			}
 		}
 
-		private void testURLButton_Click(object sender, EventArgs e)
+		private void TestURLButton_Click(object sender, EventArgs e)
 		{
 			if (IsGitURLValid())
 			{
