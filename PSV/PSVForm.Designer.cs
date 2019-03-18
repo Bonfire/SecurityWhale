@@ -46,14 +46,14 @@
 			this.infoTabControl = new System.Windows.Forms.TabControl();
 			this.tableTab = new System.Windows.Forms.TabPage();
 			this.listView1 = new System.Windows.Forms.ListView();
-			this.graphTab = new System.Windows.Forms.TabPage();
-			this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
-			this.viewTree = new System.Windows.Forms.TreeView();
-			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.severityColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.vulnColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.fileColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.dateTimeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.graphTab = new System.Windows.Forms.TabPage();
+			this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
+			this.viewTree = new System.Windows.Forms.TreeView();
+			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
 			this.tabControl.SuspendLayout();
 			this.scanPage.SuspendLayout();
 			this.viewPage.SuspendLayout();
@@ -176,7 +176,7 @@
 			this.openProjectButton.Name = "openProjectButton";
 			this.openProjectButton.Size = new System.Drawing.Size(177, 23);
 			this.openProjectButton.TabIndex = 1;
-			this.openProjectButton.Text = "Open Project";
+			this.openProjectButton.Text = "Clone and Open Project";
 			this.openProjectButton.UseVisualStyleBackColor = true;
 			this.openProjectButton.Click += new System.EventHandler(this.OpenProjectButton_Click);
 			// 
@@ -234,6 +234,26 @@
 			this.listView1.UseCompatibleStateImageBehavior = false;
 			this.listView1.View = System.Windows.Forms.View.Details;
 			// 
+			// severityColumn
+			// 
+			this.severityColumn.Text = "Severity";
+			this.severityColumn.Width = 57;
+			// 
+			// vulnColumn
+			// 
+			this.vulnColumn.Text = "Vulnerability";
+			this.vulnColumn.Width = 178;
+			// 
+			// fileColumn
+			// 
+			this.fileColumn.Text = "File";
+			this.fileColumn.Width = 267;
+			// 
+			// dateTimeColumn
+			// 
+			this.dateTimeColumn.Text = "Date/Time";
+			this.dateTimeColumn.Width = 120;
+			// 
 			// graphTab
 			// 
 			this.graphTab.Controls.Add(this.vulnGraph);
@@ -259,26 +279,6 @@
 			this.viewTree.Name = "viewTree";
 			this.viewTree.Size = new System.Drawing.Size(156, 405);
 			this.viewTree.TabIndex = 0;
-			// 
-			// severityColumn
-			// 
-			this.severityColumn.Text = "Severity";
-			this.severityColumn.Width = 57;
-			// 
-			// vulnColumn
-			// 
-			this.vulnColumn.Text = "Vulnerability";
-			this.vulnColumn.Width = 178;
-			// 
-			// fileColumn
-			// 
-			this.fileColumn.Text = "File";
-			this.fileColumn.Width = 267;
-			// 
-			// dateTimeColumn
-			// 
-			this.dateTimeColumn.Text = "Date/Time";
-			this.dateTimeColumn.Width = 120;
 			// 
 			// PSVForm
 			// 
