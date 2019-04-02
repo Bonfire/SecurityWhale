@@ -13,7 +13,7 @@ namespace PSV
 			InitializeComponent();
 		}
 
-		private Boolean IsGitURLValid()
+		public bool IsGitURLValid()
 		{
 			try
 			{
@@ -26,9 +26,9 @@ namespace PSV
 			}
 		}
 
-		private bool IsPathValid()
+		public bool IsPathValid()
 		{
-			string[] files = Directory.GetFiles(folderBrowserDialog.SelectedPath);
+			string[] files = Directory.GetFiles(pathToCloneTextBox.Text);
 			return files.Length == 0 ? true : false;
 		}
 

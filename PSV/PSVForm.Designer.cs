@@ -311,7 +311,6 @@
 		private System.Windows.Forms.ProgressBar scanProgressBar;
 		private System.Windows.Forms.GroupBox settingsGroupBox;
 		private System.Windows.Forms.Label projectURLLabel;
-		private System.Windows.Forms.TextBox projectURLTextBox;
 		private System.Windows.Forms.Button openProjectButton;
 		private System.Windows.Forms.TreeView scanTree;
 		private System.Windows.Forms.TabPage viewPage;
@@ -322,7 +321,6 @@
 		private LiveCharts.WinForms.CartesianChart vulnGraph;
 		private System.Windows.Forms.ListView listView1;
 		private System.Windows.Forms.Label projectNameLabel;
-		private System.Windows.Forms.TextBox pathToCloneTextBox;
 		private System.Windows.Forms.Button testURLButton;
 		private System.Windows.Forms.Button openFolderButton;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
@@ -330,6 +328,8 @@
 		private System.Windows.Forms.ColumnHeader vulnColumn;
 		private System.Windows.Forms.ColumnHeader fileColumn;
 		private System.Windows.Forms.ColumnHeader dateTimeColumn;
+		public System.Windows.Forms.TextBox projectURLTextBox;
+		public System.Windows.Forms.TextBox pathToCloneTextBox;
 	}
 }
 
