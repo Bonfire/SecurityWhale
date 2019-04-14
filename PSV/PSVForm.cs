@@ -58,7 +58,7 @@ namespace PSV
                 return;
             }
 
-            Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text, );
+            Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
 
             DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
