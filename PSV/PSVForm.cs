@@ -47,7 +47,7 @@ namespace PSV
 
             if (!IsPathValid())
             {
-                MessageBox.Show("Folder in path is not empty", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Folder in path is not empty or does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
