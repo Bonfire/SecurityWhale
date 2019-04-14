@@ -55,10 +55,10 @@ namespace PSV
 
         private static TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
         {
-            var directoryNode = new TreeNode(directoryInfo.Name);
-            foreach (var directory in directoryInfo.GetDirectories())
+            TreeNode directoryNode = new TreeNode(directoryInfo.Name);
+            foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
                 directoryNode.Nodes.Add(CreateDirectoryNode(directory));
-            foreach (var file in directoryInfo.GetFiles())
+            foreach (FileInfo file in directoryInfo.GetFiles())
                 directoryNode.Nodes.Add(new TreeNode(file.Name));
             return directoryNode;
         }
