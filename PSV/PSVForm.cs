@@ -17,6 +17,11 @@ namespace PSV
         {
             try
             {
+                if (!projectURLTextBox.Text.EndsWith(".git"))
+                {
+                    projectURLTextBox.Text = string.Concat(projectURLTextBox.Text, ".git");
+                }
+
                 System.Collections.Generic.IEnumerable<Reference> references = Repository.ListRemoteReferences(projectURLTextBox.Text);
                 return true;
             }
@@ -48,7 +53,7 @@ namespace PSV
 
             Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
 
-            var rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
+            DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
         }
