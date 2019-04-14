@@ -41,7 +41,14 @@ namespace PSV
         {
             if (!IsGitURLValid())
             {
-                MessageBox.Show("Git URL is not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DialogResult messageBoxResult = MessageBox.Show("Git URL is not valid. Is it Private?", "Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+
+                if(messageBoxResult == DialogResult.Yes)
+                {
+                    GitHubLogInForm gitHubLoginForm = new GitHubLogInForm();
+                    gitHubLoginForm.Show();
+                }
+
                 return;
             }
 

@@ -87,6 +87,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GitHubLogInForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GitHubLogInForm.Designer.cs">
+      <DependentUpon>GitHubLogInForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PSVForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +101,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="GitHubLogInForm.resx">
+      <DependentUpon>GitHubLogInForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PSVForm.resx">
       <DependentUpon>PSVForm.cs</DependentUpon>
     </EmbeddedResource>
