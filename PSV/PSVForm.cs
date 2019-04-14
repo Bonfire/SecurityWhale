@@ -39,11 +39,17 @@ namespace PSV
 
         private void OpenProjectButton_Click(object sender, EventArgs e)
         {
+            if (!IsPathValid())
+            {
+                MessageBox.Show("Folder in path is not empty or does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (!IsGitURLValid())
             {
                 DialogResult messageBoxResult = MessageBox.Show("Git URL is not valid. Is it Private?", "Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
 
-                if(messageBoxResult == DialogResult.Yes)
+                if (messageBoxResult == DialogResult.Yes)
                 {
                     GitHubLogInForm gitHubLoginForm = new GitHubLogInForm();
                     gitHubLoginForm.Show();
@@ -52,13 +58,7 @@ namespace PSV
                 return;
             }
 
-            if (!IsPathValid())
-            {
-                MessageBox.Show("Folder in path is not empty or does not exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
+            Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text, );
 
             DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));

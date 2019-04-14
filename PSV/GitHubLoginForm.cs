@@ -6,6 +6,8 @@ namespace PSV
 {
     public partial class GitHubLogInForm : Form
     {
+        public Credentials gitHubCredentials;
+
         public GitHubLogInForm()
         {
             InitializeComponent();
@@ -18,11 +20,13 @@ namespace PSV
 
         private void LogInButton_Click(object sender, EventArgs e)
         {
-            LibGit2Sharp.Credentials gitHubCredentials = new UsernamePasswordCredentials()
+            gitHubCredentials = new UsernamePasswordCredentials()
             {
                 Username = gitHubUsernameTextBox.Text,
                 Password = gitHubPasswordTextBox.Text
             };
+
+            // TODO: Implement logging in and authenticated cloning
         }
     }
 }
