@@ -20,7 +20,9 @@ namespace PSV.Tests
 			PSVForm testForm = new PSVForm();
 			testForm.projectURLTextBox.Text = "https://github.com/Bonfire/Legionary.git";
 			Assert.IsTrue(testForm.IsGitURLValid());
-		}
+            testForm.projectURLTextBox.Text = "https://github.com/Bonfire/Non-Existent-Project.git";
+            Assert.IsFalse(testForm.IsGitURLValid());
+        }
 
 		[TestMethod()]
 		public void IsPathValidTest()
@@ -29,18 +31,16 @@ namespace PSV.Tests
 
 			// Create a new path to test
 			// Test that the path is valid (exists and non-empty)
-			string testPath = Path.Combine(Directory.GetCurrentDirectory(), "CloneTest\\");
+            string testPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "CloneTest\\");
 			Debug.WriteLine(testPath);
 			DirectoryInfo testDirectory = Directory.CreateDirectory(testPath);
 			testForm.pathToCloneTextBox.Text = testDirectory.FullName;
 			Assert.IsTrue(testForm.IsPathValid());
 
-			// TODO: Finish this test
-
 			// Delete the directory
-			// Test that the non-existant directory is invalid
-			//testDirectory.Delete(true);
-			//Assert.IsFalse(testForm.IsPathValid());
+			// Test that the non-existant directory is indeed non-existent
+			testDirectory.Delete(true);
+            Assert.ThrowsException<DirectoryNotFoundException>(() => testForm.IsPathValid());
 		}
 	}
 }
