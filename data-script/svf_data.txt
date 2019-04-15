@@ -1,0 +1,47 @@
+Individual file data
+--------------------
+FROM INDIVIDUAL COMMITS
+**both datetimes come to be the same buuuut since they have them seperate i figured theyre not always **
+committed_datetime :: datetime
+HUMAN READABLE VERSIONS AVAILABLE
+commit count :: int
+commit size :: int
+
+commit files changed :: dict --> also can do without filename
+	- filename :: string		-file count :: int
+	- insertions :: int
+	- deletions :: int
+	- lines changed :: int
+
+Repo Data
+---------
+assignees
+branches 
+contributors 
+count_open_issues
+commits 
+events 
+forks 
+issues 
+labels 
+languages 
+milestone 
+network_count
+pulls
+refs 
+stargazer_dates
+stargazer
+subs 
+watchers
+size 
+
+# boolean data
+has_issue
+has_downloads
+has_projects
+has_wiki 
+
+# datetime data
+updated_at
+repo_created_at
+commits
