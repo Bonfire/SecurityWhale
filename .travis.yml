@@ -1,8 +1,13 @@
 language: csharp
-mono: none
 sudo: required
 dist: xenial
-dotnet: 2.2
+
+matrix:
+  include:
+    - dotnet: 2.2
+      mono: none
+      env: DOTNETCORE=1  # optional, can be used to take different code paths in your script
+    - mono: latest
 
 solution: PSV.sln
 
