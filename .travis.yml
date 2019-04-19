@@ -1,6 +1,9 @@
 language: csharp
 mono: none
-dotnet: 2.0.0
+sudo: required
+dist: xenial
+dotnet: 2.2
+
 solution: PSV.sln
 
 script:
