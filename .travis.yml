@@ -5,3 +5,4 @@ solution: PSV.sln
 
 script:
  - dotnet restore
+ - dotnet test
