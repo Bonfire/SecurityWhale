@@ -16,7 +16,7 @@ In order to run the program type into your CLI.
 python git_collector.py
 ```
 
-There is a test folder with four seperate github repos with CVE commit mentions that can be used for testing program and pulling data from.
+Tests can be run by cloning a project to your local computer to run program, or through the program (significantly slower)
 **Must get cridentials to access database and github token, it is not provided**
 
 ## Help
