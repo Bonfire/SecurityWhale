@@ -17,6 +17,7 @@ python git_collector.py
 ```
 
 There is a test folder with four seperate github repos with CVE commit mentions that can be used for testing program and pulling data from.
+**Must get cridentials to access database, it is not provided**
 
 ## Help
 
