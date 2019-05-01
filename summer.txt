@@ -1,2 +1,5 @@
 5/1/2019: 
-- 
+- Tried to set up connections with the database and the data points
+- uploaded to github
+- moved all credentials to seperate file (for database connection)
+- several TODOs were made and need to be addressed at some point
