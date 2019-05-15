@@ -5,10 +5,10 @@ from token_file import access_token
 from git import Repo
 import os
 import time
-from database_cred_file import username
-from database_cred_file import host_name
-from database_cred_file import psswrd
-from database_cred_file import database_name
+from database_connection import username as username
+from database_connection import host_name as host_name
+from database_connection import psswrd as psswrd
+from database_connection import database_name as database_name
 
 # connect to MySQL database
 try:
@@ -33,7 +33,7 @@ git = Github(access_token)
 github_repo = ''
 repo_dir = ''
 
-mycursor = conn.cursor()
+# mycursor = conn.cursor()
 
 
 # clones github repo to any location on local computer
@@ -56,7 +56,7 @@ def git_clone():
         print("Clone unsuccessful", e)
 
 
-def git_repo():
+def get_repo():
     """
     Function gets the name of a github repository
 
@@ -113,21 +113,22 @@ def repo_int_data():
     has_projects = github_repo.has_projects
     has_wiki = github_repo.has_wiki
 
-    # insert data into database
-    sql = """INSERT INTO repo (assignees, branches, contributors,
-    count_open_issues, commits, events, forks, issues, labels, languages,
-    milestones, network_count, pulls, refs, stargazer, subs, watchers,
-    size, has_issue, has_downloads, has_projects, has_wiki) VALUES (%d, %d, %d,
-    %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %s, %s, %s, %s)
-    """
-
-    val = [assignees, branches, contributors, count_open_issues, commits,
-           events, forks, issues, labels, languages, milestone, network_count,
-           pulls, refs, stargazer, subs, watchers, size, has_issue,
-           has_downloads, has_projects, has_wiki]
-
-    mycursor.execute(sql, val)
-    mycursor.commit()
+    # # insert data into database
+    # sql = """INSERT INTO repo (assignees, branches, contributors,
+    # count_open_issues, commits, events, forks, issues, labels, languages,
+    # milestones, network_count, pulls, refs, stargazer, subs, watchers,
+    # size, has_issue, has_downloads, has_projects, has_wiki) VALUES (%d, %d, %d,
+    # %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %s, %s, %s, %s)
+    # """
+    #
+    # val = [assignees, branches, contributors, count_open_issues, commits,
+    #        events, forks, issues, labels, languages, milestone, network_count,
+    #        pulls, refs, stargazer, subs, watchers, size, has_issue,
+    #        has_downloads, has_projects, has_wiki]
+    #
+    # mycursor.execute(sql, val)
+    # mycursor.commit()
+    # mycursor.close()
 
 
 def repo_dt_data():
@@ -145,14 +146,15 @@ def repo_dt_data():
     # TODO connect these points to the database
     # TODO parse date time data and send in as specified by database
     # date time data
-    updated_at = str(github_repo.updated_at)
-    repo_creation_date = str(github_repo.created_at)
-
-    sql = "INSERT INTO repo (updated_at, repo_creation_date) VALUES (%s, %s)"
-    val = [updated_at, repo_creation_date]
-
-    mycursor.execute(sql, val)
-    mycursor.execute()
+    # updated_at = str(github_repo.updated_at)
+    # repo_creation_date = str(github_repo.created_at)
+    #
+    # sql = "INSERT INTO repo (updated_at, repo_creation_date) VALUES (%s, %s)"
+    # val = [updated_at, repo_creation_date]
+    #
+    # mycursor.execute(sql, val)
+    # mycursor.execute()
+    # mycursor.close()
 
 
 def commit_data(commit):
@@ -181,15 +183,16 @@ def commit_data(commit):
     print(commit.stats.files)
     print(commit.stats.total)
 
-    sql = """INSERT INTO file (hexsha, commit_datetime, readable_datetime,
-    commit_count, commit_size, commit_files, commit_stats) VALUES (%s, %s, %d,
-    %d)"""
-
-    val = [hexsha, commit_datetime, readable_datetime, commit_count,
-           commit_size]
-
-    mycursor.execute(sql, val)
-    mycursor.execute()
+    # sql = """INSERT INTO file (hexsha, commit_datetime, readable_datetime,
+    # commit_count, commit_size, commit_files, commit_stats) VALUES (%s, %s, %d,
+    # %d)"""
+    #
+    # val = [hexsha, commit_datetime, readable_datetime, commit_count,
+    #        commit_size]
+    #
+    # mycursor.execute(sql, val)
+    # mycursor.execute()
+    # mycursor.close()
 
 
 # TODO function that gets line count of each file in repository
@@ -231,9 +234,9 @@ def file_count():
 
 
 def main():
-
     # TODO set up what to run
     # check repo loaded properly
+    get_repo()
     try:
         repo = Repo(repo_dir)
 

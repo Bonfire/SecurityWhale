@@ -3,7 +3,6 @@ Individual file data
 FROM INDIVIDUAL COMMITS
 **both datetimes come to be the same buuuut since they have them seperate i figured theyre not always **
 committed_datetime :: datetime
-HUMAN READABLE VERSIONS AVAILABLE
 commit count :: int
 commit size :: int
 
