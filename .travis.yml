@@ -1,3 +1,5 @@
+before_install: cd Application
+
 language: csharp
 mono: none
 sudo: required
