@@ -3,14 +3,17 @@ Individual file data
 FROM INDIVIDUAL COMMITS
 **both datetimes come to be the same buuuut since they have them seperate i figured theyre not always **
 committed_datetime :: datetime
-commit count :: int
 commit size :: int
+hexsha :: int
 
-commit files changed :: dict --> also can do without filename
-	- filename :: string		-file count :: int
+commit files changed ** from commit_stats = commit.stats.files
+	- filepath :: string		
+	- file count :: int ** work in progress
 	- insertions :: int
 	- deletions :: int
-	- lines changed :: int
+	- lines changed :: intextremely annoying challenging to module up, web scraping part 2
+
+Repository info on Languages ** in progress, 
 
 Repo Data
 ---------
@@ -28,7 +31,6 @@ milestone
 network_count
 pulls
 refs 
-stargazer_dates
 stargazer
 subs 
 watchers
@@ -41,6 +43,5 @@ has_projects
 has_wiki 
 
 # datetime data
-updated_at
 repo_created_at
-commits
+stargazer_dates

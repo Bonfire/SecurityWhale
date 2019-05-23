@@ -32,7 +32,6 @@ def repo_data():
     labels = github_repo.get_labels().totalCount
     network_count = github_repo.network_count
     pulls = github_repo.get_pulls().totalCount
-    # ----------------------------------------------------
     stargazer = github_repo.get_stargazers().totalCount
     subscribers = github_repo.get_subscribers().totalCount
     watchers = github_repo.watchers_count
@@ -64,7 +63,8 @@ def repo_data():
 
 def file_data(repo):
     """Function Gathers data on a file such as line count,
-    hex, commit info and stores the values which are then sent over to the database
+    hex, commit info and stores the values which are then sent over to the
+    database
 
     :param repo: a connection to the repo we request through git
     :return:
@@ -81,7 +81,8 @@ def file_data(repo):
         print("hexsha: ", hexsha)
         print("committed datetime:", str(committed_datetime))
         print("commit size:", commit_size)
-        # iterations through commit stats and parses dictionaries into variables
+        # iterations through commit stats and parses dictionaries into
+        # variables
         # gives me file path
         # insertion, deletion, lines changes
         for file_path, value in commit_stats.items():
@@ -89,9 +90,7 @@ def file_data(repo):
             for type_of_change, change_value in value.items():
                 print(type_of_change, change_value)
 
-
     print("-" * 80)
-
 
     # # list of all the files in project directory and subdirectories
     # files = []
