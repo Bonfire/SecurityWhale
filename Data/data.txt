@@ -45,3 +45,9 @@ has_wiki
 # datetime data
 repo_created_at
 stargazer_dates
+
+# github repo info
+1) openssl/openssl
+2) MontaVista-OpenSourceTechnology/poky
+3) meiyopeng/guix
+4) fgeek/pyfiscan
