@@ -1,17 +1,17 @@
 Individual file data
 --------------------
 FROM INDIVIDUAL COMMITS
-**both datetimes come to be the same buuuut since they have them seperate i figured theyre not always **
+**both datetime come to be the same but since they have them seperated i figured they're not always **
 committed_datetime :: datetime
 commit size :: int
-hexsha :: int
+hexsha :: int ( not sure if important)
 
 commit files changed ** from commit_stats = commit.stats.files
 	- filepath :: string		
 	- file count :: int ** work in progress
 	- insertions :: int
 	- deletions :: int
-	- lines changed :: intextremely annoying challenging to module up, web scraping part 2
+	- lines changed :: int extremely annoying challenging to module up, web scraping part 2
 
 Repository info on Languages ** in progress, 
 
@@ -35,6 +35,7 @@ stargazer
 subs 
 watchers
 size 
+repo_created_at
 
 # boolean data
 has_issue
@@ -43,8 +44,13 @@ has_projects
 has_wiki 
 
 # datetime data
-repo_created_at
 stargazer_dates
+
+file data
+number of files
+commit datetime ** in for loop hard to process
+commit size ** in for loop hard to process
+type of commit change and number of line changed ** in for loop hard to process
 
 # github repo info
 1) openssl/openssl

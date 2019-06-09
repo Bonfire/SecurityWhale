@@ -102,20 +102,20 @@ def file_data(repo):
                                        database=database)
         cursor = conn.cursor()
 
-        lens = []
-
         # with all the commits, go through and pull data
         commits = list(repo.iter_commits('master'))[:1]
         for commit in commits:
             committed_datetime = commit.committed_datetime
             commit_size = commit.size
+            # ----------------------------------------------------------------------
             # iterations through commit stats and parses dictionaries into
             # variables, gives me file path insertion, deletion, lines changes
             # TODO think of a way to add this to database if possible
-            commit_stats = commit.stats.files
-            for file_path, value in commit_stats.items():
-                for type_of_change, change_value in value.items():
-                    print(type_of_change, change_value)
+            # commit_stats = commit.stats.files
+            # for file_path, value in commit_stats.items():
+            #     for type_of_change, change_value in value.items():
+            #         print(type_of_change, change_value)
+            # ----------------------------------------------------------------------
         # TODO get number of files in project
         # gets names of all files in project and stores in list
         files = []
@@ -125,14 +125,7 @@ def file_data(repo):
                 break
         # file count
         number_of_files = len(files)
-
-        count = 0
-        for dirpath, dirnames, filenames in walk(repo_dir):
-            for filename in [f for f in filenames if f.endswith(".c")]:
-                count += 1
-        print(count)
-
-        # TODO get number of each file type
+        # --------------------------------------------------------------------------
 
         print('finished gathering data')
     except mysql.connector.Error as err:
