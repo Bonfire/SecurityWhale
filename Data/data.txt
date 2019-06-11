@@ -1,21 +1,6 @@
-Individual file data
---------------------
-FROM INDIVIDUAL COMMITS
-**both datetime come to be the same but since they have them seperated i figured they're not always **
-committed_datetime :: datetime
-commit size :: int
-hexsha :: int ( not sure if important)
+Repository info on Languages ** in progress,
 
-commit files changed ** from commit_stats = commit.stats.files
-	- filepath :: string		
-	- file count :: int ** work in progress
-	- insertions :: int
-	- deletions :: int
-	- lines changed :: int extremely annoying challenging to module up, web scraping part 2
-
-Repository info on Languages ** in progress, 
-
-Repo Data
+Repo Data (int)
 ---------
 assignees
 branches 
@@ -37,20 +22,24 @@ watchers
 size 
 repo_created_at
 
-# boolean data
-has_issue
-has_downloads
-has_projects
-has_wiki 
-
-# datetime data
-stargazer_dates
+# can also get
+--------------
+has_issue (bool)
+has_downloads (bool)
+has_projects (bool)
+has_wiki (bool)
+stargazer_dates (list of datetime)
 
 file data
-number of files
-commit datetime ** in for loop hard to process
-commit size ** in for loop hard to process
-type of commit change and number of line changed ** in for loop hard to process
+---------
+number_of_files_in_project (int)
+committed_datetime (list of datetime)
+commit_size_sum (int)
+commit_files_count (int)
+commit_insertion_count (int)
+commit_deletion_count (int)
+commit_lines_changed_count (int)
+hexsha (list of something) ** not sure if useful
 
 # github repo info
 1) openssl/openssl

@@ -73,7 +73,7 @@ def repo_data():
         for row in records:
             print(row)
 
-        print('all records in repo table, printed')
+        print('REPO DATA COLLECTION COMPLETED')
 
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -83,7 +83,7 @@ def repo_data():
         else:
             print(err)
     else:
-        print('Closing database')
+        print('CLOSING DATEBASE')
         conn.close()
 
 
@@ -102,32 +102,48 @@ def file_data(repo):
                                        database=database)
         cursor = conn.cursor()
 
-        # with all the commits, go through and pull data
-        commits = list(repo.iter_commits('master'))[:1]
-        for commit in commits:
-            committed_datetime = commit.committed_datetime
-            commit_size = commit.size
-            # ----------------------------------------------------------------------
-            # iterations through commit stats and parses dictionaries into
-            # variables, gives me file path insertion, deletion, lines changes
-            # TODO think of a way to add this to database if possible
-            # commit_stats = commit.stats.files
-            # for file_path, value in commit_stats.items():
-            #     for type_of_change, change_value in value.items():
-            #         print(type_of_change, change_value)
-            # ----------------------------------------------------------------------
-        # TODO get number of files in project
         # gets names of all files in project and stores in list
         files = []
         for (dirpath, dirnames, filenames) in walk(repo_dir):
             for filename in [f for f in filenames]:
                 files.extend(filenames)
                 break
-        # file count
-        number_of_files = len(files)
-        # --------------------------------------------------------------------------
+        # number of files in project
+        number_of_files_in_project = len(files)
 
-        print('finished gathering data')
+        # gets list of commit datetime
+        committed_datetimes = []
+        # total sum of commit size
+        commit_size_sum = 0
+        # total files committed
+        commit_files_count = 0
+        # commit stats
+        commit_insertion_count = 0
+        commit_deletion_count = 0
+        commit_lines_changed_count = 0
+        commits_hexsha = []
+
+        # with all the commits, go through and pull data
+        commits = list(repo.iter_commits('master'))[:20]
+        for commit in commits:
+            commits_hexsha.append(commit.hexsha)
+            committed_datetimes.append(commit.committed_datetime)
+            commit_size_sum += commit.size
+
+            # iterations through commit stats and parses dictionaries into
+            # variables, gives me file path insertion, deletion, lines changes
+            commit_stats = commit.stats.files
+            for file_path, value in commit_stats.items():
+                commit_files_count += 1
+                for type_of_change, change_value in value.items():
+                    if type_of_change == "insertions":
+                        commit_insertion_count += change_value
+                    if type_of_change == "deletions":
+                        commit_deletion_count += change_value
+                    if type_of_change == "lines":
+                        commit_lines_changed_count += change_value
+
+        print('\nFILE DATA COLLECTION COMPLETE')
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -136,7 +152,7 @@ def file_data(repo):
         else:
             print(err)
     else:
-        print('closing connection')
+        print('CLOSING CONNECTION')
         conn.close()
 
     # C:\Users\bbkyl\Dropbox\github\test\openssl
