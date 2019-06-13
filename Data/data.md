@@ -1,48 +1,64 @@
-Repository info on Languages ** in progress,
+# Data Log
 
-Repo Data (int)
----------
-assignees
-branches 
-contributors 
-count_open_issues
-commits 
-events 
-forks 
-issues 
-labels 
-languages 
-milestone 
-network_count
-pulls
-refs 
-stargazer
-subs 
-watchers
-size 
-repo_created_at
+This file contains a detailed list of all the data we are able to collect from the python script we've created. It is broken down into sections based on how it is stored within our database.
 
-# can also get
---------------
-has_issue (bool)
-has_downloads (bool)
-has_projects (bool)
-has_wiki (bool)
-stargazer_dates (list of datetime)
+## Repo Data
 
-file data
----------
-number_of_files_in_project (int)
-committed_datetime (list of datetime)
-commit_size_sum (int)
-commit_files_count (int)
-commit_insertion_count (int)
-commit_deletion_count (int)
-commit_lines_changed_count (int)
-hexsha (list of something) ** not sure if useful
+These are all the data points we are able to obtain regarding the repository itself, this is focused less on the files but rather on the project as a whole as uploaded on githubs website. The Data is mostly Integer data but we are able to gather boolean data as well as datetime data.
 
-# github repo info
-1) openssl/openssl
-2) MontaVista-OpenSourceTechnology/poky
-3) meiyopeng/guix
-4) fgeek/pyfiscan
+**In regards to the datetime data minus repo_crated_at variable it is stored in a list and currently we are unable to store that into the database.**
+
+**Table of Repo data of type Integer** 
+
+| Repo Data       |                  |               |
+| ----------------|:----------------:| -------------:|
+| assigneees      | count_open_issues| forks         |
+| branches        | commits          | issues        |
+| languages       | milestones       | network_count |
+| pulls           | refs             | stargazers    |
+| subs            | watchers         | size          |
+| repo_created_at |                  |               |
+
+**Table of Repo Data of type bool**
+
+| Repo Data       |                  |               |
+| ----------------|:----------------:| -------------:|
+| has_issue       | has_project      | has_wiki      |
+| has_download    | commits          | issues        |
+
+**List of Repo Data of type datetime but in a list**
+
+- stargazer_dates
+
+## file data
+
+The file data has been far trickier to obtain and has required several different methods to obtain the current data points we have. Still working to obtain more data points by other means currently listed below are all the data points we have that we can pull that correlate more to the files in the project than the github repository.
+
+**Table of all the file data we currently have all integer data except hexsha**
+
+| file Data                  |                        |                             |
+| ---------------------------|:----------------------:| ---------------------------:|
+| number_of_files_in_project | commit_files_count     | commit_insertion_count      |
+| commit_size_sum            | commit_deletion_count  | commit_lines_changed_count  |
+| Hexsha                     |                        |                             |
+
+
+**List of file data of type datetime but in a list**
+
+- committed_datetime (list of datetime)
+
+## Meta-Data (TBD)
+
+
+# Testing
+
+## Github Repository Names
+
+Accumilating a list of repo names so we can begin testing shortly, any mention of `cve` in the commmit logs is good enough, looking for as many projects as possible.
+
+Currently we are only able to get the data and run the tests through clonning of the projects getting the full repo name and using the test directory to pull the data points. (there are probably way easier ways but we currently don't know them and this way seems the fastest)
+
+- openssl/openssl
+- MontaVista-OpenSourceTechnology/poky
+- meiyopeng/guix
+- fgeek/pyfiscan
