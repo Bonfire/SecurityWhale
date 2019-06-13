@@ -25,15 +25,15 @@ These are all the data points we are able to obtain regarding the repository its
 | Repo Data       |                  |               |
 | ----------------|:----------------:| -------------:|
 | has_issue       | has_project      | has_wiki      |
-| has_download    | commits          | issues        |
+| has_download    |                  |               |
 
 **List of Repo Data of type datetime but in a list**
 
 - stargazer_dates
 
-We also have the type of language used in the project and the size of each languages use. Working on a way to store them together or most likely they will be seperate data points but they will have to be stored in a list ex) lang = [c,py,java] and lang_size = [123434, 654356, 654]
+We also have the type of language used in the project and the size of each languages use. Working on a way to store them together or most likely they will be seperate data points but they will have to be stored in a list ex) lang = [c,py,java] is a string list and lang_size = [123434, 654356, 654] is an integer list. Note both data points are more related to the files 
 
-- lang
+- lang_string
 - lang_size
 
 ## file data
@@ -68,3 +68,15 @@ Currently we are only able to get the data and run the tests through clonning of
 - MontaVista-OpenSourceTechnology/poky
 - meiyopeng/guix
 - fgeek/pyfiscan
+- microsoft/ChakraCore
+- libreswan/libreswan
+- FriendsOfPHP/security-advisories
+- NYULibraries/privileges
+- nuxsmin/sysPass
+- microsoft
+- lantw44m/freebsd-ports-gnome
+- raspberrypi/linux
+
+
+
+
