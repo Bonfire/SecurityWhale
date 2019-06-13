@@ -14,10 +14,11 @@ These are all the data points we are able to obtain regarding the repository its
 | ----------------|:----------------:| -------------:|
 | assigneees      | count_open_issues| forks         |
 | branches        | commits          | issues        |
-| languages       | milestones       | network_count |
+| language_count  | milestones       | network_count |
 | pulls           | refs             | stargazers    |
 | subs            | watchers         | size          |
 | repo_created_at |                  |               |
+
 
 **Table of Repo Data of type bool**
 
@@ -29,6 +30,11 @@ These are all the data points we are able to obtain regarding the repository its
 **List of Repo Data of type datetime but in a list**
 
 - stargazer_dates
+
+We also have the type of language used in the project and the size of each languages use. Working on a way to store them together or most likely they will be seperate data points but they will have to be stored in a list ex) lang = [c,py,java] and lang_size = [123434, 654356, 654]
+
+- lang
+- lang_size
 
 ## file data
 
