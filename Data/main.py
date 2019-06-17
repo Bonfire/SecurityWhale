@@ -24,8 +24,8 @@ def repo_data(github_repo, repo_name):
 
     # lists the contain data from the language dictionary,
     # the string language and the size of it in project
-    lang_string = []
-    lang_size = []
+    # lang_string = []
+    # lang_size = []
 
     assignees = github_repo.get_assignees().totalCount
     branches = github_repo.get_branches().totalCount
@@ -37,9 +37,9 @@ def repo_data(github_repo, repo_name):
     issues = github_repo.get_issues().totalCount
     labels = github_repo.get_labels().totalCount
     language_count = len(github_repo.get_languages())
-    for lang, count in github_repo.get_languages().items():
-        lang_string.append(lang)
-        lang_size.append(count)
+    # for lang, count in github_repo.get_languages().items():
+    #     lang_string.append(lang)
+    #     lang_size.append(count)
     milestone = github_repo.get_milestones().totalCount
     network_count = github_repo.network_count
     pulls = github_repo.get_pulls().totalCount
@@ -138,6 +138,12 @@ def file_data(repo, repo_dir):
                 if type_of_change == "lines":
                     commit_lines_changed_count += change_value
 
+
+    datetime_count = len(committed_datetimes)
+    hexsha_count = len(commits_hexsha)
+
+
+
     # TODO need to update database first
 
     # try:
@@ -175,6 +181,11 @@ def file_data(repo, repo_dir):
 
 
 def main():
+
+    # run a constant loop to generate multiple streams of data
+    while():
+        pass
+
     try:
         # get the name of the online repo, and the directory on the local computer of
         # same repo
@@ -188,7 +199,7 @@ def main():
         # if repo exists
         if not repo.bare:
             repo_data(github_repo, repo_name)
-            # file_data(repo, repo_dir)
+            file_data(repo, repo_dir)
         else:
             print('Could not load repository at {} :('.format(repo_dir))
     except Exception as e:
