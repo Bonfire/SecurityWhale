@@ -65,12 +65,12 @@ we have that we can pull that correlate more to the files in the project than th
 
 # Testing
 
-## Methods
+## Automated Data Collection Method
 
 Several Ideas are in the work for gathering data automatically especially without constantly having to manually insert
 the require info needed to begin the collection process.
 
-**1) Read in from a file**
+**Read in from a file**
 
 Store the repository names and the directory paths in separate or the same file and have the program read in each line,
 collect and insert the date into the database and repeat the process repeatedly until the entire file has been
@@ -78,13 +78,13 @@ read.
 
 ## Sudo-code
 
-**Method 1**
+**Automation Method**
 
 ![sudo-code](sudocode.PNG)
 
 ## Github Repository Names
 
-Accumilating a list of repo names so we can begin testing shortly, any mention of `cve` in the commmit logs is good
+Accumulating a list of repo names so we can begin testing shortly, any mention of `cve` in the commmit logs is good
 enough, looking for as many projects as possible.
 
 Currently we are only able to get the data and run the tests through clonning of the projects getting the full repo name
@@ -105,5 +105,15 @@ them and this way seems the fastest)
 - raspberrypi/linux
 
 
+## Database Schemas
 
+Below are images of our current repo and file database schemas showing which data points are present in the database
+for us to insert and use. **Subject to change**
+
+
+![repo-schema](repo.PNG)
+
+
+
+![file-schema](file.PNG)
 

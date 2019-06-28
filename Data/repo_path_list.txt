@@ -1,0 +1,4 @@
+openssl/openssl C:\Users\bbkyl\Dropbox\github\test\openssl
+MontaVista-OpenSourceTechnology/poky C:\Users\bbkyl\Dropbox\github\test\poky
+meiyopeng/guix C:\Users\bbkyl\Dropbox\github\test\guix
+fgeek/pyfiscan C:\Users\bbkyl\Dropbox\github\test\pyfiscan
