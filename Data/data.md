@@ -80,7 +80,7 @@ read.
 
 **Automation Method**
 
-![sudo-code](sudocode.PNG)
+![sudo-code](screenshots/sudocode.PNG)
 
 ## Github Repository Names
 
@@ -110,10 +110,11 @@ them and this way seems the fastest)
 Below are images of our current repo and file database schemas showing which data points are present in the database
 for us to insert and use. **Subject to change**
 
+**Repo Schema**
 
-![repo-schema](repo.PNG)
+![repo-schema](screenshots/repo.PNG)
 
+**File Schema**
 
-
-![file-schema](file.PNG)
+![file-schema](screenshots/file.PNG)
 

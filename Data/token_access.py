@@ -1,1 +1,1 @@
-git_access = 'token access'
+git_access = 'access token'
