@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.IO;
 using LibGit2Sharp;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace PSV
 {
@@ -94,6 +95,27 @@ namespace PSV
             {
                 testURLButton.ForeColor = Color.Red;
             }
+        }
+
+        private void BeginScanButton_Click(object sender, EventArgs e)
+        {
+            string pythonInterpreter = "python.exe";
+            string pythonScript = "testScript.py";
+            int x = 2, y = 5; // Test input variables
+
+            ProcessStartInfo pythonStartInfo = new ProcessStartInfo(pythonInterpreter);
+            pythonStartInfo.UseShellExecute = false;
+            pythonStartInfo.RedirectStandardOutput = true;
+            pythonStartInfo.Arguments = pythonScript + " " + x + " " + y; // Pass three arguments, the first being the script itself
+
+            Process pythonProcess = new Process();
+            pythonProcess.StartInfo = pythonStartInfo;
+            pythonProcess.Start();
+
+            StreamReader outputReader = pythonProcess.StandardOutput;
+            string outputString = outputReader.ReadLine();
+
+            MessageBox.Show(outputString);
         }
     }
 }
