@@ -17,7 +17,8 @@ file_to_repo_ID = 0
 
 
 def repo_data(github_repo, repo_name):
-    """Function Gathers data on a repository such as subscribers,
+    """
+    Function Gathers data on a repository such as subscribers,
     and issues and stores the values which are then sent over to the database
 
     :param github_repo: variable that is connected to Github API
@@ -25,8 +26,7 @@ def repo_data(github_repo, repo_name):
     :return:
     """
 
-    # lists the contain data from the language dictionary,
-    # the string language and the size of it in project
+    # contains data on a projects languages
     lang_string = []
     lang_size = []
     language_size = 0
@@ -34,6 +34,7 @@ def repo_data(github_repo, repo_name):
     # auto updates global variable to be used in file method
     global file_to_repo_ID
 
+    # all repo data points we can acquire
     assignees = github_repo.get_assignees().totalCount
     branches = github_repo.get_branches().totalCount
     contributors = github_repo.get_contributors().totalCount
@@ -58,11 +59,14 @@ def repo_data(github_repo, repo_name):
     watchers = github_repo.watchers_count
     size = github_repo.size
     repo_creation_date = str(github_repo.created_at)
+
+    # boolean data points currently not in use
     # has_issue = github_repo.has_issues
     # has_download = github_repo.has_downloads
     # has_wiki = github_repo.has_wiki
     # has_project = github_repo.has_projects
 
+    # access database and insert all the data into repo schema
     try:
         conn = mysql.connector.connect(user=user, host=host,
                                        password=password,
@@ -83,7 +87,6 @@ def repo_data(github_repo, repo_name):
         file_to_repo_ID = cursor.lastrowid
 
         conn.commit()
-        print('Records were inserted successfully into repo table')
 
         print('REPO DATA COLLECTION COMPLETED')
 
@@ -100,7 +103,8 @@ def repo_data(github_repo, repo_name):
 
 
 def file_data(repo, repo_dir, repo_name):
-    """Function Gathers data on a file such as line count,
+    """
+    Function Gathers data on a file such as line count,
     hex, commit info and stores the values which are then sent over to the
     database
 
@@ -109,7 +113,7 @@ def file_data(repo, repo_dir, repo_name):
     :return:
     """
 
-    # gets names of all files in project and stores in list
+    # acquire number of files in a project
     files = []
     for (dirpath, dirnames, filenames) in walk(repo_dir):
         for filename in [f for f in filenames]:
@@ -118,28 +122,25 @@ def file_data(repo, repo_dir, repo_name):
     # number of files in project
     number_of_files_in_project = len(files)
 
-    # gets list of commit datetime
+    # list data points
+    commits_hexsha = []
     committed_datetimes = []
-    # total sum of commit size
+
+    # summed integer data points from total project commits
     commit_size_sum = 0
-    # total files committed
     commit_files_count = 0
-    # commit stats
     commit_insertion_count = 0
     commit_deletion_count = 0
     commit_lines_changed_count = 0
-    # list of all the hexsha
-    commits_hexsha = []
 
-    # with all the commits, go through and pull data
+    # iterate through the commit history and gather data
     commits = list(repo.iter_commits('master'))[:20]
     for commit in commits:
         commits_hexsha.append(commit.hexsha)
         committed_datetimes.append(commit.committed_datetime)
         commit_size_sum += commit.size
 
-        # iterations through commit stats and parses dictionaries into
-        # variables, gives me file path insertion, deletion, lines changes
+        # get data points from stats, since it's stored in a dictionary we had to use a nested for loop to gather it
         commit_stats = commit.stats.files
         for file_path, value in commit_stats.items():
             commit_files_count += 1
@@ -151,16 +152,17 @@ def file_data(repo, repo_dir, repo_name):
                 if type_of_change == "lines":
                     commit_lines_changed_count += change_value
 
+    # can't used lists in database insertion so got total count instead
     datetime_count = len(committed_datetimes)
     hexsha_count = len(commits_hexsha)
 
+    # connect to database and insert file data points into file schema
     try:
         conn = mysql.connector.connect(user=user, host=host,
                                        password=password,
                                        database=database)
         cursor = conn.cursor()
 
-        # insert into database, won't work now because database not properly setup for these data points
         sql_insert_query = """INSERT INTO file (repoID, filename, num_files,commit_size, commit_count,
         insertions, deletions,lines_changed, hexsha_count) VALUES (%s, %s,
         %s, %s, %s, %s, %s, %s, %s)"""
@@ -186,23 +188,25 @@ def file_data(repo, repo_dir, repo_name):
         conn.close()
 
 
-# C:\Users\bbkyl\Dropbox\github\test\openssl
-
-
 def main():
+    '''
+    Main Function gathers information on the projects we are gathering data from through a read in file.
+    Each project is then scanned repo data and file data and the values are inserted into a database
+    before the cycle repeats.
+    :return:
+    '''
+
+    # read form repo_path_list and collect/insert data points until reach EOF
     try:
-        # read in repo name and directory path from file and collect data
-        # this is done until end of file
         with open('repo_path_list.txt', 'r') as repo_info:
             for row in repo_info.readlines():
-                # name of repository on Github
                 repo_name, repo_dir = row.split(' ')
                 github_repo = git.get_repo(repo_name, lazy=False)
 
-                # file path name
+                # used in GitPython library
                 repo = Repo(repo_dir.rstrip())
 
-                # if repo exists run data
+                # if repo exists run methods
                 if not repo.bare:
                     repo_data(github_repo, repo_name)
                     file_data(repo, repo_dir.rstrip(), repo_name)
@@ -212,22 +216,6 @@ def main():
     except Exception as e:
         print("Could not check if repo existed", e)
 
-    # try:
-    #     # get the name of the online repo, and the file path on the local computer
-    #     repo_name = input('Name of Github Repo: ')
-    #     github_repo = git.get_repo(repo_name, lazy=False)
-    #     repo_dir = input('Repo Directory: ')
-    #
-    #     repo = Repo(repo_dir)
-    #
-    #     # if repo exists
-    #     if not repo.bare:
-    #         repo_data(github_repo, repo_name)
-    #         file_data(repo, repo_dir, repo_name)
-    #     else:
-    #         print('Could not load repository at {} :('.format(repo_dir))
-    # except Exception as e:
-    #     print("Could not check if repo existed", e)
 
 
 if __name__ == "__main__":

@@ -5,78 +5,87 @@ broken down into sections based on how it is stored within our database.
 
 ## Repo Data
 
-These are all the data points we are able to obtain regarding the repository itself, this is focused less on the files
-but rather on the project as a whole as uploaded on githubs website. The Data is mostly Integer data but we are able to
-gather boolean data as well as datetime data.
+"Repo Data" refers to all the data points that we can access through python libraries and using githubs API. What you will notice below is that we have several data points some we use and some we have available if we for whatever reason our Machine Learning team requires more points.
 
-**In regards to the datetime data minus repo_crated_at variable it is stored in a list and currently we are unable to
-store that into the database.**
+The sections are broken off into sections based on data type. Our data points consist of Integers, Strings, Datetime, Boolean, and a few list data types. Not all the data points you see are in the program and there are some that are only used for making other points.
 
-**Table of Repo data of type Integer** 
+##### Integer Data Points
 
-| Repo Data       |                  |               |
-| ----------------|:----------------:| -------------:|
-| assigneees      | count_open_issues| forks         |
-| branches        | commits          | issues        |
-| language_count  | milestones       | network_count |
-| pulls           | refs             | stargazers    |
-| subs            | watchers         | size          |
-| repo_created_at |                  |               |
+|                 |                  |               |               |
+| ----------------|:----------------:| -------------:| -------------:|
+| assigneees      | open_issues      | forks         | contributors  |
+| branches        | commits          | issues        |               |
+| language_count  | milestones       | network_count |               |
+| pulls           | refs             | stargazers    |               |
+| subscribers     | watchers         | size          |               |
+| labels          | language_size    | stargazers    |               |
 
 
-**Table of Repo Data of type bool**
+##### Boolean Data Points
 
-| Repo Data       |                  |               |
+|                 |                  |               |
 | ----------------|:----------------:| -------------:|
 | has_issue       | has_project      | has_wiki      |
 | has_download    |                  |               |
 
-**List of Repo Data of type datetime but in a list**
+##### List Data Points
 
+These are lists of data points that would have to be iterated through to store the individual values
+
+- Languages
+- language_sizes
 - stargazer_dates
 
-We also have the type of language used in the project and the size of each languages use. Working on a way to store them
-together or most likely they will be seperate data points but they will have to be stored in a list
-`ex) lang = [c,py,java] is a string list and lang_size = [123434, 654356, 654] is an integer list.` Note both data
-points are more related to the files 
+        languages = [c, py, java] and language_size = [123434, 654356, 654] are just to give you an idea of how they'd be represented.
 
-- lang_string
-- lang_size
+##### Strings and Datetime Data Points
 
-## file data
-
-The file data has been far trickier to obtain and has required several different methods to obtain the current data
-points we have. Still working to obtain more data points by other means currently listed below are all the data points
-we have that we can pull that correlate more to the files in the project than the github repository.
-
-**Table of all the file data we currently have all integer data except hexsha**
-
-| file Data                  |                        |                             |
-| ---------------------------|:----------------------:| ---------------------------:|
-| number_of_files_in_project | commit_files_count     | commit_insertion_count      |
-| commit_size_sum            | commit_deletion_count  | commit_lines_changed_count  |
-| Hexsha                     |                        |                             |
+- date_opened (datetime)
+- repo_name (string)
+- repo_initial_creation (datetime)
 
 
-**List of file data of type datetime but in a list**
+## File Data
 
-- committed_datetime (list of datetime)
+"File Data" refers to any data points that are tied in closely with the individual files and directories of a given project. These points have data points tied in with Decimals, Strings, Bits and Integers
+
+##### Decimal Data Points
+
+|               |               |                |
+| --------------|:-------------:| --------------:|
+| num_files     | commit_count  | insertion      |
+| commit_size   | deletion      | lines_changed  |
+| Hexsha_count  |               |                |
+
+
+##### Integer, String and Bit Data Points
+
+- repoID (Integer)
+- filename (String)
+- training_flag (Bit)
+- has_fault (Bit)
+
+##### List Data Points
+
+- committed_datetime 
+- files
+- commits_hexsha
 
 
 # Testing
 
 ## Automated Data Collection Method
 
-Several Ideas are in the work for gathering data automatically especially without constantly having to manually insert
-the require info needed to begin the collection process.
+A Big focus is creating a program that runs automatically where we wou;dn't have to manually input the information required to start up the program each time. Mainly we just don't want to worry about having all of the projects stored and having to manually enter the repositories github name and its cloned directory path over and over again.
+So we deced to implement a for loop that reads from a text file all the projects and their directory paths so our program can handle all of the extra labor for us.
 
-**Read in from a file**
+## Automation Method
 
-Store the repository names and the directory paths in separate or the same file and have the program read in each line,
+Store the repository names and the directory paths in the same file and have the program read in each line,
 collect and insert the date into the database and repeat the process repeatedly until the entire file has been
 read.
 
-## Sudo-code
+### Sudo-code
 
 **Automation Method**
 
@@ -84,12 +93,9 @@ read.
 
 ## Github Repository Names
 
-Accumulating a list of repo names so we can begin testing shortly, any mention of `cve` in the commmit logs is good
-enough, looking for as many projects as possible.
+Accumulating a list of repo names so we can begin testing shortly, any mention of `cve` in the commmit logs  and issues is what we have been looking for, we are currently looking for as many projects as possible.
 
-Currently we are only able to get the data and run the tests through clonning of the projects getting the full repo name
-and using the test directory to pull the data points. (there are probably way easier ways but we currently don't know
-them and this way seems the fastest)
+Currently we are only able to get the data and run the tests through clonning of the projects, getting the full repo name and using the test directory to pull the data points.
 
 - openssl/openssl
 - MontaVista-OpenSourceTechnology/poky
