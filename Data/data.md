@@ -106,9 +106,7 @@ Currently we are only able to get the data and run the tests through clonning of
 - FriendsOfPHP/security-advisories
 - NYULibraries/privileges
 - nuxsmin/sysPass
-- microsoft
 - lantw44m/freebsd-ports-gnome
-- raspberrypi/linux
 
 
 ## Database Schemas

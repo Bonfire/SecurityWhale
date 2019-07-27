@@ -1,13 +1,15 @@
-from token_access import git_access
+from os import walk
+
+import mysql.connector
+from git import Repo
+from github import Github
+from mysql.connector import errorcode
+
 from config import database
 from config import host
 from config import password
 from config import user
-from github import Github
-from git import Repo
-import mysql.connector
-from mysql.connector import errorcode
-from os import walk
+from token_access import git_access
 
 # My personal github API token, must have to access data
 git = Github(git_access)
@@ -110,6 +112,7 @@ def file_data(repo, repo_dir, repo_name):
 
     :param repo: a connection to the repo we request through git
     :param repo_dir: the directory path name where project is located locally
+    :param repo_name: Name of repository
     :return:
     """
 
@@ -155,6 +158,7 @@ def file_data(repo, repo_dir, repo_name):
     # can't used lists in database insertion so got total count instead
     datetime_count = len(committed_datetimes)
     hexsha_count = len(commits_hexsha)
+    fault_flag = check_faults(repo)
 
     # connect to database and insert file data points into file schema
     try:
@@ -163,11 +167,11 @@ def file_data(repo, repo_dir, repo_name):
                                        database=database)
         cursor = conn.cursor()
 
-        sql_insert_query = """INSERT INTO file (repoID, filename, num_files,commit_size, commit_count,
-        insertions, deletions,lines_changed, hexsha_count) VALUES (%s, %s,
+        sql_insert_query = """INSERT INTO file (repoID, filename, has_fault, num_files,commit_size, commit_count,
+        insertions, deletions,lines_changed, hexsha_count) VALUES (%s, %s, %s,
         %s, %s, %s, %s, %s, %s, %s)"""
 
-        insert_tuple = (file_to_repo_ID, repo_name,
+        insert_tuple = (file_to_repo_ID, repo_name, fault_flag,
                         number_of_files_in_project, commit_size_sum, commit_files_count, commit_insertion_count,
                         commit_deletion_count, commit_lines_changed_count, hexsha_count)
 
@@ -188,13 +192,26 @@ def file_data(repo, repo_dir, repo_name):
         conn.close()
 
 
+def check_faults(repo):
+    """
+    Function checks if a repository mentions CVE in its commits history and then returns 1 if true else 0 if false
+    :param repo: repository object
+    :return 1: if cve is mentioned in commit message or summary
+    """
+    # iterate through the commit history and gather data
+    commits = list(repo.iter_commits('master'))[:]
+    for commit in commits:
+        if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1:
+            return 1
+
+
 def main():
-    '''
+    """
     Main Function gathers information on the projects we are gathering data from through a read in file.
     Each project is then scanned repo data and file data and the values are inserted into a database
     before the cycle repeats.
     :return:
-    '''
+    """
 
     # read form repo_path_list and collect/insert data points until reach EOF
     try:
@@ -215,7 +232,6 @@ def main():
                     print('Could not load repository at {} :('.format(repo_dir))
     except Exception as e:
         print("Could not check if repo existed", e)
-
 
 
 if __name__ == "__main__":
