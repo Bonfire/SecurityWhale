@@ -1,3 +1,4 @@
+import time
 from os import walk
 
 import mysql.connector
@@ -90,8 +91,6 @@ def repo_data(github_repo, repo_name):
 
         conn.commit()
 
-        print('REPO DATA COLLECTION COMPLETED')
-
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -100,7 +99,6 @@ def repo_data(github_repo, repo_name):
         else:
             print(err)
     else:
-        print('CLOSING DATABASE')
         conn.close()
 
 
@@ -178,8 +176,6 @@ def file_data(repo, repo_dir, repo_name):
         cursor.execute(sql_insert_query, insert_tuple)
         conn.commit()
 
-        print('\nFILE DATA COLLECTION COMPLETE')
-
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -188,7 +184,6 @@ def file_data(repo, repo_dir, repo_name):
         else:
             print(err)
     else:
-        print('CLOSING CONNECTION')
         conn.close()
 
 
@@ -215,6 +210,7 @@ def main():
 
     # read form repo_path_list and collect/insert data points until reach EOF
     try:
+        start_time = time.time()
         with open('repo_path_list.txt', 'r') as repo_info:
             for row in repo_info.readlines():
                 repo_name, repo_dir = row.split(' ')
@@ -230,6 +226,7 @@ def main():
                 # if repo doesn't exists display error and exit
                 else:
                     print('Could not load repository at {} :('.format(repo_dir))
+        print('Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
         print("Could not check if repo existed", e)
 

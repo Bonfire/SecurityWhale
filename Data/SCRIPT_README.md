@@ -1,13 +1,12 @@
-# Data Log
+# Data Acquisition
+Collects data on github repositories and stores it in a MySQL database.
 
-This file contains a detailed list of all the data we are able to collect from the python script we've created. It is
-broken down into sections based on how it is stored within our database.
 
 ## Repo Data
 
-"Repo Data" refers to all the data points that we can access through python libraries and using githubs API. What you will notice below is that we have several data points some we use and some we have available if we for whatever reason our Machine Learning team requires more points.
+"Repo Data" refers to all the data points that we can access through python libraries and using githubs API. What you will notice below is that we have several data points some we use and some we have available if needed.
 
-The sections are broken off into sections based on data type. Our data points consist of Integers, Strings, Datetime, Boolean, and a few list data types. Not all the data points you see are in the program and there are some that are only used for making other points.
+The sections are broken off based on data types. Our data points consist of Integers, Strings, Datetime, Boolean, and a few list data types. Not all the data points you see are in the program and there are some that are only used for making other points.
 
 ##### Integer Data Points
 
@@ -47,7 +46,7 @@ These are lists of data points that would have to be iterated through to store t
 
 ## File Data
 
-"File Data" refers to any data points that are tied in closely with the individual files and directories of a given project. These points have data points tied in with Decimals, Strings, Bits and Integers
+"File Data" refers to any data points that are tied in closely with the individual files of a given project. These points have data points tied in with Decimals, Strings, Bits and Integers
 
 ##### Decimal Data Points
 
@@ -63,7 +62,7 @@ These are lists of data points that would have to be iterated through to store t
 - repoID (Integer)
 - filename (String)
 - training_flag (Bit)
-- has_fault (Bit)
+- has_fault (Integer)
 
 ##### List Data Points
 
@@ -74,16 +73,18 @@ These are lists of data points that would have to be iterated through to store t
 
 # Testing
 
+Running Program:
+**Everything is done automatically through the script**
+
+**Make sure Path list, token access and config file are in same directory as main program**
+```shell script
+Python Main.py
+```
 ## Automated Data Collection Method
 
-A Big focus is creating a program that runs automatically where we wou;dn't have to manually input the information required to start up the program each time. Mainly we just don't want to worry about having all of the projects stored and having to manually enter the repositories github name and its cloned directory path over and over again.
-So we deced to implement a for loop that reads from a text file all the projects and their directory paths so our program can handle all of the extra labor for us.
+This Method involves implementing a for loop that reads from a text file all the projects and their directory paths so our program can gather the data on each project that way without the user manually entering that required information each time.
 
 ## Automation Method
-
-Store the repository names and the directory paths in the same file and have the program read in each line,
-collect and insert the date into the database and repeat the process repeatedly until the entire file has been
-read.
 
 ### Sudo-code
 
