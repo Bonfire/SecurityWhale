@@ -1,10 +1,10 @@
-﻿using System;
-using System.Windows.Forms;
-using System.IO;
-using LibGit2Sharp;
-using System.Drawing;
+﻿using LibGit2Sharp;
+using System;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace PSV
 {
