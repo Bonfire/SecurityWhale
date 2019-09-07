@@ -111,7 +111,7 @@
             this.testURLButton.Location = new System.Drawing.Point(6, 59);
             this.testURLButton.Name = "testURLButton";
             this.testURLButton.Size = new System.Drawing.Size(177, 23);
-            this.testURLButton.TabIndex = 10;
+            this.testURLButton.TabIndex = 4;
             this.testURLButton.Text = "Test URL";
             this.testURLButton.UseVisualStyleBackColor = true;
             this.testURLButton.Click += new System.EventHandler(this.TestURLButton_Click);
@@ -121,7 +121,7 @@
             this.openFolderButton.Location = new System.Drawing.Point(318, 33);
             this.openFolderButton.Name = "openFolderButton";
             this.openFolderButton.Size = new System.Drawing.Size(45, 20);
-            this.openFolderButton.TabIndex = 9;
+            this.openFolderButton.TabIndex = 3;
             this.openFolderButton.Text = "...";
             this.openFolderButton.UseVisualStyleBackColor = true;
             this.openFolderButton.Click += new System.EventHandler(this.OpenFolderButton_Click);
@@ -131,7 +131,7 @@
             this.pathToCloneTextBox.Location = new System.Drawing.Point(106, 33);
             this.pathToCloneTextBox.Name = "pathToCloneTextBox";
             this.pathToCloneTextBox.Size = new System.Drawing.Size(206, 20);
-            this.pathToCloneTextBox.TabIndex = 8;
+            this.pathToCloneTextBox.TabIndex = 2;
             // 
             // projectNameLabel
             // 
@@ -148,7 +148,7 @@
             this.beginScanButton.Location = new System.Drawing.Point(686, 388);
             this.beginScanButton.Name = "beginScanButton";
             this.beginScanButton.Size = new System.Drawing.Size(110, 23);
-            this.beginScanButton.TabIndex = 6;
+            this.beginScanButton.TabIndex = 14;
             this.beginScanButton.Text = "Begin Scan";
             this.beginScanButton.UseVisualStyleBackColor = true;
             this.beginScanButton.Click += new System.EventHandler(this.BeginScanButton_Click);
@@ -167,7 +167,7 @@
             this.settingsGroupBox.Location = new System.Drawing.Point(9, 88);
             this.settingsGroupBox.Name = "settingsGroupBox";
             this.settingsGroupBox.Size = new System.Drawing.Size(354, 323);
-            this.settingsGroupBox.TabIndex = 4;
+            this.settingsGroupBox.TabIndex = 6;
             this.settingsGroupBox.TabStop = false;
             this.settingsGroupBox.Text = "Scan Settings";
             // 
@@ -178,7 +178,7 @@
             this.limitScanGroupBox.Location = new System.Drawing.Point(6, 42);
             this.limitScanGroupBox.Name = "limitScanGroupBox";
             this.limitScanGroupBox.Size = new System.Drawing.Size(342, 155);
-            this.limitScanGroupBox.TabIndex = 2;
+            this.limitScanGroupBox.TabIndex = 8;
             this.limitScanGroupBox.TabStop = false;
             this.limitScanGroupBox.Text = "Limit Scan";
             // 
@@ -193,7 +193,7 @@
             this.exclusionGroupBox.Location = new System.Drawing.Point(6, 42);
             this.exclusionGroupBox.Name = "exclusionGroupBox";
             this.exclusionGroupBox.Size = new System.Drawing.Size(330, 102);
-            this.exclusionGroupBox.TabIndex = 2;
+            this.exclusionGroupBox.TabIndex = 10;
             this.exclusionGroupBox.TabStop = false;
             this.exclusionGroupBox.Text = "Exclusions (Comma Separated)";
             // 
@@ -202,7 +202,7 @@
             this.foldersBox.Location = new System.Drawing.Point(87, 71);
             this.foldersBox.Name = "foldersBox";
             this.foldersBox.Size = new System.Drawing.Size(237, 20);
-            this.foldersBox.TabIndex = 5;
+            this.foldersBox.TabIndex = 13;
             // 
             // foldersLabel
             // 
@@ -218,7 +218,7 @@
             this.fileNamesBox.Location = new System.Drawing.Point(87, 19);
             this.fileNamesBox.Name = "fileNamesBox";
             this.fileNamesBox.Size = new System.Drawing.Size(237, 20);
-            this.fileNamesBox.TabIndex = 3;
+            this.fileNamesBox.TabIndex = 11;
             // 
             // label1
             // 
@@ -234,7 +234,7 @@
             this.fileExtensionsBox.Location = new System.Drawing.Point(87, 45);
             this.fileExtensionsBox.Name = "fileExtensionsBox";
             this.fileExtensionsBox.Size = new System.Drawing.Size(237, 20);
-            this.fileExtensionsBox.TabIndex = 1;
+            this.fileExtensionsBox.TabIndex = 12;
             // 
             // fileExtensionsLabel
             // 
@@ -251,7 +251,7 @@
             this.includeHiddenCheck.Location = new System.Drawing.Point(6, 19);
             this.includeHiddenCheck.Name = "includeHiddenCheck";
             this.includeHiddenCheck.Size = new System.Drawing.Size(126, 17);
-            this.includeHiddenCheck.TabIndex = 1;
+            this.includeHiddenCheck.TabIndex = 9;
             this.includeHiddenCheck.Text = "Include Hidden Items";
             this.includeHiddenCheck.UseVisualStyleBackColor = true;
             // 
@@ -261,7 +261,7 @@
             this.provideDataBox.Location = new System.Drawing.Point(6, 19);
             this.provideDataBox.Name = "provideDataBox";
             this.provideDataBox.Size = new System.Drawing.Size(144, 17);
-            this.provideDataBox.TabIndex = 1;
+            this.provideDataBox.TabIndex = 7;
             this.provideDataBox.Text = "Provide Data for Training";
             this.provideDataBox.UseVisualStyleBackColor = true;
             // 
@@ -279,14 +279,14 @@
             this.projectURLTextBox.Location = new System.Drawing.Point(106, 6);
             this.projectURLTextBox.Name = "projectURLTextBox";
             this.projectURLTextBox.Size = new System.Drawing.Size(257, 20);
-            this.projectURLTextBox.TabIndex = 2;
+            this.projectURLTextBox.TabIndex = 1;
             // 
             // openProjectButton
             // 
             this.openProjectButton.Location = new System.Drawing.Point(186, 59);
             this.openProjectButton.Name = "openProjectButton";
             this.openProjectButton.Size = new System.Drawing.Size(177, 23);
-            this.openProjectButton.TabIndex = 1;
+            this.openProjectButton.TabIndex = 5;
             this.openProjectButton.Text = "Clone and Open Project";
             this.openProjectButton.UseVisualStyleBackColor = true;
             this.openProjectButton.Click += new System.EventHandler(this.OpenProjectButton_Click);
