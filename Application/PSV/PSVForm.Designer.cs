@@ -138,12 +138,13 @@
             this.projectNameLabel.AutoSize = true;
             this.projectNameLabel.Location = new System.Drawing.Point(6, 36);
             this.projectNameLabel.Name = "projectNameLabel";
-            this.projectNameLabel.Size = new System.Drawing.Size(94, 13);
+            this.projectNameLabel.Size = new System.Drawing.Size(86, 13);
             this.projectNameLabel.TabIndex = 7;
-            this.projectNameLabel.Text = "Path To Clone To:";
+            this.projectNameLabel.Text = "Path to Clone to:";
             // 
             // beginScanButton
             // 
+            this.beginScanButton.Enabled = false;
             this.beginScanButton.Location = new System.Drawing.Point(686, 388);
             this.beginScanButton.Name = "beginScanButton";
             this.beginScanButton.Size = new System.Drawing.Size(110, 23);
@@ -176,7 +177,7 @@
             this.limitScanGroupBox.Controls.Add(this.includeHiddenCheck);
             this.limitScanGroupBox.Location = new System.Drawing.Point(6, 42);
             this.limitScanGroupBox.Name = "limitScanGroupBox";
-            this.limitScanGroupBox.Size = new System.Drawing.Size(342, 275);
+            this.limitScanGroupBox.Size = new System.Drawing.Size(342, 155);
             this.limitScanGroupBox.TabIndex = 2;
             this.limitScanGroupBox.TabStop = false;
             this.limitScanGroupBox.Text = "Limit Scan";
@@ -191,7 +192,7 @@
             this.exclusionGroupBox.Controls.Add(this.fileExtensionsLabel);
             this.exclusionGroupBox.Location = new System.Drawing.Point(6, 42);
             this.exclusionGroupBox.Name = "exclusionGroupBox";
-            this.exclusionGroupBox.Size = new System.Drawing.Size(330, 204);
+            this.exclusionGroupBox.Size = new System.Drawing.Size(330, 102);
             this.exclusionGroupBox.TabIndex = 2;
             this.exclusionGroupBox.TabStop = false;
             this.exclusionGroupBox.Text = "Exclusions (Comma Separated)";
@@ -348,7 +349,7 @@
             // severityColumn
             // 
             this.severityColumn.Text = "Severity";
-            this.severityColumn.Width = 57;
+            this.severityColumn.Width = 56;
             // 
             // vulnColumn
             // 

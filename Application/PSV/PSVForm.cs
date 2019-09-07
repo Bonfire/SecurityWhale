@@ -75,6 +75,8 @@ namespace PSV
             DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
+            // Allow the user to scan
+            beginScanButton.Enabled = true;
         }
 
         private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
