@@ -11,6 +11,8 @@ namespace PSV
     {
         // Our user's exclusion lists
         public String[] fileNameExclusions, fileExtensionExclusions, folderExclusions;
+        public Boolean isRepoPrivate = false;
+
 
         public PSVForm()
         {
@@ -38,6 +40,7 @@ namespace PSV
                 // Fire up the GitHub authenticator form
                 if (messageBoxResult == DialogResult.Yes)
                 {
+                    isRepoPrivate = true;
                     GitHubLogInForm gitHubLoginForm = new GitHubLogInForm(projectURLTextBox.Text, pathToCloneTextBox.Text);
                     gitHubLoginForm.ShowDialog();
                 }
@@ -54,7 +57,7 @@ namespace PSV
         }
 
         // Open the project in the application (this is NOT the scan)
-        private void OpenProjectButton_Click(object sender, EventArgs e)
+        private void CloneProjectButton_Click(object sender, EventArgs e)
         {
             // Perform our two validation checks
             if (!IsPathValid())
@@ -63,26 +66,11 @@ namespace PSV
                 return;
             }
 
-            if (!IsGitURLValid())
+            // Clone the repo if it isn't private (already cloned)
+            if (IsGitURLValid() && !isRepoPrivate)
             {
-                return;
+                Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
             }
-
-            // Clone the repo
-            Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
-
-            // Update our scan settings and exclusions
-            updateScanSettings();
-
-            // Clear the current file tree
-            scanTree.Nodes.Clear();
-
-            // Add all new folders and files to the file tree
-            DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
-            scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
-
-            // Allow the user to scan
-            beginScanButton.Enabled = true;
         }
 
         // Used to create nodes and add them to the TreeView
@@ -146,13 +134,23 @@ namespace PSV
             }
         }
 
-        // Perform a URL test when the "Test URL" button is clicked
-        private void TestURLButton_Click(object sender, EventArgs e)
+        private void LoadProjectButton_Click(object sender, EventArgs e)
         {
-            if (IsGitURLValid())
-            {
-                openProjectButton.Enabled = true;
-            }
+            // Update our scan settings and exclusions
+            updateScanSettings();
+
+            // Clear the current file tree
+            scanTree.Nodes.Clear();
+
+            // Add all new folders and files to the file tree
+            DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
+            scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
+
+            // Expand the root (top) node to show the user that it loaded properly
+            scanTree.TopNode.Expand();
+
+            // Allow the user to scan
+            beginScanButton.Enabled = true;
         }
 
         // Begin the scan by calling the data script which calls the ML predictor

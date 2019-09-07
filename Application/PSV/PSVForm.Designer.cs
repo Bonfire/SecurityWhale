@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PSVForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.scanPage = new System.Windows.Forms.TabPage();
-            this.testURLButton = new System.Windows.Forms.Button();
+            this.loadProjectButton = new System.Windows.Forms.Button();
             this.openFolderButton = new System.Windows.Forms.Button();
             this.pathToCloneTextBox = new System.Windows.Forms.TextBox();
             this.projectNameLabel = new System.Windows.Forms.Label();
@@ -50,7 +50,7 @@
             this.provideDataBox = new System.Windows.Forms.CheckBox();
             this.projectURLLabel = new System.Windows.Forms.Label();
             this.projectURLTextBox = new System.Windows.Forms.TextBox();
-            this.openProjectButton = new System.Windows.Forms.Button();
+            this.cloneProjectButton = new System.Windows.Forms.Button();
             this.scanTree = new System.Windows.Forms.TreeView();
             this.viewPage = new System.Windows.Forms.TabPage();
             this.infoTabControl = new System.Windows.Forms.TabControl();
@@ -87,7 +87,7 @@
             // 
             // scanPage
             // 
-            this.scanPage.Controls.Add(this.testURLButton);
+            this.scanPage.Controls.Add(this.loadProjectButton);
             this.scanPage.Controls.Add(this.openFolderButton);
             this.scanPage.Controls.Add(this.pathToCloneTextBox);
             this.scanPage.Controls.Add(this.projectNameLabel);
@@ -96,7 +96,7 @@
             this.scanPage.Controls.Add(this.settingsGroupBox);
             this.scanPage.Controls.Add(this.projectURLLabel);
             this.scanPage.Controls.Add(this.projectURLTextBox);
-            this.scanPage.Controls.Add(this.openProjectButton);
+            this.scanPage.Controls.Add(this.cloneProjectButton);
             this.scanPage.Controls.Add(this.scanTree);
             this.scanPage.Location = new System.Drawing.Point(4, 22);
             this.scanPage.Name = "scanPage";
@@ -106,15 +106,15 @@
             this.scanPage.Text = "Scan";
             this.scanPage.UseVisualStyleBackColor = true;
             // 
-            // testURLButton
+            // loadProjectButton
             // 
-            this.testURLButton.Location = new System.Drawing.Point(6, 59);
-            this.testURLButton.Name = "testURLButton";
-            this.testURLButton.Size = new System.Drawing.Size(177, 23);
-            this.testURLButton.TabIndex = 4;
-            this.testURLButton.Text = "Test URL";
-            this.testURLButton.UseVisualStyleBackColor = true;
-            this.testURLButton.Click += new System.EventHandler(this.TestURLButton_Click);
+            this.loadProjectButton.Location = new System.Drawing.Point(189, 59);
+            this.loadProjectButton.Name = "loadProjectButton";
+            this.loadProjectButton.Size = new System.Drawing.Size(174, 23);
+            this.loadProjectButton.TabIndex = 5;
+            this.loadProjectButton.Text = "Load Project";
+            this.loadProjectButton.UseVisualStyleBackColor = true;
+            this.loadProjectButton.Click += new System.EventHandler(this.LoadProjectButton_Click);
             // 
             // openFolderButton
             // 
@@ -281,16 +281,15 @@
             this.projectURLTextBox.Size = new System.Drawing.Size(257, 20);
             this.projectURLTextBox.TabIndex = 1;
             // 
-            // openProjectButton
+            // cloneProjectButton
             // 
-            this.openProjectButton.Enabled = false;
-            this.openProjectButton.Location = new System.Drawing.Point(186, 59);
-            this.openProjectButton.Name = "openProjectButton";
-            this.openProjectButton.Size = new System.Drawing.Size(177, 23);
-            this.openProjectButton.TabIndex = 5;
-            this.openProjectButton.Text = "Clone and Open Project";
-            this.openProjectButton.UseVisualStyleBackColor = true;
-            this.openProjectButton.Click += new System.EventHandler(this.OpenProjectButton_Click);
+            this.cloneProjectButton.Location = new System.Drawing.Point(9, 59);
+            this.cloneProjectButton.Name = "cloneProjectButton";
+            this.cloneProjectButton.Size = new System.Drawing.Size(174, 23);
+            this.cloneProjectButton.TabIndex = 4;
+            this.cloneProjectButton.Text = "Clone Project";
+            this.cloneProjectButton.UseVisualStyleBackColor = true;
+            this.cloneProjectButton.Click += new System.EventHandler(this.CloneProjectButton_Click);
             // 
             // scanTree
             // 
@@ -430,7 +429,7 @@
 		private System.Windows.Forms.ProgressBar scanProgressBar;
 		private System.Windows.Forms.GroupBox settingsGroupBox;
 		private System.Windows.Forms.Label projectURLLabel;
-		private System.Windows.Forms.Button openProjectButton;
+		private System.Windows.Forms.Button cloneProjectButton;
 		private System.Windows.Forms.TreeView scanTree;
 		private System.Windows.Forms.TabPage viewPage;
 		private System.Windows.Forms.TreeView viewTree;
@@ -440,7 +439,6 @@
 		private LiveCharts.WinForms.CartesianChart vulnGraph;
 		private System.Windows.Forms.ListView listView1;
 		private System.Windows.Forms.Label projectNameLabel;
-		private System.Windows.Forms.Button testURLButton;
 		private System.Windows.Forms.Button openFolderButton;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
 		private System.Windows.Forms.ColumnHeader severityColumn;
@@ -459,6 +457,7 @@
         private System.Windows.Forms.CheckBox includeHiddenCheck;
         private System.Windows.Forms.CheckBox provideDataBox;
         private System.Windows.Forms.TextBox foldersBox;
+        private System.Windows.Forms.Button loadProjectButton;
     }
 }
 
