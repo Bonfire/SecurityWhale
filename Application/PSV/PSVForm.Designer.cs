@@ -283,6 +283,7 @@
             // 
             // openProjectButton
             // 
+            this.openProjectButton.Enabled = false;
             this.openProjectButton.Location = new System.Drawing.Point(186, 59);
             this.openProjectButton.Name = "openProjectButton";
             this.openProjectButton.Size = new System.Drawing.Size(177, 23);

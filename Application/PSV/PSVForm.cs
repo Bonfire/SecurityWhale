@@ -142,11 +142,17 @@ namespace PSV
         {
             if (IsGitURLValid())
             {
-                testURLButton.ForeColor = Color.Green;
+                openProjectButton.Enabled = true;
             }
             else
             {
-                testURLButton.ForeColor = Color.Red;
+                DialogResult messageBoxResult = MessageBox.Show("Git URL is not valid. Is it Private?", "Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    GitHubLogInForm gitHubLoginForm = new GitHubLogInForm();
+                    gitHubLoginForm.Show();
+                }
             }
         }
 
