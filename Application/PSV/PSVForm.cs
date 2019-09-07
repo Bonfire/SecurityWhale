@@ -4,11 +4,14 @@ using System.IO;
 using LibGit2Sharp;
 using System.Drawing;
 using System.Diagnostics;
+using System.Linq;
 
 namespace PSV
 {
     public partial class PSVForm : Form
     {
+        public String[] fileNameExclusions, fileExtensionExclusions, folderExclusions;
+
         public PSVForm()
         {
             InitializeComponent();
@@ -61,18 +64,30 @@ namespace PSV
 
             Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
 
+            // Update our scan settings and exclusions
+            updateScanSettings();
+
             DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
         }
 
-        private static TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
+        private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
         {
             TreeNode directoryNode = new TreeNode(directoryInfo.Name);
             foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
-                directoryNode.Nodes.Add(CreateDirectoryNode(directory));
+                // Use LINQ to see if the folder is excluded
+                if (!folderExclusions.Contains(directory.Name))
+                {
+                    directoryNode.Nodes.Add(CreateDirectoryNode(directory));
+                }
             foreach (FileInfo file in directoryInfo.GetFiles())
-                directoryNode.Nodes.Add(new TreeNode(file.Name));
+                // Use LINQ to see if the file is excluded by name or extension
+                if (!fileNameExclusions.Contains(file.Name) && !fileExtensionExclusions.Contains(Path.GetExtension(file.FullName)))
+                {
+                    directoryNode.Nodes.Add(new TreeNode(file.Name));
+
+                }
             return directoryNode;
         }
 
@@ -120,6 +135,14 @@ namespace PSV
             string outputString = outputReader.ReadLine();
 
             MessageBox.Show(outputString);
+        }
+
+        public void updateScanSettings()
+        {
+            // Our scan exclusions
+            fileNameExclusions = fileNamesBox.Text.Split(',');
+            fileExtensionExclusions = fileExtensionsBox.Text.Split(',');
+            folderExclusions = foldersBox.Text.Split(',');
         }
     }
 }

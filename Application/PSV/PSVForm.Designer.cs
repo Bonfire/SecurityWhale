@@ -43,8 +43,8 @@
             this.foldersLabel = new System.Windows.Forms.Label();
             this.fileNamesBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.fileTypesBox = new System.Windows.Forms.TextBox();
-            this.fileTypesLabel = new System.Windows.Forms.Label();
+            this.fileExtensionsBox = new System.Windows.Forms.TextBox();
+            this.fileExtensionsLabel = new System.Windows.Forms.Label();
             this.includeHiddenCheck = new System.Windows.Forms.CheckBox();
             this.includeSubfoldersCheck = new System.Windows.Forms.CheckBox();
             this.provideDataBox = new System.Windows.Forms.CheckBox();
@@ -189,8 +189,8 @@
             this.exclusionGroupBox.Controls.Add(this.foldersLabel);
             this.exclusionGroupBox.Controls.Add(this.fileNamesBox);
             this.exclusionGroupBox.Controls.Add(this.label1);
-            this.exclusionGroupBox.Controls.Add(this.fileTypesBox);
-            this.exclusionGroupBox.Controls.Add(this.fileTypesLabel);
+            this.exclusionGroupBox.Controls.Add(this.fileExtensionsBox);
+            this.exclusionGroupBox.Controls.Add(this.fileExtensionsLabel);
             this.exclusionGroupBox.Location = new System.Drawing.Point(6, 65);
             this.exclusionGroupBox.Name = "exclusionGroupBox";
             this.exclusionGroupBox.Size = new System.Drawing.Size(330, 204);
@@ -209,9 +209,9 @@
             // 
             // fileNamesBox
             // 
-            this.fileNamesBox.Location = new System.Drawing.Point(70, 19);
+            this.fileNamesBox.Location = new System.Drawing.Point(87, 19);
             this.fileNamesBox.Name = "fileNamesBox";
-            this.fileNamesBox.Size = new System.Drawing.Size(254, 20);
+            this.fileNamesBox.Size = new System.Drawing.Size(237, 20);
             this.fileNamesBox.TabIndex = 3;
             // 
             // label1
@@ -223,21 +223,21 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "File Names:";
             // 
-            // fileTypesBox
+            // fileExtensionsBox
             // 
-            this.fileTypesBox.Location = new System.Drawing.Point(70, 45);
-            this.fileTypesBox.Name = "fileTypesBox";
-            this.fileTypesBox.Size = new System.Drawing.Size(254, 20);
-            this.fileTypesBox.TabIndex = 1;
+            this.fileExtensionsBox.Location = new System.Drawing.Point(87, 45);
+            this.fileExtensionsBox.Name = "fileExtensionsBox";
+            this.fileExtensionsBox.Size = new System.Drawing.Size(237, 20);
+            this.fileExtensionsBox.TabIndex = 1;
             // 
-            // fileTypesLabel
+            // fileExtensionsLabel
             // 
-            this.fileTypesLabel.AutoSize = true;
-            this.fileTypesLabel.Location = new System.Drawing.Point(6, 48);
-            this.fileTypesLabel.Name = "fileTypesLabel";
-            this.fileTypesLabel.Size = new System.Drawing.Size(58, 13);
-            this.fileTypesLabel.TabIndex = 0;
-            this.fileTypesLabel.Text = "File Types:";
+            this.fileExtensionsLabel.AutoSize = true;
+            this.fileExtensionsLabel.Location = new System.Drawing.Point(6, 48);
+            this.fileExtensionsLabel.Name = "fileExtensionsLabel";
+            this.fileExtensionsLabel.Size = new System.Drawing.Size(75, 13);
+            this.fileExtensionsLabel.TabIndex = 0;
+            this.fileExtensionsLabel.Text = "File Extension:";
             // 
             // includeHiddenCheck
             // 
@@ -398,9 +398,9 @@
             // 
             // foldersBox
             // 
-            this.foldersBox.Location = new System.Drawing.Point(70, 71);
+            this.foldersBox.Location = new System.Drawing.Point(87, 71);
             this.foldersBox.Name = "foldersBox";
-            this.foldersBox.Size = new System.Drawing.Size(254, 20);
+            this.foldersBox.Size = new System.Drawing.Size(237, 20);
             this.foldersBox.TabIndex = 5;
             // 
             // PSVForm
@@ -464,8 +464,8 @@
         private System.Windows.Forms.Label foldersLabel;
         private System.Windows.Forms.TextBox fileNamesBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox fileTypesBox;
-        private System.Windows.Forms.Label fileTypesLabel;
+        private System.Windows.Forms.TextBox fileExtensionsBox;
+        private System.Windows.Forms.Label fileExtensionsLabel;
         private System.Windows.Forms.CheckBox includeHiddenCheck;
         private System.Windows.Forms.CheckBox includeSubfoldersCheck;
         private System.Windows.Forms.CheckBox provideDataBox;
