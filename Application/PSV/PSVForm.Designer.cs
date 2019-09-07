@@ -40,13 +40,13 @@
             this.settingsGroupBox = new System.Windows.Forms.GroupBox();
             this.limitScanGroupBox = new System.Windows.Forms.GroupBox();
             this.exclusionGroupBox = new System.Windows.Forms.GroupBox();
+            this.foldersBox = new System.Windows.Forms.TextBox();
             this.foldersLabel = new System.Windows.Forms.Label();
             this.fileNamesBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.fileExtensionsBox = new System.Windows.Forms.TextBox();
             this.fileExtensionsLabel = new System.Windows.Forms.Label();
             this.includeHiddenCheck = new System.Windows.Forms.CheckBox();
-            this.includeSubfoldersCheck = new System.Windows.Forms.CheckBox();
             this.provideDataBox = new System.Windows.Forms.CheckBox();
             this.projectURLLabel = new System.Windows.Forms.Label();
             this.projectURLTextBox = new System.Windows.Forms.TextBox();
@@ -64,7 +64,6 @@
             this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
             this.viewTree = new System.Windows.Forms.TreeView();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.foldersBox = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.scanPage.SuspendLayout();
             this.settingsGroupBox.SuspendLayout();
@@ -175,7 +174,6 @@
             // 
             this.limitScanGroupBox.Controls.Add(this.exclusionGroupBox);
             this.limitScanGroupBox.Controls.Add(this.includeHiddenCheck);
-            this.limitScanGroupBox.Controls.Add(this.includeSubfoldersCheck);
             this.limitScanGroupBox.Location = new System.Drawing.Point(6, 42);
             this.limitScanGroupBox.Name = "limitScanGroupBox";
             this.limitScanGroupBox.Size = new System.Drawing.Size(342, 275);
@@ -191,12 +189,19 @@
             this.exclusionGroupBox.Controls.Add(this.label1);
             this.exclusionGroupBox.Controls.Add(this.fileExtensionsBox);
             this.exclusionGroupBox.Controls.Add(this.fileExtensionsLabel);
-            this.exclusionGroupBox.Location = new System.Drawing.Point(6, 65);
+            this.exclusionGroupBox.Location = new System.Drawing.Point(6, 42);
             this.exclusionGroupBox.Name = "exclusionGroupBox";
             this.exclusionGroupBox.Size = new System.Drawing.Size(330, 204);
             this.exclusionGroupBox.TabIndex = 2;
             this.exclusionGroupBox.TabStop = false;
             this.exclusionGroupBox.Text = "Exclusions (Comma Separated)";
+            // 
+            // foldersBox
+            // 
+            this.foldersBox.Location = new System.Drawing.Point(87, 71);
+            this.foldersBox.Name = "foldersBox";
+            this.foldersBox.Size = new System.Drawing.Size(237, 20);
+            this.foldersBox.TabIndex = 5;
             // 
             // foldersLabel
             // 
@@ -242,22 +247,12 @@
             // includeHiddenCheck
             // 
             this.includeHiddenCheck.AutoSize = true;
-            this.includeHiddenCheck.Location = new System.Drawing.Point(6, 42);
+            this.includeHiddenCheck.Location = new System.Drawing.Point(6, 19);
             this.includeHiddenCheck.Name = "includeHiddenCheck";
             this.includeHiddenCheck.Size = new System.Drawing.Size(126, 17);
             this.includeHiddenCheck.TabIndex = 1;
             this.includeHiddenCheck.Text = "Include Hidden Items";
             this.includeHiddenCheck.UseVisualStyleBackColor = true;
-            // 
-            // includeSubfoldersCheck
-            // 
-            this.includeSubfoldersCheck.AutoSize = true;
-            this.includeSubfoldersCheck.Location = new System.Drawing.Point(6, 19);
-            this.includeSubfoldersCheck.Name = "includeSubfoldersCheck";
-            this.includeSubfoldersCheck.Size = new System.Drawing.Size(114, 17);
-            this.includeSubfoldersCheck.TabIndex = 0;
-            this.includeSubfoldersCheck.Text = "Include Subfolders";
-            this.includeSubfoldersCheck.UseVisualStyleBackColor = true;
             // 
             // provideDataBox
             // 
@@ -396,13 +391,6 @@
             this.viewTree.Size = new System.Drawing.Size(156, 405);
             this.viewTree.TabIndex = 0;
             // 
-            // foldersBox
-            // 
-            this.foldersBox.Location = new System.Drawing.Point(87, 71);
-            this.foldersBox.Name = "foldersBox";
-            this.foldersBox.Size = new System.Drawing.Size(237, 20);
-            this.foldersBox.TabIndex = 5;
-            // 
             // PSVForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -467,7 +455,6 @@
         private System.Windows.Forms.TextBox fileExtensionsBox;
         private System.Windows.Forms.Label fileExtensionsLabel;
         private System.Windows.Forms.CheckBox includeHiddenCheck;
-        private System.Windows.Forms.CheckBox includeSubfoldersCheck;
         private System.Windows.Forms.CheckBox provideDataBox;
         private System.Windows.Forms.TextBox foldersBox;
     }
