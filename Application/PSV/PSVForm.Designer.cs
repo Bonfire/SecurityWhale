@@ -38,6 +38,16 @@
             this.beginScanButton = new System.Windows.Forms.Button();
             this.scanProgressBar = new System.Windows.Forms.ProgressBar();
             this.settingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.limitScanGroupBox = new System.Windows.Forms.GroupBox();
+            this.exclusionGroupBox = new System.Windows.Forms.GroupBox();
+            this.foldersLabel = new System.Windows.Forms.Label();
+            this.fileNamesBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.fileTypesBox = new System.Windows.Forms.TextBox();
+            this.fileTypesLabel = new System.Windows.Forms.Label();
+            this.includeHiddenCheck = new System.Windows.Forms.CheckBox();
+            this.includeSubfoldersCheck = new System.Windows.Forms.CheckBox();
+            this.provideDataBox = new System.Windows.Forms.CheckBox();
             this.projectURLLabel = new System.Windows.Forms.Label();
             this.projectURLTextBox = new System.Windows.Forms.TextBox();
             this.openProjectButton = new System.Windows.Forms.Button();
@@ -54,8 +64,12 @@
             this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
             this.viewTree = new System.Windows.Forms.TreeView();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.foldersBox = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.scanPage.SuspendLayout();
+            this.settingsGroupBox.SuspendLayout();
+            this.limitScanGroupBox.SuspendLayout();
+            this.exclusionGroupBox.SuspendLayout();
             this.viewPage.SuspendLayout();
             this.infoTabControl.SuspendLayout();
             this.tableTab.SuspendLayout();
@@ -148,12 +162,112 @@
             // 
             // settingsGroupBox
             // 
-            this.settingsGroupBox.Location = new System.Drawing.Point(369, 3);
+            this.settingsGroupBox.Controls.Add(this.limitScanGroupBox);
+            this.settingsGroupBox.Controls.Add(this.provideDataBox);
+            this.settingsGroupBox.Location = new System.Drawing.Point(9, 88);
             this.settingsGroupBox.Name = "settingsGroupBox";
-            this.settingsGroupBox.Size = new System.Drawing.Size(427, 379);
+            this.settingsGroupBox.Size = new System.Drawing.Size(354, 323);
             this.settingsGroupBox.TabIndex = 4;
             this.settingsGroupBox.TabStop = false;
             this.settingsGroupBox.Text = "Scan Settings";
+            // 
+            // limitScanGroupBox
+            // 
+            this.limitScanGroupBox.Controls.Add(this.exclusionGroupBox);
+            this.limitScanGroupBox.Controls.Add(this.includeHiddenCheck);
+            this.limitScanGroupBox.Controls.Add(this.includeSubfoldersCheck);
+            this.limitScanGroupBox.Location = new System.Drawing.Point(6, 42);
+            this.limitScanGroupBox.Name = "limitScanGroupBox";
+            this.limitScanGroupBox.Size = new System.Drawing.Size(342, 275);
+            this.limitScanGroupBox.TabIndex = 2;
+            this.limitScanGroupBox.TabStop = false;
+            this.limitScanGroupBox.Text = "Limit Scan";
+            // 
+            // exclusionGroupBox
+            // 
+            this.exclusionGroupBox.Controls.Add(this.foldersBox);
+            this.exclusionGroupBox.Controls.Add(this.foldersLabel);
+            this.exclusionGroupBox.Controls.Add(this.fileNamesBox);
+            this.exclusionGroupBox.Controls.Add(this.label1);
+            this.exclusionGroupBox.Controls.Add(this.fileTypesBox);
+            this.exclusionGroupBox.Controls.Add(this.fileTypesLabel);
+            this.exclusionGroupBox.Location = new System.Drawing.Point(6, 65);
+            this.exclusionGroupBox.Name = "exclusionGroupBox";
+            this.exclusionGroupBox.Size = new System.Drawing.Size(330, 204);
+            this.exclusionGroupBox.TabIndex = 2;
+            this.exclusionGroupBox.TabStop = false;
+            this.exclusionGroupBox.Text = "Exclusions (Comma Separated)";
+            // 
+            // foldersLabel
+            // 
+            this.foldersLabel.AutoSize = true;
+            this.foldersLabel.Location = new System.Drawing.Point(6, 74);
+            this.foldersLabel.Name = "foldersLabel";
+            this.foldersLabel.Size = new System.Drawing.Size(44, 13);
+            this.foldersLabel.TabIndex = 4;
+            this.foldersLabel.Text = "Folders:";
+            // 
+            // fileNamesBox
+            // 
+            this.fileNamesBox.Location = new System.Drawing.Point(70, 19);
+            this.fileNamesBox.Name = "fileNamesBox";
+            this.fileNamesBox.Size = new System.Drawing.Size(254, 20);
+            this.fileNamesBox.TabIndex = 3;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 22);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(62, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "File Names:";
+            // 
+            // fileTypesBox
+            // 
+            this.fileTypesBox.Location = new System.Drawing.Point(70, 45);
+            this.fileTypesBox.Name = "fileTypesBox";
+            this.fileTypesBox.Size = new System.Drawing.Size(254, 20);
+            this.fileTypesBox.TabIndex = 1;
+            // 
+            // fileTypesLabel
+            // 
+            this.fileTypesLabel.AutoSize = true;
+            this.fileTypesLabel.Location = new System.Drawing.Point(6, 48);
+            this.fileTypesLabel.Name = "fileTypesLabel";
+            this.fileTypesLabel.Size = new System.Drawing.Size(58, 13);
+            this.fileTypesLabel.TabIndex = 0;
+            this.fileTypesLabel.Text = "File Types:";
+            // 
+            // includeHiddenCheck
+            // 
+            this.includeHiddenCheck.AutoSize = true;
+            this.includeHiddenCheck.Location = new System.Drawing.Point(6, 42);
+            this.includeHiddenCheck.Name = "includeHiddenCheck";
+            this.includeHiddenCheck.Size = new System.Drawing.Size(126, 17);
+            this.includeHiddenCheck.TabIndex = 1;
+            this.includeHiddenCheck.Text = "Include Hidden Items";
+            this.includeHiddenCheck.UseVisualStyleBackColor = true;
+            // 
+            // includeSubfoldersCheck
+            // 
+            this.includeSubfoldersCheck.AutoSize = true;
+            this.includeSubfoldersCheck.Location = new System.Drawing.Point(6, 19);
+            this.includeSubfoldersCheck.Name = "includeSubfoldersCheck";
+            this.includeSubfoldersCheck.Size = new System.Drawing.Size(114, 17);
+            this.includeSubfoldersCheck.TabIndex = 0;
+            this.includeSubfoldersCheck.Text = "Include Subfolders";
+            this.includeSubfoldersCheck.UseVisualStyleBackColor = true;
+            // 
+            // provideDataBox
+            // 
+            this.provideDataBox.AutoSize = true;
+            this.provideDataBox.Location = new System.Drawing.Point(6, 19);
+            this.provideDataBox.Name = "provideDataBox";
+            this.provideDataBox.Size = new System.Drawing.Size(144, 17);
+            this.provideDataBox.TabIndex = 1;
+            this.provideDataBox.Text = "Provide Data for Training";
+            this.provideDataBox.UseVisualStyleBackColor = true;
             // 
             // projectURLLabel
             // 
@@ -183,9 +297,9 @@
             // 
             // scanTree
             // 
-            this.scanTree.Location = new System.Drawing.Point(6, 88);
+            this.scanTree.Location = new System.Drawing.Point(369, 6);
             this.scanTree.Name = "scanTree";
-            this.scanTree.Size = new System.Drawing.Size(357, 323);
+            this.scanTree.Size = new System.Drawing.Size(427, 376);
             this.scanTree.TabIndex = 0;
             // 
             // viewPage
@@ -228,6 +342,7 @@
             this.vulnColumn,
             this.fileColumn,
             this.dateTimeColumn});
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(624, 383);
@@ -281,6 +396,13 @@
             this.viewTree.Size = new System.Drawing.Size(156, 405);
             this.viewTree.TabIndex = 0;
             // 
+            // foldersBox
+            // 
+            this.foldersBox.Location = new System.Drawing.Point(70, 71);
+            this.foldersBox.Name = "foldersBox";
+            this.foldersBox.Size = new System.Drawing.Size(254, 20);
+            this.foldersBox.TabIndex = 5;
+            // 
             // PSVForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -296,6 +418,12 @@
             this.tabControl.ResumeLayout(false);
             this.scanPage.ResumeLayout(false);
             this.scanPage.PerformLayout();
+            this.settingsGroupBox.ResumeLayout(false);
+            this.settingsGroupBox.PerformLayout();
+            this.limitScanGroupBox.ResumeLayout(false);
+            this.limitScanGroupBox.PerformLayout();
+            this.exclusionGroupBox.ResumeLayout(false);
+            this.exclusionGroupBox.PerformLayout();
             this.viewPage.ResumeLayout(false);
             this.infoTabControl.ResumeLayout(false);
             this.tableTab.ResumeLayout(false);
@@ -331,6 +459,17 @@
 		private System.Windows.Forms.ColumnHeader dateTimeColumn;
 		public System.Windows.Forms.TextBox projectURLTextBox;
 		public System.Windows.Forms.TextBox pathToCloneTextBox;
-	}
+        private System.Windows.Forms.GroupBox limitScanGroupBox;
+        private System.Windows.Forms.GroupBox exclusionGroupBox;
+        private System.Windows.Forms.Label foldersLabel;
+        private System.Windows.Forms.TextBox fileNamesBox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox fileTypesBox;
+        private System.Windows.Forms.Label fileTypesLabel;
+        private System.Windows.Forms.CheckBox includeHiddenCheck;
+        private System.Windows.Forms.CheckBox includeSubfoldersCheck;
+        private System.Windows.Forms.CheckBox provideDataBox;
+        private System.Windows.Forms.TextBox foldersBox;
+    }
 }
 

@@ -100,16 +100,20 @@ namespace PSV
         private void BeginScanButton_Click(object sender, EventArgs e)
         {
             string pythonInterpreter = "python.exe";
-            string pythonScript = "testScript.py";
-            int x = 2, y = 5; // Test input variables
+            string pythonScript = "dataScript.py";
+            bool sendData = provideDataBox.Checked;
 
-            ProcessStartInfo pythonStartInfo = new ProcessStartInfo(pythonInterpreter);
-            pythonStartInfo.UseShellExecute = false;
-            pythonStartInfo.RedirectStandardOutput = true;
-            pythonStartInfo.Arguments = pythonScript + " " + x + " " + y; // Pass three arguments, the first being the script itself
+            ProcessStartInfo pythonStartInfo = new ProcessStartInfo(pythonInterpreter)
+            {
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                Arguments = pythonScript + " " + sendData.ToString() // Arguments passed to the script (True or False)
+            };
 
-            Process pythonProcess = new Process();
-            pythonProcess.StartInfo = pythonStartInfo;
+            Process pythonProcess = new Process
+            {
+                StartInfo = pythonStartInfo
+            };
             pythonProcess.Start();
 
             StreamReader outputReader = pythonProcess.StandardOutput;
