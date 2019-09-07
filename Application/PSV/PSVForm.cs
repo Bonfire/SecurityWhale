@@ -62,11 +62,16 @@ namespace PSV
                 return;
             }
 
+            // Clone the repo
             Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
 
             // Update our scan settings and exclusions
             updateScanSettings();
 
+            // Clear the current file tree
+            scanTree.Nodes.Clear();
+
+            // Add all new folders and files to the file tree
             DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
@@ -76,17 +81,48 @@ namespace PSV
         {
             TreeNode directoryNode = new TreeNode(directoryInfo.Name);
             foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
-                // Use LINQ to see if the folder is excluded
+                // Use LINQ to see if the folder is excluded by name
                 if (!folderExclusions.Contains(directory.Name))
                 {
+                    // Check to see if the folder is hidden and add it if the 'include hidden files' setting is checked
+                    if (directory.Attributes.HasFlag(FileAttributes.Hidden))
+                    {
+                        if (!includeHiddenCheck.Checked)
+                        {
+                            continue;
+                        }
+                    }
+
+                    // If we made it this far, add the folder
                     directoryNode.Nodes.Add(CreateDirectoryNode(directory));
+
+
                 }
             foreach (FileInfo file in directoryInfo.GetFiles())
-                // Use LINQ to see if the file is excluded by name or extension
-                if (!fileNameExclusions.Contains(file.Name) && !fileExtensionExclusions.Contains(Path.GetExtension(file.FullName)))
+                // If the file isnt excluded by name
+                if (!fileNameExclusions.Contains(file.Name))
                 {
-                    directoryNode.Nodes.Add(new TreeNode(file.Name));
+                    // If the file has an extension, check extension exclusions
+                    // If the file is excluded by extension, skip it
+                    if (!Path.GetExtension(file.FullName).Equals(String.Empty))
+                    {
+                        if (fileExtensionExclusions.Contains(Path.GetExtension(file.FullName)))
+                        {
+                            continue;
+                        }
+                    }
 
+                    // If the file has a 'hidden file' attribute, check the 'include hidden files setting'
+                    if (file.Attributes.HasFlag(FileAttributes.Hidden))
+                    {
+                        if (!includeHiddenCheck.Checked)
+                        {
+                            continue;
+                        }
+                    }
+
+                    // If we made it this far without skipping the file, add it
+                    directoryNode.Nodes.Add(new TreeNode(file.Name));
                 }
             return directoryNode;
         }
