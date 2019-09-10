@@ -153,6 +153,15 @@ namespace PSV
             beginScanButton.Enabled = true;
         }
 
+        private void PSVForm_Load(object sender, EventArgs e)
+        {
+            provideDataToolTip.SetToolTip(provideDataBox, "Send extracted metadata to our servers for future training");
+            includeHiddenItemsToolTip.SetToolTip(includeHiddenCheck, "Includes files/folders that may be hidden when creating the file tree");
+            fileNamesToolTip.SetToolTip(fileNamesBox, "Exclude files by name, comma separated (e.g. \"File1.txt\", \"File2.exe\")");
+            fileExtensionToolTip.SetToolTip(fileExtensionsBox, "Exclude files by extension, comma separated (e.g. \".txt\", \".exe\")");
+            foldersToolTip.SetToolTip(foldersBox, "Exclude folders by name, comma separated (e.g. \"Folder1\", \"Folder2\")");
+        }
+
         // Begin the scan by calling the data script which calls the ML predictor
         private void BeginScanButton_Click(object sender, EventArgs e)
         {

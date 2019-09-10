@@ -28,9 +28,24 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PSVForm));
             this.tabControl = new System.Windows.Forms.TabControl();
             this.scanPage = new System.Windows.Forms.TabPage();
+            this.repoTypeSeparatorRight = new System.Windows.Forms.Label();
+            this.repoTypeSeparatorLeft = new System.Windows.Forms.Label();
+            this.repoTypeLabel = new System.Windows.Forms.Label();
+            this.localSeparatorRight = new System.Windows.Forms.Label();
+            this.localSeparatorLeft = new System.Windows.Forms.Label();
+            this.remoteSeparatorRight = new System.Windows.Forms.Label();
+            this.remoteSeparatorLeft = new System.Windows.Forms.Label();
+            this.localRepoLabel = new System.Windows.Forms.Label();
+            this.remoteRepoLabel = new System.Windows.Forms.Label();
+            this.localBrowserButton = new System.Windows.Forms.Button();
+            this.localPathTextbox = new System.Windows.Forms.TextBox();
+            this.localPathLabel = new System.Windows.Forms.Label();
+            this.remoteRadio = new System.Windows.Forms.RadioButton();
+            this.localRadio = new System.Windows.Forms.RadioButton();
             this.loadProjectButton = new System.Windows.Forms.Button();
             this.openFolderButton = new System.Windows.Forms.Button();
             this.pathToCloneTextBox = new System.Windows.Forms.TextBox();
@@ -38,12 +53,11 @@
             this.beginScanButton = new System.Windows.Forms.Button();
             this.scanProgressBar = new System.Windows.Forms.ProgressBar();
             this.settingsGroupBox = new System.Windows.Forms.GroupBox();
-            this.limitScanGroupBox = new System.Windows.Forms.GroupBox();
             this.exclusionGroupBox = new System.Windows.Forms.GroupBox();
             this.foldersBox = new System.Windows.Forms.TextBox();
             this.foldersLabel = new System.Windows.Forms.Label();
             this.fileNamesBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.fileNamesLabel = new System.Windows.Forms.Label();
             this.fileExtensionsBox = new System.Windows.Forms.TextBox();
             this.fileExtensionsLabel = new System.Windows.Forms.Label();
             this.includeHiddenCheck = new System.Windows.Forms.CheckBox();
@@ -64,10 +78,14 @@
             this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
             this.viewTree = new System.Windows.Forms.TreeView();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.provideDataToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.includeHiddenItemsToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.fileNamesToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.fileExtensionToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.foldersToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl.SuspendLayout();
             this.scanPage.SuspendLayout();
             this.settingsGroupBox.SuspendLayout();
-            this.limitScanGroupBox.SuspendLayout();
             this.exclusionGroupBox.SuspendLayout();
             this.viewPage.SuspendLayout();
             this.infoTabControl.SuspendLayout();
@@ -87,6 +105,20 @@
             // 
             // scanPage
             // 
+            this.scanPage.Controls.Add(this.repoTypeSeparatorRight);
+            this.scanPage.Controls.Add(this.repoTypeSeparatorLeft);
+            this.scanPage.Controls.Add(this.repoTypeLabel);
+            this.scanPage.Controls.Add(this.localSeparatorRight);
+            this.scanPage.Controls.Add(this.localSeparatorLeft);
+            this.scanPage.Controls.Add(this.remoteSeparatorRight);
+            this.scanPage.Controls.Add(this.remoteSeparatorLeft);
+            this.scanPage.Controls.Add(this.localRepoLabel);
+            this.scanPage.Controls.Add(this.remoteRepoLabel);
+            this.scanPage.Controls.Add(this.localBrowserButton);
+            this.scanPage.Controls.Add(this.localPathTextbox);
+            this.scanPage.Controls.Add(this.localPathLabel);
+            this.scanPage.Controls.Add(this.remoteRadio);
+            this.scanPage.Controls.Add(this.localRadio);
             this.scanPage.Controls.Add(this.loadProjectButton);
             this.scanPage.Controls.Add(this.openFolderButton);
             this.scanPage.Controls.Add(this.pathToCloneTextBox);
@@ -106,9 +138,137 @@
             this.scanPage.Text = "Scan";
             this.scanPage.UseVisualStyleBackColor = true;
             // 
+            // repoTypeSeparatorRight
+            // 
+            this.repoTypeSeparatorRight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.repoTypeSeparatorRight.Location = new System.Drawing.Point(233, 19);
+            this.repoTypeSeparatorRight.Name = "repoTypeSeparatorRight";
+            this.repoTypeSeparatorRight.Size = new System.Drawing.Size(132, 2);
+            this.repoTypeSeparatorRight.TabIndex = 29;
+            // 
+            // repoTypeSeparatorLeft
+            // 
+            this.repoTypeSeparatorLeft.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.repoTypeSeparatorLeft.Location = new System.Drawing.Point(6, 20);
+            this.repoTypeSeparatorLeft.Name = "repoTypeSeparatorLeft";
+            this.repoTypeSeparatorLeft.Size = new System.Drawing.Size(131, 2);
+            this.repoTypeSeparatorLeft.TabIndex = 28;
+            // 
+            // repoTypeLabel
+            // 
+            this.repoTypeLabel.AutoSize = true;
+            this.repoTypeLabel.Location = new System.Drawing.Point(143, 14);
+            this.repoTypeLabel.Name = "repoTypeLabel";
+            this.repoTypeLabel.Size = new System.Drawing.Size(84, 13);
+            this.repoTypeLabel.TabIndex = 27;
+            this.repoTypeLabel.Text = "Repository Type";
+            // 
+            // localSeparatorRight
+            // 
+            this.localSeparatorRight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.localSeparatorRight.Location = new System.Drawing.Point(210, 72);
+            this.localSeparatorRight.Name = "localSeparatorRight";
+            this.localSeparatorRight.Size = new System.Drawing.Size(153, 2);
+            this.localSeparatorRight.TabIndex = 26;
+            this.localSeparatorRight.Text = "--------";
+            // 
+            // localSeparatorLeft
+            // 
+            this.localSeparatorLeft.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.localSeparatorLeft.Location = new System.Drawing.Point(12, 72);
+            this.localSeparatorLeft.Name = "localSeparatorLeft";
+            this.localSeparatorLeft.Size = new System.Drawing.Size(153, 2);
+            this.localSeparatorLeft.TabIndex = 25;
+            this.localSeparatorLeft.Text = "--------";
+            // 
+            // remoteSeparatorRight
+            // 
+            this.remoteSeparatorRight.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.remoteSeparatorRight.Location = new System.Drawing.Point(216, 125);
+            this.remoteSeparatorRight.Name = "remoteSeparatorRight";
+            this.remoteSeparatorRight.Size = new System.Drawing.Size(149, 2);
+            this.remoteSeparatorRight.TabIndex = 24;
+            this.remoteSeparatorRight.Text = "--------";
+            // 
+            // remoteSeparatorLeft
+            // 
+            this.remoteSeparatorLeft.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.remoteSeparatorLeft.Location = new System.Drawing.Point(11, 126);
+            this.remoteSeparatorLeft.Name = "remoteSeparatorLeft";
+            this.remoteSeparatorLeft.Size = new System.Drawing.Size(149, 2);
+            this.remoteSeparatorLeft.TabIndex = 23;
+            this.remoteSeparatorLeft.Text = "--------";
+            // 
+            // localRepoLabel
+            // 
+            this.localRepoLabel.AutoSize = true;
+            this.localRepoLabel.Location = new System.Drawing.Point(171, 66);
+            this.localRepoLabel.Name = "localRepoLabel";
+            this.localRepoLabel.Size = new System.Drawing.Size(33, 13);
+            this.localRepoLabel.TabIndex = 22;
+            this.localRepoLabel.Text = "Local";
+            this.localRepoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // remoteRepoLabel
+            // 
+            this.remoteRepoLabel.AutoSize = true;
+            this.remoteRepoLabel.Location = new System.Drawing.Point(166, 120);
+            this.remoteRepoLabel.Name = "remoteRepoLabel";
+            this.remoteRepoLabel.Size = new System.Drawing.Size(44, 13);
+            this.remoteRepoLabel.TabIndex = 21;
+            this.remoteRepoLabel.Text = "Remote";
+            this.remoteRepoLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // localBrowserButton
+            // 
+            this.localBrowserButton.Location = new System.Drawing.Point(320, 90);
+            this.localBrowserButton.Name = "localBrowserButton";
+            this.localBrowserButton.Size = new System.Drawing.Size(45, 20);
+            this.localBrowserButton.TabIndex = 20;
+            this.localBrowserButton.Text = "...";
+            this.localBrowserButton.UseVisualStyleBackColor = true;
+            // 
+            // localPathTextbox
+            // 
+            this.localPathTextbox.Location = new System.Drawing.Point(108, 90);
+            this.localPathTextbox.Name = "localPathTextbox";
+            this.localPathTextbox.Size = new System.Drawing.Size(206, 20);
+            this.localPathTextbox.TabIndex = 19;
+            // 
+            // localPathLabel
+            // 
+            this.localPathLabel.AutoSize = true;
+            this.localPathLabel.Location = new System.Drawing.Point(8, 93);
+            this.localPathLabel.Name = "localPathLabel";
+            this.localPathLabel.Size = new System.Drawing.Size(85, 13);
+            this.localPathLabel.TabIndex = 18;
+            this.localPathLabel.Text = "Repository Path:";
+            // 
+            // remoteRadio
+            // 
+            this.remoteRadio.AutoSize = true;
+            this.remoteRadio.Location = new System.Drawing.Point(233, 38);
+            this.remoteRadio.Name = "remoteRadio";
+            this.remoteRadio.Size = new System.Drawing.Size(62, 17);
+            this.remoteRadio.TabIndex = 17;
+            this.remoteRadio.Text = "Remote";
+            this.remoteRadio.UseVisualStyleBackColor = true;
+            // 
+            // localRadio
+            // 
+            this.localRadio.AutoSize = true;
+            this.localRadio.Checked = true;
+            this.localRadio.Location = new System.Drawing.Point(86, 38);
+            this.localRadio.Name = "localRadio";
+            this.localRadio.Size = new System.Drawing.Size(51, 17);
+            this.localRadio.TabIndex = 16;
+            this.localRadio.TabStop = true;
+            this.localRadio.Text = "Local";
+            this.localRadio.UseVisualStyleBackColor = true;
+            // 
             // loadProjectButton
             // 
-            this.loadProjectButton.Location = new System.Drawing.Point(189, 59);
+            this.loadProjectButton.Location = new System.Drawing.Point(189, 198);
             this.loadProjectButton.Name = "loadProjectButton";
             this.loadProjectButton.Size = new System.Drawing.Size(174, 23);
             this.loadProjectButton.TabIndex = 5;
@@ -118,7 +278,8 @@
             // 
             // openFolderButton
             // 
-            this.openFolderButton.Location = new System.Drawing.Point(318, 33);
+            this.openFolderButton.Enabled = false;
+            this.openFolderButton.Location = new System.Drawing.Point(320, 172);
             this.openFolderButton.Name = "openFolderButton";
             this.openFolderButton.Size = new System.Drawing.Size(45, 20);
             this.openFolderButton.TabIndex = 3;
@@ -128,7 +289,8 @@
             // 
             // pathToCloneTextBox
             // 
-            this.pathToCloneTextBox.Location = new System.Drawing.Point(106, 33);
+            this.pathToCloneTextBox.Enabled = false;
+            this.pathToCloneTextBox.Location = new System.Drawing.Point(108, 172);
             this.pathToCloneTextBox.Name = "pathToCloneTextBox";
             this.pathToCloneTextBox.Size = new System.Drawing.Size(206, 20);
             this.pathToCloneTextBox.TabIndex = 2;
@@ -136,7 +298,7 @@
             // projectNameLabel
             // 
             this.projectNameLabel.AutoSize = true;
-            this.projectNameLabel.Location = new System.Drawing.Point(6, 36);
+            this.projectNameLabel.Location = new System.Drawing.Point(8, 175);
             this.projectNameLabel.Name = "projectNameLabel";
             this.projectNameLabel.Size = new System.Drawing.Size(86, 13);
             this.projectNameLabel.TabIndex = 7;
@@ -162,37 +324,27 @@
             // 
             // settingsGroupBox
             // 
-            this.settingsGroupBox.Controls.Add(this.limitScanGroupBox);
+            this.settingsGroupBox.Controls.Add(this.exclusionGroupBox);
+            this.settingsGroupBox.Controls.Add(this.includeHiddenCheck);
             this.settingsGroupBox.Controls.Add(this.provideDataBox);
-            this.settingsGroupBox.Location = new System.Drawing.Point(9, 88);
+            this.settingsGroupBox.Location = new System.Drawing.Point(9, 227);
             this.settingsGroupBox.Name = "settingsGroupBox";
-            this.settingsGroupBox.Size = new System.Drawing.Size(354, 323);
+            this.settingsGroupBox.Size = new System.Drawing.Size(354, 184);
             this.settingsGroupBox.TabIndex = 6;
             this.settingsGroupBox.TabStop = false;
             this.settingsGroupBox.Text = "Scan Settings";
-            // 
-            // limitScanGroupBox
-            // 
-            this.limitScanGroupBox.Controls.Add(this.exclusionGroupBox);
-            this.limitScanGroupBox.Controls.Add(this.includeHiddenCheck);
-            this.limitScanGroupBox.Location = new System.Drawing.Point(6, 42);
-            this.limitScanGroupBox.Name = "limitScanGroupBox";
-            this.limitScanGroupBox.Size = new System.Drawing.Size(342, 155);
-            this.limitScanGroupBox.TabIndex = 8;
-            this.limitScanGroupBox.TabStop = false;
-            this.limitScanGroupBox.Text = "Limit Scan";
             // 
             // exclusionGroupBox
             // 
             this.exclusionGroupBox.Controls.Add(this.foldersBox);
             this.exclusionGroupBox.Controls.Add(this.foldersLabel);
             this.exclusionGroupBox.Controls.Add(this.fileNamesBox);
-            this.exclusionGroupBox.Controls.Add(this.label1);
+            this.exclusionGroupBox.Controls.Add(this.fileNamesLabel);
             this.exclusionGroupBox.Controls.Add(this.fileExtensionsBox);
             this.exclusionGroupBox.Controls.Add(this.fileExtensionsLabel);
-            this.exclusionGroupBox.Location = new System.Drawing.Point(6, 42);
+            this.exclusionGroupBox.Location = new System.Drawing.Point(6, 65);
             this.exclusionGroupBox.Name = "exclusionGroupBox";
-            this.exclusionGroupBox.Size = new System.Drawing.Size(330, 102);
+            this.exclusionGroupBox.Size = new System.Drawing.Size(342, 113);
             this.exclusionGroupBox.TabIndex = 10;
             this.exclusionGroupBox.TabStop = false;
             this.exclusionGroupBox.Text = "Exclusions (Comma Separated)";
@@ -220,14 +372,14 @@
             this.fileNamesBox.Size = new System.Drawing.Size(237, 20);
             this.fileNamesBox.TabIndex = 11;
             // 
-            // label1
+            // fileNamesLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 22);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "File Names:";
+            this.fileNamesLabel.AutoSize = true;
+            this.fileNamesLabel.Location = new System.Drawing.Point(6, 22);
+            this.fileNamesLabel.Name = "fileNamesLabel";
+            this.fileNamesLabel.Size = new System.Drawing.Size(62, 13);
+            this.fileNamesLabel.TabIndex = 2;
+            this.fileNamesLabel.Text = "File Names:";
             // 
             // fileExtensionsBox
             // 
@@ -248,7 +400,7 @@
             // includeHiddenCheck
             // 
             this.includeHiddenCheck.AutoSize = true;
-            this.includeHiddenCheck.Location = new System.Drawing.Point(6, 19);
+            this.includeHiddenCheck.Location = new System.Drawing.Point(6, 42);
             this.includeHiddenCheck.Name = "includeHiddenCheck";
             this.includeHiddenCheck.Size = new System.Drawing.Size(126, 17);
             this.includeHiddenCheck.TabIndex = 9;
@@ -268,7 +420,7 @@
             // projectURLLabel
             // 
             this.projectURLLabel.AutoSize = true;
-            this.projectURLLabel.Location = new System.Drawing.Point(6, 9);
+            this.projectURLLabel.Location = new System.Drawing.Point(8, 148);
             this.projectURLLabel.Name = "projectURLLabel";
             this.projectURLLabel.Size = new System.Drawing.Size(87, 13);
             this.projectURLLabel.TabIndex = 3;
@@ -276,14 +428,16 @@
             // 
             // projectURLTextBox
             // 
-            this.projectURLTextBox.Location = new System.Drawing.Point(106, 6);
+            this.projectURLTextBox.Enabled = false;
+            this.projectURLTextBox.Location = new System.Drawing.Point(108, 145);
             this.projectURLTextBox.Name = "projectURLTextBox";
             this.projectURLTextBox.Size = new System.Drawing.Size(257, 20);
             this.projectURLTextBox.TabIndex = 1;
             // 
             // cloneProjectButton
             // 
-            this.cloneProjectButton.Location = new System.Drawing.Point(9, 59);
+            this.cloneProjectButton.Enabled = false;
+            this.cloneProjectButton.Location = new System.Drawing.Point(9, 198);
             this.cloneProjectButton.Name = "cloneProjectButton";
             this.cloneProjectButton.Size = new System.Drawing.Size(174, 23);
             this.cloneProjectButton.TabIndex = 4;
@@ -293,9 +447,9 @@
             // 
             // scanTree
             // 
-            this.scanTree.Location = new System.Drawing.Point(369, 6);
+            this.scanTree.Location = new System.Drawing.Point(369, 0);
             this.scanTree.Name = "scanTree";
-            this.scanTree.Size = new System.Drawing.Size(427, 376);
+            this.scanTree.Size = new System.Drawing.Size(427, 382);
             this.scanTree.TabIndex = 0;
             // 
             // viewPage
@@ -404,13 +558,12 @@
             this.MinimumSize = new System.Drawing.Size(850, 500);
             this.Name = "PSVForm";
             this.Text = "PSV";
+            this.Load += new System.EventHandler(this.PSVForm_Load);
             this.tabControl.ResumeLayout(false);
             this.scanPage.ResumeLayout(false);
             this.scanPage.PerformLayout();
             this.settingsGroupBox.ResumeLayout(false);
             this.settingsGroupBox.PerformLayout();
-            this.limitScanGroupBox.ResumeLayout(false);
-            this.limitScanGroupBox.PerformLayout();
             this.exclusionGroupBox.ResumeLayout(false);
             this.exclusionGroupBox.PerformLayout();
             this.viewPage.ResumeLayout(false);
@@ -447,17 +600,35 @@
 		private System.Windows.Forms.ColumnHeader dateTimeColumn;
 		public System.Windows.Forms.TextBox projectURLTextBox;
 		public System.Windows.Forms.TextBox pathToCloneTextBox;
-        private System.Windows.Forms.GroupBox limitScanGroupBox;
         private System.Windows.Forms.GroupBox exclusionGroupBox;
         private System.Windows.Forms.Label foldersLabel;
         private System.Windows.Forms.TextBox fileNamesBox;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label fileNamesLabel;
         private System.Windows.Forms.TextBox fileExtensionsBox;
         private System.Windows.Forms.Label fileExtensionsLabel;
         private System.Windows.Forms.CheckBox includeHiddenCheck;
         private System.Windows.Forms.CheckBox provideDataBox;
         private System.Windows.Forms.TextBox foldersBox;
         private System.Windows.Forms.Button loadProjectButton;
+        private System.Windows.Forms.Label localSeparatorRight;
+        private System.Windows.Forms.Label localSeparatorLeft;
+        private System.Windows.Forms.Label remoteSeparatorRight;
+        private System.Windows.Forms.Label remoteSeparatorLeft;
+        private System.Windows.Forms.Label localRepoLabel;
+        private System.Windows.Forms.Label remoteRepoLabel;
+        private System.Windows.Forms.Button localBrowserButton;
+        private System.Windows.Forms.TextBox localPathTextbox;
+        private System.Windows.Forms.Label localPathLabel;
+        private System.Windows.Forms.RadioButton remoteRadio;
+        private System.Windows.Forms.RadioButton localRadio;
+        private System.Windows.Forms.Label repoTypeSeparatorRight;
+        private System.Windows.Forms.Label repoTypeSeparatorLeft;
+        private System.Windows.Forms.Label repoTypeLabel;
+        private System.Windows.Forms.ToolTip provideDataToolTip;
+        private System.Windows.Forms.ToolTip includeHiddenItemsToolTip;
+        private System.Windows.Forms.ToolTip fileNamesToolTip;
+        private System.Windows.Forms.ToolTip fileExtensionToolTip;
+        private System.Windows.Forms.ToolTip foldersToolTip;
     }
 }
 
