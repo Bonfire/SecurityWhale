@@ -253,6 +253,7 @@
             this.remoteRadio.TabIndex = 17;
             this.remoteRadio.Text = "Remote";
             this.remoteRadio.UseVisualStyleBackColor = true;
+            this.remoteRadio.CheckedChanged += new System.EventHandler(this.RemoteRadio_CheckedChanged);
             // 
             // localRadio
             // 

@@ -162,6 +162,38 @@ namespace PSV
             foldersToolTip.SetToolTip(foldersBox, "Exclude folders by name, comma separated (e.g. \"Folder1\", \"Folder2\")");
         }
 
+        private void RemoteRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            // Nasty, but works. Not much work on the GUIs side either so it'll stay for now.
+
+            if (remoteRadio.Checked)
+            {
+                // Disable the local stuff
+                localPathTextbox.Enabled = false;
+                localBrowserButton.Enabled = false;
+
+                // Enable the remote stuff
+                projectURLTextBox.Enabled = true;
+                pathToCloneTextBox.Enabled = true;
+                openFolderButton.Enabled = true;
+                cloneProjectButton.Enabled = true;
+            }
+            else
+            {
+                // Disable the local stuff
+                localPathTextbox.Enabled = true;
+                localBrowserButton.Enabled = true;
+
+                // Enable the remote stuff
+                projectURLTextBox.Enabled = false;
+                pathToCloneTextBox.Enabled = false;
+                openFolderButton.Enabled = false;
+                cloneProjectButton.Enabled = false;
+            }
+
+        }
+
+
         // Begin the scan by calling the data script which calls the ML predictor
         private void BeginScanButton_Click(object sender, EventArgs e)
         {
