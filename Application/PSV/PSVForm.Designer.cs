@@ -268,7 +268,7 @@
             // 
             // loadProjectButton
             // 
-            this.loadProjectButton.Location = new System.Drawing.Point(189, 198);
+            this.loadProjectButton.Location = new System.Drawing.Point(191, 198);
             this.loadProjectButton.Name = "loadProjectButton";
             this.loadProjectButton.Size = new System.Drawing.Size(174, 23);
             this.loadProjectButton.TabIndex = 5;
@@ -307,9 +307,9 @@
             // beginScanButton
             // 
             this.beginScanButton.Enabled = false;
-            this.beginScanButton.Location = new System.Drawing.Point(686, 388);
+            this.beginScanButton.Location = new System.Drawing.Point(639, 388);
             this.beginScanButton.Name = "beginScanButton";
-            this.beginScanButton.Size = new System.Drawing.Size(110, 23);
+            this.beginScanButton.Size = new System.Drawing.Size(157, 23);
             this.beginScanButton.TabIndex = 14;
             this.beginScanButton.Text = "Begin Scan";
             this.beginScanButton.UseVisualStyleBackColor = true;
@@ -319,7 +319,7 @@
             // 
             this.scanProgressBar.Location = new System.Drawing.Point(369, 388);
             this.scanProgressBar.Name = "scanProgressBar";
-            this.scanProgressBar.Size = new System.Drawing.Size(311, 23);
+            this.scanProgressBar.Size = new System.Drawing.Size(264, 23);
             this.scanProgressBar.TabIndex = 5;
             // 
             // settingsGroupBox
@@ -351,7 +351,7 @@
             // 
             // foldersBox
             // 
-            this.foldersBox.Location = new System.Drawing.Point(87, 71);
+            this.foldersBox.Location = new System.Drawing.Point(93, 78);
             this.foldersBox.Name = "foldersBox";
             this.foldersBox.Size = new System.Drawing.Size(237, 20);
             this.foldersBox.TabIndex = 13;
@@ -359,7 +359,7 @@
             // foldersLabel
             // 
             this.foldersLabel.AutoSize = true;
-            this.foldersLabel.Location = new System.Drawing.Point(6, 74);
+            this.foldersLabel.Location = new System.Drawing.Point(12, 81);
             this.foldersLabel.Name = "foldersLabel";
             this.foldersLabel.Size = new System.Drawing.Size(44, 13);
             this.foldersLabel.TabIndex = 4;
@@ -367,7 +367,7 @@
             // 
             // fileNamesBox
             // 
-            this.fileNamesBox.Location = new System.Drawing.Point(87, 19);
+            this.fileNamesBox.Location = new System.Drawing.Point(93, 26);
             this.fileNamesBox.Name = "fileNamesBox";
             this.fileNamesBox.Size = new System.Drawing.Size(237, 20);
             this.fileNamesBox.TabIndex = 11;
@@ -375,7 +375,7 @@
             // fileNamesLabel
             // 
             this.fileNamesLabel.AutoSize = true;
-            this.fileNamesLabel.Location = new System.Drawing.Point(6, 22);
+            this.fileNamesLabel.Location = new System.Drawing.Point(12, 29);
             this.fileNamesLabel.Name = "fileNamesLabel";
             this.fileNamesLabel.Size = new System.Drawing.Size(62, 13);
             this.fileNamesLabel.TabIndex = 2;
@@ -383,7 +383,7 @@
             // 
             // fileExtensionsBox
             // 
-            this.fileExtensionsBox.Location = new System.Drawing.Point(87, 45);
+            this.fileExtensionsBox.Location = new System.Drawing.Point(93, 52);
             this.fileExtensionsBox.Name = "fileExtensionsBox";
             this.fileExtensionsBox.Size = new System.Drawing.Size(237, 20);
             this.fileExtensionsBox.TabIndex = 12;
@@ -391,7 +391,7 @@
             // fileExtensionsLabel
             // 
             this.fileExtensionsLabel.AutoSize = true;
-            this.fileExtensionsLabel.Location = new System.Drawing.Point(6, 48);
+            this.fileExtensionsLabel.Location = new System.Drawing.Point(12, 55);
             this.fileExtensionsLabel.Name = "fileExtensionsLabel";
             this.fileExtensionsLabel.Size = new System.Drawing.Size(75, 13);
             this.fileExtensionsLabel.TabIndex = 0;
