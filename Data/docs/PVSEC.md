@@ -1,12 +1,15 @@
-# Data Acquisition
-Collects data on github repositories and stores it in a MySQL database.
+# Probable Vulnerability Security Scanner
 
+Probable Vulnerability Security Scanner or pvSec focuses on gather data points from githubs api as well as taking
+data from locally cloned projects. With the data collected from the script it is then sent to a database via a connection
+made in the script.
 
-## Repo Data
+## Data Points
 
-"Repo Data" refers to all the data points that we can access through python libraries and using githubs API. What you will notice below is that we have several data points some we use and some we have available if needed.
+There are 2 forms of data that pvSec gathers, both involve the use of githubs API and both pull information from the
+individual repositories both online and locally. The first one is the **Repo Data** which refers to all the data points
+that we can that are more inline with what a user could see from github. This includes number of branches, open issues, commits, contributors, forks and the size of the project. 
 
-The sections are broken off based on data types. Our data points consist of Integers, Strings, Datetime, Boolean, and a few list data types. Not all the data points you see are in the program and there are some that are only used for making other points.
 
 ##### Integer Data Points
 
@@ -19,17 +22,10 @@ The sections are broken off based on data types. Our data points consist of Inte
 | subscribers     | watchers         | size          |               |
 | labels          | language_size    | stargazers    |               |
 
-
-##### Boolean Data Points
-
-|                 |                  |               |
-| ----------------|:----------------:| -------------:|
-| has_issue       | has_project      | has_wiki      |
-| has_download    |                  |               |
-
 ##### List Data Points
 
-These are lists of data points that would have to be iterated through to store the individual values
+These are lists of data points that are used to gather the total amount. The total number of languages, total Language
+size and total number of stargazer dates.
 
 - Languages
 - language_sizes
@@ -46,7 +42,9 @@ These are lists of data points that would have to be iterated through to store t
 
 ## File Data
 
-"File Data" refers to any data points that are tied in closely with the individual files of a given project. These points have data points tied in with Decimals, Strings, Bits and Integers
+The second type of data collected is the "File Data" which refers to any data points that are tied in closely with the
+project locally. This does not have a complete focus on the individual files of a given repo, However it does give me
+data points such as number of files, commit size and number of commits.
 
 ##### Decimal Data Points
 
@@ -57,14 +55,15 @@ These are lists of data points that would have to be iterated through to store t
 | Hexsha_count  |               |                |
 
 
-##### Integer, String and Bit Data Points
+##### Integer, String Data Points
 
 - repoID (Integer)
 - filename (String)
-- training_flag (Bit)
 - has_fault (Integer)
 
 ##### List Data Points
+
+These are lists of data points that are used to gather the total amount. The total number of committed datetimes, the number of files in a project and number of file hexes
 
 - committed_datetime 
 - files
@@ -74,17 +73,15 @@ These are lists of data points that would have to be iterated through to store t
 # Testing
 
 Running Program:
-**Everything is done automatically through the script**
+**Everything is done automatically through the script besides the cloning of projects for training**
 
-**Make sure Path list, token access and config file are in same directory as main program**
 ```shell script
 Python Main.py
 ```
-## Automated Data Collection Method
 
-This Method involves implementing a for loop that reads from a text file all the projects and their directory paths so our program can gather the data on each project that way without the user manually entering that required information each time.
+## Automated Data Collection
 
-## Automation Method
+This Method involves implementing a for loop that reads from a text file all the projects and their directory paths so our program can gather the data on each project that way without the user does not have to manually enter the required information each time.
 
 ### Sudo-code
 
