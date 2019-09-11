@@ -236,12 +236,29 @@ def features_array(git_repo, repository, repository_name, repository_dir):
 
 def log_data(repository):
     try:
-        repo_log = repository
-        commit_log_subject = repo_log.git.log("--pretty=format: %s")
-        commit_log_stats = repo_log.git.log("--numstat")
+#         TODO: split this dictionary of dictionaries into a list of lists containing the filename index and the average
+#           insertions and deletions and line changes from each file
+        commit_size_sum = 0
+        commit_files_count = 0
+        commit_insertion_count = 0
+        commit_deletion_count = 0
+        commit_lines_changed_count = 0
 
-        # print(commit_log_subject)
-        print(commit_log_stats.split())
+        commits = list(git_repo.iter_commits('master'))[:]
+        for commit in commits:
+            # get data points from stats, since it's stored in a dictionary we had to use a nested for loop to gather it
+            commit_stats = commit.stats.files
+            # print(commit.stats.total)
+            print(commit.stats.files)
+            for file_path, value in commit_stats.items():
+                commit_files_count += 1
+                for type_of_change, change_value in value.items():
+                    if type_of_change == "insertions":
+                        commit_insertion_count += change_value
+                    if type_of_change == "deletions":
+                        commit_deletion_count += change_value
+                    if type_of_change == "lines":
+                        commit_lines_changed_count += change_value
 
     except Exception:
         pass
