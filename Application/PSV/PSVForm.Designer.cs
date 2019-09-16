@@ -75,7 +75,6 @@
             this.fileColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.dateTimeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.graphTab = new System.Windows.Forms.TabPage();
-            this.vulnGraph = new LiveCharts.WinForms.CartesianChart();
             this.viewTree = new System.Windows.Forms.TreeView();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.provideDataToolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -90,7 +89,6 @@
             this.viewPage.SuspendLayout();
             this.infoTabControl.SuspendLayout();
             this.tableTab.SuspendLayout();
-            this.graphTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -523,7 +521,6 @@
             // 
             // graphTab
             // 
-            this.graphTab.Controls.Add(this.vulnGraph);
             this.graphTab.Location = new System.Drawing.Point(4, 22);
             this.graphTab.Name = "graphTab";
             this.graphTab.Padding = new System.Windows.Forms.Padding(3);
@@ -531,14 +528,6 @@
             this.graphTab.TabIndex = 1;
             this.graphTab.Text = "Graph";
             this.graphTab.UseVisualStyleBackColor = true;
-            // 
-            // vulnGraph
-            // 
-            this.vulnGraph.Location = new System.Drawing.Point(6, 6);
-            this.vulnGraph.Name = "vulnGraph";
-            this.vulnGraph.Size = new System.Drawing.Size(608, 367);
-            this.vulnGraph.TabIndex = 0;
-            this.vulnGraph.Text = "Vulnerability Graph";
             // 
             // viewTree
             // 
@@ -570,7 +559,6 @@
             this.viewPage.ResumeLayout(false);
             this.infoTabControl.ResumeLayout(false);
             this.tableTab.ResumeLayout(false);
-            this.graphTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -590,7 +578,6 @@
 		private System.Windows.Forms.TabControl infoTabControl;
 		private System.Windows.Forms.TabPage tableTab;
 		private System.Windows.Forms.TabPage graphTab;
-		private LiveCharts.WinForms.CartesianChart vulnGraph;
 		private System.Windows.Forms.ListView listView1;
 		private System.Windows.Forms.Label projectNameLabel;
 		private System.Windows.Forms.Button openFolderButton;
