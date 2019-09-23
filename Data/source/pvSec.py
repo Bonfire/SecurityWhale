@@ -1,3 +1,7 @@
+# Author: Kyle Reid
+# Contributor: Tom
+# Last updated: 9.21.19
+
 import time
 from os import walk
 
@@ -16,7 +20,13 @@ from config import password
 from config import user
 
 # shh just accept it
-repo_id = 0
+repo_id = 7
+
+# Contains the totals as described above
+totals = {}
+
+# Contains the averages as described above
+avgs = []
 
 
 def access_github():
@@ -27,53 +37,31 @@ def access_github():
     return Github(git_access)
 
 
-def database_connector(repo_data, repo_file_data):
+def repo_database_connector(repo_data):
     """
     Connects to the SQL database and executes commands to insert queries and data points into database
     :param repo_data: tuple containing data points from repo
-    :param repo_file_data: tuple containing data points form repo file
     :return:
     """
     global repo_id
+    print("Repo ID in database connector: " + str(repo_id))
 
     try:
         conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
         cursor = conn.cursor()
 
         # this is for repo data database setup
-        repo_sql_insert_query = """INSERT INTO repo (repo_name, repo_initial_creation, assignees,
+        repo_sql_insert_query = """INSERT INTO repo (repo_name, assignees,
         size, commits, events, forks, branches, contributors, labels, language_count,
         language_size, milestones, issues, refs, stargazers, subscribers, watchers, network, open_issues,
-        pulls, num_files) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        pulls, num_files, commit_size, commit_count, insertions, deletions, lines_changed, has_fault) VALUES (%s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         repo_insert_tuple = repo_data
 
         cursor.execute(repo_sql_insert_query, repo_insert_tuple)
         repo_id = cursor.lastrowid
         conn.commit()
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
-    else:
-        conn.close()
-
-    try:
-        conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
-        mouse = conn.cursor()
-
-        # This is for repo file data database setup
-        repo_file_sql_insert_query = """INSERT INTO file (repoID, filename, has_fault,commit_size,
-        commit_count, insertions, deletions,lines_changed, hexsha_count) VALUES (%s, %s, %s, %s, %s, %s, %s,
-        %s, %s)"""
-
-        repo_file_insert_tuple = repo_file_data
-
-        mouse.execute(repo_file_sql_insert_query, repo_file_insert_tuple)
-        conn.commit()
 
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -86,7 +74,7 @@ def database_connector(repo_data, repo_file_data):
         conn.close()
 
 
-def repository_data(git_repo, repository_name, repository_dir):
+def repository_data(git_repo, repository, repository_name, repository_dir):
     """
     Accesses githubs api to pull info such as number of subscribers, issues, commits and size of repo
     :param git_repo: repository object containing the entire repo
@@ -98,6 +86,11 @@ def repository_data(git_repo, repository_name, repository_dir):
     lang_size = []
     language_size = 0
     files = []
+    commit_size_sum = 0
+    commit_files_count = 0
+    commit_insertion_count = 0
+    commit_deletion_count = 0
+    commit_lines_changed_count = 0
 
     assignees = git_repo.get_assignees().totalCount
     branches = git_repo.get_branches().totalCount
@@ -122,7 +115,6 @@ def repository_data(git_repo, repository_name, repository_dir):
     subscribers = git_repo.get_subscribers().totalCount
     watchers = git_repo.watchers_count
     size = git_repo.size
-    repo_creation_date = str(git_repo.created_at)
 
     for (dirpath, dirnames, filenames) in walk(repository_dir):
         for filename in [f for f in filenames]:
@@ -131,38 +123,14 @@ def repository_data(git_repo, repository_name, repository_dir):
 
     number_of_files_in_project = len(files)
 
-    repo_data = (repository_name, repo_creation_date, assignees, size, commits, events, forks, branches, contributors,
-                 labels, language_count, language_size, milestone, issues, refs, stargazer, subscribers, watchers,
-                 network_count, count_open_issues, pulls, number_of_files_in_project)
-    return repo_data
+    commit_list = list(repository.iter_commits('master'))[:500]
 
-
-def repository_file_data(git_repo, repository_name):
-    """
-    Accesses githubs api to pull info such as commit info, hexsha, also scans locally cloned version
-    of repo for more data such as line count
-    :param git_repo: repo object to access api data
-    :param repository_name: name of repo on github
-    :return:
-    """
-    global repo_id
-
-    commits_hexsha = []
-
-    commit_size_sum = 0
-    commit_files_count = 0
-    commit_insertion_count = 0
-    commit_deletion_count = 0
-    commit_lines_changed_count = 0
-
-    commits = list(git_repo.iter_commits('master'))[:2]
-    for commit in commits:
-        commits_hexsha.append(commit.hexsha)
+    for commit in commit_list:
         commit_size_sum += commit.size
 
         # get data points from stats, since it's stored in a dictionary we had to use a nested for loop to gather it
         commit_stats = commit.stats.files
-        print(commit.stats.total)
+
         for file_path, value in commit_stats.items():
             commit_files_count += 1
             for type_of_change, change_value in value.items():
@@ -173,15 +141,14 @@ def repository_file_data(git_repo, repository_name):
                 if type_of_change == "lines":
                     commit_lines_changed_count += change_value
 
-    # since we cant add lists to the database i calculated the amount of each list and storing that value instead
-    hexsha_count = len(commits_hexsha)
-    fault_flag = flag_fault(git_repo)
+        fault_flag = flag_fault(repository)
 
-    repo_file_data = (repo_id, repository_name, fault_flag,
-                      commit_size_sum, commit_files_count, commit_insertion_count,
-                      commit_deletion_count, commit_lines_changed_count, hexsha_count)
-
-    return repo_file_data
+    repo_data = (repository_name, assignees, size, commits, events, forks, branches, contributors,
+                 labels, language_count, language_size, milestone, issues, refs, stargazer, subscribers, watchers,
+                 network_count, count_open_issues, pulls, number_of_files_in_project, commit_size_sum,
+                 commit_files_count, commit_insertion_count, commit_deletion_count, commit_lines_changed_count,
+                 fault_flag)
+    return repo_data
 
 
 def flag_fault(repository):
@@ -191,34 +158,18 @@ def flag_fault(repository):
     :return: if repository mentions CVE
     """
     # gather a list of commits from the master branch of a repo
-    commits = list(repository.iter_commits('master'))[:]
+    commits = list(repository.iter_commits('master'))[:500]
     # scan each commit string for the mention of cve with find() returning -1 if not found
     for commit in commits:
-        if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1:
+        if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1 or commit.message.find('bugs'):
             return 1
         else:
             return 0
 
 
-# TODO: Create automation for cloning locally
-
-def git_clone(repo_names):
-    """
-    Automate the cloning of repos from github and storing them into a fold
-    :param repo_names: file listing repo names to clone
-    :return:
-    """
-    # clones from the url of the repo we want and loads it to folder
-    with open(repo_names) as file:
-        git_repo_name = file.readlines()
-        print(git_repo_name)
-        Repo.clone_from("https://www.github.com/" + str(git_repo_name),
-                        "../source/cloned_repos")
-    print('done cloning')
-
-
 def features_array(git_repo, repository, repository_name, repository_dir):
     """
+    combines data points and creates a numpy array
 
     :param git_repo: gitpython repo object to get data from api
     :param repository: pygithub object used to get data from api
@@ -226,42 +177,131 @@ def features_array(git_repo, repository, repository_name, repository_dir):
     :param repository_dir: location of cloned repo
     :return:
     """
-    features_repo = list(repository_data(git_repo, repository_name))
-    features_file = list(repository_file_data(repository, repository_dir, repository_name))
-    array = np.array(features_repo + features_file)
+    features_repo = list(repository_data(git_repo, repository_name, repository_dir))
+    array = np.array(features_repo)
     return array
 
 
-# TODO: parse git log data and get it in the database
+def parse_dic(dic):
+    """
+    Parses the data into a dictionary of total
 
-def log_data(repository):
+    :param dic: Dictionary of parsed github commit log history
+    :return:
+    """
+    # This gives us the filepath itself
+    fp = list(dic.keys())[0]
+
+    # Insertions and deletions for this particular filepath
+    fp_ins = dic[fp]['insertions']
+    fp_del = dic[fp]['deletions']
+    fp_lin = dic[fp]['lines']
+
+    # If this filepath has not been seen before...
+    if totals.get(fp) is None:
+        # ...we're creating a new entry with the current data as starting values
+        # print(fp + " is not in the dictionary")
+        new_ins_total = fp_ins
+        new_del_total = fp_del
+        new_lin_total = fp_lin
+        new_count = 1
+    else:
+        # ...otherwise, just increment the entries we already have
+        new_ins_total = totals[fp]['ins_total'] + fp_ins
+        new_del_total = totals[fp]['del_total'] + fp_del
+        new_lin_total = totals[fp]['lin_total'] + fp_lin
+        new_count = totals[fp]['count'] + 1
+
+    # Update can either update an existing key-value pair or create a new one
+    totals.update(
+        {fp: {'ins_total': new_ins_total, 'del_total': new_del_total, 'lin_total': new_lin_total, 'count': new_count}})
+
+
+# TODO: figure a way to send data over to a numpy array
+def log_data(git_repo):
+    """
+    Parses a dictionary of dictionaries, d, with the format
+        {str : {'insertions' : int, 'deletions' : int, 'lines' : int}}
+    into a new dictionary of dictionaries of totals with the format
+        {str : {'ins_total' : int, 'del_total' : int, 'lin_total' : int, 'count' : int}}
+    where 'count' is how many times that key has been seen Afterwards, this will be converted into a list of lists
+    with the format
+        [['file', x, y, z], ...]
+
+    :param git_repo: gitpython repo object to get data from api
+    :return:
+    """
+
+    global repo_id
+    print("Repo ID in data log: " + str(repo_id))
+    flags = []
+    commit_sizes = []
+    commits = list(git_repo.iter_commits('master'))[:500]
+    index = 0
+
     try:
-#         TODO: split this dictionary of dictionaries into a list of lists containing the filename index and the average
-#           insertions and deletions and line changes from each file
-        commit_size_sum = 0
-        commit_files_count = 0
-        commit_insertion_count = 0
-        commit_deletion_count = 0
-        commit_lines_changed_count = 0
 
-        commits = list(git_repo.iter_commits('master'))[:]
+        # Sends each commit dictionary to be parsed
         for commit in commits:
-            # get data points from stats, since it's stored in a dictionary we had to use a nested for loop to gather it
-            commit_stats = commit.stats.files
-            # print(commit.stats.total)
-            print(commit.stats.files)
-            for file_path, value in commit_stats.items():
-                commit_files_count += 1
-                for type_of_change, change_value in value.items():
-                    if type_of_change == "insertions":
-                        commit_insertion_count += change_value
-                    if type_of_change == "deletions":
-                        commit_deletion_count += change_value
-                    if type_of_change == "lines":
-                        commit_lines_changed_count += change_value
+            parse_dic(commit.stats.files)
+            commit_sizes.append(commit.size)
+            if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1 or commit.message.find('bugs') != -1:
+                flags.append(1)
+            else:
+                flags.append(0)
+
+            # Use totals to find averages
+        for key in totals:
+            key_val = totals[key]
+            tot_ins = key_val['ins_total']
+            tot_del = key_val['del_total']
+            tot_lin = key_val['lin_total']
+            count = key_val['count']
+
+            # Add to averages list
+            avgs.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
+                         flags[index], commit_sizes[index]])
+            index += 1
 
     except Exception:
         pass
+
+    # add the new data to file table
+    for key in avgs:
+        filename = key[0]
+        total_ins = key[1]
+        ins_avg = key[2]
+        total_del = key[3]
+        del_avg = key[4]
+        total_lines = key[5]
+        lines_avg = key[6]
+        fault_flag = key[7]
+        commit_size = key[8]
+
+        try:
+            conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
+            cursor = conn.cursor()
+
+            # Updates multiple columns of a single row in table
+            repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
+        insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
+         %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+            log_inserts = (repo_id, filename, fault_flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+                           commit_size)
+
+            cursor.execute(repo_file_sql_update_query, log_inserts)
+            conn.commit()
+
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
+            conn.close()
 
 
 if __name__ == "__main__":
@@ -269,23 +309,18 @@ if __name__ == "__main__":
         start_time = time.time()
         git = access_github()
 
-        with open('../docs/repo_path_list.txt', 'r') as repo_info:
+        with open('../docs/Github_Testing.txt', 'r') as repo_info:
             for row in repo_info.readlines():
                 repo_name, repo_dir = row.split(' ')
                 github_repo = git.get_repo(repo_name, lazy=False)
                 repo = Repo(repo_dir.rstrip())
-                # Remove pass and comment out whatever function you want to check out
-                # database_connector does most of everything to do the numpy array uncomment it out as well
-                # log_data: testing in progress
+
                 if not repo.bare:
-                    pass
-                    # database_connector(repository_data(github_repo, repo_name),
-                    #                    repository_file_data(repo, repo_dir.rstrip(), repo_name))
-                    # features_array(github_repo, repo, repo_name, repo_dir.rstrip())
-                    # repository_file_data(repo, repo_dir.rstrip(), repo_name)
-                    # log_data(repo)
+                    repo_database_connector(repository_data(github_repo, repo,
+                                                            repo_name, repo_dir.rstrip()))
+                    log_data(repo)
                 else:
-                    print('Could not load repository at {} :('.format(repo_dir))
+                    print('Could not load repository at {} :'.format(repo_dir))
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
