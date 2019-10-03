@@ -20,7 +20,7 @@ from config import password
 from config import user
 
 # shh just accept it
-repo_id = 7
+repo_id = 1
 
 # Contains the totals as described above
 totals = {}
@@ -143,6 +143,11 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
 
         fault_flag = flag_fault(repository)
 
+    # clear lists of data for next repo
+    lang_size.clear()
+    lang_string.clear()
+    files.clear()
+
     repo_data = (repository_name, assignees, size, commits, events, forks, branches, contributors,
                  labels, language_count, language_size, milestone, issues, refs, stargazer, subscribers, watchers,
                  network_count, count_open_issues, pulls, number_of_files_in_project, commit_size_sum,
@@ -151,6 +156,7 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
     return repo_data
 
 
+# TODO: Find a way to get more fault values
 def flag_fault(repository):
     """
     Check if a repository mentions CVE in its commit history
@@ -161,12 +167,14 @@ def flag_fault(repository):
     commits = list(repository.iter_commits('master'))[:500]
     # scan each commit string for the mention of cve with find() returning -1 if not found
     for commit in commits:
-        if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1 or commit.message.find('bugs'):
+        if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1 or commit.message.find(
+                'bug') or commit.summary.find('bug') != 1:
             return 1
         else:
             return 0
 
 
+# TODO: need a way to pass all these value to a numpy array for curtis
 def features_array(git_repo, repository, repository_name, repository_dir):
     """
     combines data points and creates a numpy array
@@ -245,7 +253,8 @@ def log_data(git_repo):
         for commit in commits:
             parse_dic(commit.stats.files)
             commit_sizes.append(commit.size)
-            if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1 or commit.message.find('bugs') != -1:
+            if commit.message.find('CVE') != -1 or commit.summary.find('CVE') != -1 or commit.message.find(
+                    'bugs') != -1:
                 flags.append(1)
             else:
                 flags.append(0)
@@ -287,8 +296,9 @@ def log_data(git_repo):
         insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
          %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-            log_inserts = (repo_id, filename, fault_flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
-                           commit_size)
+            log_inserts = (
+                repo_id, filename, fault_flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+                commit_size)
 
             cursor.execute(repo_file_sql_update_query, log_inserts)
             conn.commit()
@@ -302,6 +312,10 @@ def log_data(git_repo):
                 print(err)
         else:
             conn.close()
+
+    # clear lists for next repo
+    flags.clear()
+    commit_sizes.clear()
 
 
 if __name__ == "__main__":
@@ -325,3 +339,4 @@ if __name__ == "__main__":
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
         print("Could not check if repo existed", e)
+
