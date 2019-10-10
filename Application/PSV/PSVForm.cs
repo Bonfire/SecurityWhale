@@ -143,7 +143,15 @@ namespace PSV
             scanTree.Nodes.Clear();
 
             // Add all new folders and files to the file tree
-            DirectoryInfo rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
+            DirectoryInfo rootDirectoryInfo;
+            if (localRadio.Checked)
+            {
+                rootDirectoryInfo = new DirectoryInfo(localPathTextbox.Text);
+            }
+            else
+            {
+                rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
+            }
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
             // Expand the root (top) node to show the user that it loaded properly
@@ -191,6 +199,15 @@ namespace PSV
                 cloneProjectButton.Enabled = false;
             }
 
+        }
+
+        private void localBrowserButton_Click(object sender, EventArgs e)
+        {
+            DialogResult openFolderDialogResult = folderBrowserDialog.ShowDialog();
+            if (openFolderDialogResult == DialogResult.OK && !string.IsNullOrWhiteSpace(folderBrowserDialog.SelectedPath))
+            {
+                localPathTextbox.Text = folderBrowserDialog.SelectedPath;
+            }
         }
 
 

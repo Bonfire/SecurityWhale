@@ -225,6 +225,7 @@
             this.localBrowserButton.TabIndex = 20;
             this.localBrowserButton.Text = "...";
             this.localBrowserButton.UseVisualStyleBackColor = true;
+            this.localBrowserButton.Click += new System.EventHandler(this.localBrowserButton_Click);
             // 
             // localPathTextbox
             // 
