@@ -48,6 +48,7 @@ namespace PSV
                 Repository.Clone(projectURL, pathToClone, credCloneOptions);
                 userCredentials = null;
                 credCloneOptions = null;
+                MessageBox.Show("Repository cloned successfully! Closing login form.", "Cloned Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             catch (LibGit2SharpException)
