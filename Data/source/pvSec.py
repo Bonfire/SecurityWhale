@@ -26,7 +26,7 @@ repo_id = 1
 totals = {}
 
 # Contains the averages as described above
-avgs = []
+avgs = {}
 
 
 def access_github():
@@ -268,8 +268,8 @@ def log_data(git_repo):
             count = key_val['count']
 
             # Add to averages list
-            avgs.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
-                         flags[index], commit_sizes[index]])
+            avgs.update({key : [tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
+                         flags[index], commit_sizes[index]]})
             index += 1
 
     except Exception:
@@ -277,15 +277,15 @@ def log_data(git_repo):
 
     # add the new data to file table
     for key in avgs:
-        filename = key[0]
-        total_ins = key[1]
-        ins_avg = key[2]
-        total_del = key[3]
-        del_avg = key[4]
-        total_lines = key[5]
-        lines_avg = key[6]
-        fault_flag = key[7]
-        commit_size = key[8]
+        filename = key
+        total_ins = avgs[key][0]
+        ins_avg = avgs[key][1]
+        total_del = avgs[key][2]
+        del_avg = avgs[key][3]
+        total_lines = avgs[key][4]
+        lines_avg = avgs[key][5]
+        fault_flag = avgs[key][6]
+        commit_size = avgs[key][7]
 
         try:
             conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
