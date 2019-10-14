@@ -1,5 +1,5 @@
 # Author: Kyle Reid
-# Contributor: Tom
+# Contributor: Tom Serrano
 # Last updated: 9.21.19
 
 import time
@@ -185,9 +185,16 @@ def features_array(git_repo, repository, repository_name, repository_dir):
     :param repository_dir: location of cloned repo
     :return:
     """
-    features_repo = list(repository_data(git_repo, repository_name, repository_dir))
-    array = np.array(features_repo)
-    return array
+    repo_data = list(repository_data(git_repo, repository_name, repository_dir))
+    
+    features = []
+    
+    #Populates features with sub-arrays containing [filename, file_data[], repo_data[]]
+    for key in avgs:
+        features.append([key, avgs[key], repo_data])
+    
+    #Converts to a numpy array before returning
+    return np.array(features)
 
 
 def parse_dic(dic):
