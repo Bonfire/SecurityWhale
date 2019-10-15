@@ -286,18 +286,32 @@ def clean_data(repository, commit_hash):
         bad_files  - a list of all files we know are faulty. I think file_extensions *is* this already.
         '''
         
-        #Get the file extension (assumes we use the last one, i.e. for "example.cpp.java", we use ".java")
-        extension = filename.split(".")[-1]
-        
-        #Cycle through the list to see if this is an extension we need
-        for f in bad_files:
-            #Get the file extension of a faulty file
-            bad_extension = f.split(".")[-1]
-            
-            #If these two files have the same extension AND the file we're looking at is NOT a file we
-            #know is faulty, add it to the list of known good files.
-            if bad_extension == extension and filename not in bad_files:
-                good_files.append(filename)
+        #We don't want to use the same file multiple times(?)
+        if filename not in good_files:
+            #Get the file extension (assumes we use the last one, i.e. for "example.cpp.java", we use ".java")
+            extension = filename.split(".")[-1]
+
+            #Cycle through the list of bad files to see if this is an extension we need.
+            #Assumes bad_files is a list of filename strings.
+            for f in bad_files:
+                #Get the file extension of a faulty file
+                bad_extension = f.split(".")[-1]
+
+                #If these two files have the same extension AND the file we're looking at is NOT a file we
+                #know is faulty, add it to the list of known good files.
+                if bad_extension == extension and filename not in bad_files:
+                    good_files.append(filename)
+
+                    #We've already accounted for this bad file, so delete it from the list.
+                    bad_files.remove(f)
+
+                    #Get the data from this good commit. The TODOs below should probably go here,
+                    #since we only want confirmed commits.
+                    parse_good(commit)
+
+                    #We're done with this file and we only want to use it to be associated with multiple
+                    #bad files
+                    break
 
         # TODO: once all commits found with same file extension get the most recent one that's not the
         #  dirty file and parse it
