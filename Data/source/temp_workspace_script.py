@@ -1,7 +1,9 @@
+import time
 from os import walk
 
 # error exceptions and API/repo access
 import mysql.connector
+from git import Repo
 from github import Github
 from mysql.connector import errorcode
 
@@ -20,7 +22,9 @@ totals = {}
 # contains the average from each commit (used in dirty/clean_data)
 averages = []
 # contains filenames (used in clean_data)
-file_extensions = []
+dirty_filenames = []
+# contains filenames (used in clean_data)
+clean_filenames = []
 
 
 def access_github():
@@ -32,10 +36,10 @@ def access_github():
     return Github(git_access)
 
 
-def repo_database(repository_data):
+def repo_database(repository_data_points):
     """
     Connects to the SQL database and executes commands to insert to insert queries and data points into database
-    :param repository_data: tuple containing data points from repository data function
+    :param repository_data_points: tuple containing data points from repository data function
     :return:
     """
 
@@ -49,10 +53,10 @@ def repo_database(repository_data):
         repo_sql_insert_query = """INSERT INTO repo (repo_name, assignees,
         size, commits, events, forks, branches, contributors, labels, language_count,
         language_size, milestones, issues, refs, stargazers, subscribers, watchers, network, open_issues,
-        pulls, num_files, commit_size, commit_count, insertions, deletions, lines_changed, has_fault) VALUES (%s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        pulls, num_files, commit_size, commit_count, insertions, deletions, lines_changed) VALUES (%s, %s, %s, %s, %s,
+        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-        repo_insert_tuple = repository_data
+        repo_insert_tuple = repository_data_points
 
         cursor.execute(repo_sql_insert_query, repo_insert_tuple)
         repo_id = cursor.lastrowid
@@ -133,8 +137,6 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
                 if type_of_change == "lines":
                     commit_lines_changed_count += change_value
 
-    fault_flag = flag_fault(repository)
-
     # clear lists of data for next repo
     lang_size.clear()
     lang_string.clear()
@@ -143,8 +145,7 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
     repo_data = (repository_name, assignees, size, commits, events, forks, branches, contributors,
                  labels, language_count, language_size, milestone, issues, refs, stargazer, subscribers, watchers,
                  network_count, count_open_issues, pulls, number_of_files_in_project, commit_size_sum,
-                 commit_files_count, commit_insertion_count, commit_deletion_count, commit_lines_changed_count,
-                 fault_flag)
+                 commit_files_count, commit_insertion_count, commit_deletion_count, commit_lines_changed_count)
 
     return repo_data
 
@@ -218,7 +219,7 @@ def dirty_data(repository, commit_hash):
         index += 1
 
     for key in averages:
-        file_extensions.append(key[0])
+        dirty_filenames.append(key[0])
         filename = key[0]
         total_ins = key[1]
         ins_avg = key[2]
@@ -271,51 +272,177 @@ def clean_data(repository, commit_hash):
     """
     # data = repository.iter_commits(commit_hash) This gets all commits up to given hash
     file_holder = []
+    # we know these files dont have any faults
     flag = 0
+    index = 0
 
     commit_log = repository.iter_commits(commit_hash)
+    commit_data = repository.commits(commit_hash)
 
+    # grab the extension of the dirty file
+    for path in commit_data.stats.files:
+        dirty_ext = path.split(".")[:-1]
+
+    # go through commit history up to dirty file commit and store all files with the same extension as the
+    # dirty_ext into a list
     for commit in commit_log:
-        pass
-        # TODO: strip file extension and compare to filename pulled from commit if found add to a list
+        for path in commit.stats.files:
+            if path.split(".")[:-1] == dirty_ext:
+                file_holder.append(path)
+
+    # grab the last file in the list and run through the commit log again, once the filenames match parse that
+    # commit and store in database
+    for commit in commit_log:
+        for path in commit.stats.files:
+            if path == file_holder[-1]:
+                parse_dic(commit.stats.files)
+
+                # use totals to find averages
+                commit_size = commit.size
+                for key in totals:
+                    key_val = totals[key]
+                    tot_ins = key_val['ins_total']
+                    tot_del = key_val['del_total']
+                    tot_lin = key_val['lin_total']
+                    count = key_val['count']
+
+                    averages.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
+                                     commit_size])
+
+                    index += 1
+
+                for key in averages:
+                    clean_filenames.append(key[0])
+                    filename = key[0]
+                    total_ins = key[1]
+                    ins_avg = key[2]
+                    total_del = key[3]
+                    del_avg = key[4]
+                    total_lines = key[5]
+                    lines_avg = key[6]
+                    commit_size = key[8]
+
+                    try:
+                        conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
+                        cursor = conn.cursor()
+
+                        # Updates multiple columns of a single row in table
+                        repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
+                        insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
+                         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+                        log_inserts = (
+                            repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+                            commit_size)
+
+                        cursor.execute(repo_file_sql_update_query, log_inserts)
+                        conn.commit()
+
+                    except mysql.connector.Error as err:
+                        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                            print("Something is wrong with your user name or password")
+                        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                            print("Database does not exist")
+                        else:
+                            print(err)
+                    else:
+                        conn.close()
+
+                # clean up lists for next commit/ repo
+                totals.clear()
+                averages.clear()
+
+
+if __name__ == "__main__":
+    try:
+        start_time = time.time()
+
+        git = access_github()
+
+        # TODO: ASSUMING i get a text file with repo name and commit hash...ill need the path name too shit
+        # TODO: get path name
+        with open('path of stored file', 'r') as repo_info:
+            # grab each repo name and commit hash and dir
+            for row in repo_info.readlines():
+                repo_name, repo_dir = row.split(' ')
+
+                # these are both important i forget which does what for which function..
+                # TODO: figure out which does which so we know which to pass to dirty/clean function
+                github_repo = git.get_repo(repo_name, lazy=False)
+                repo = Repo(repo_dir.rstrip())
+
+                # here we check if we can access the actual repository object
+                if not repo.bare:
+                    repo_database(repository_data(github_repo, repo,
+                                                  repo_name, repo_dir.rstrip()))
+                    # here the we grab and store the dirty data first
+                    # dirty_data(github_repo,commit_hash)
+                    # clean_data(github_repo, commit_hash)
+                else:
+                    print('Could not load repository at {} :'.format(repo_dir))
+
+        print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
+    except Exception as e:
+        print("Could not check if repo existed", e)
+
+# =============================================================================================================================
+#  WORK TOM DID SHOULD BE SUPPER USEFUL JUST HAVE to FIND A WAY To INCORPERATE IT INTO ABOVE CODE
+# def clean_data(repository, commit_hash):
+#     """
+#     Clean data looks through a repository history up until the given commit hash to find another file
+#     with the same extension. It strips the filename for the extension then checks to see it another filename
+#     matches that extension in the commit history. once found parse that commit to database as clean data
+
+#     :param repository:
+#     :param commit_hash:
+#     :return:
+#     """
+#     # data = repository.iter_commits(commit_hash) This gets all commits up to given hash
+#     file_holder = []
+#     flag = 0
+
+#     commit_log = repository.iter_commits(commit_hash)
+
+#     for commit in commit_log:
+#         pass
+#         # TODO: strip file extension and compare to filename pulled from commit if found add to a list
         
-        '''
-        Assumed variables:
-        filename   - the file we're currently looking at
-        good_files - a list of all files we know are NOT faulty
-        bad_files  - a list of all files we know are faulty. I think file_extensions *is* this already.
-        '''
+#         '''
+#         Assumed variables:
+#         filename   - the file we're currently looking at
+#         good_files - a list of all files we know are NOT faulty
+#         bad_files  - a list of all files we know are faulty. I think file_extensions *is* this already.
+#         '''
         
-        #We don't want to use the same file multiple times(?)
-        if filename not in good_files:
-            #Get the file extension (assumes we use the last one, i.e. for "example.cpp.java", we use ".java")
-            extension = filename.split(".")[-1]
+#         #We don't want to use the same file multiple times(?)
+#         if filename not in good_files:
+#             #Get the file extension (assumes we use the last one, i.e. for "example.cpp.java", we use ".java")
+#             extension = filename.split(".")[-1]
 
-            #Cycle through the list of bad files to see if this is an extension we need.
-            #Assumes bad_files is a list of filename strings.
-            for f in bad_files:
-                #Get the file extension of a faulty file
-                bad_extension = f.split(".")[-1]
+#             #Cycle through the list of bad files to see if this is an extension we need.
+#             #Assumes bad_files is a list of filename strings.
+#             for f in bad_files:
+#                 #Get the file extension of a faulty file
+#                 bad_extension = f.split(".")[-1]
 
-                #If these two files have the same extension AND the file we're looking at is NOT a file we
-                #know is faulty, add it to the list of known good files.
-                if bad_extension == extension and filename not in bad_files:
-                    good_files.append(filename)
+#                 #If these two files have the same extension AND the file we're looking at is NOT a file we
+#                 #know is faulty, add it to the list of known good files.
+#                 if bad_extension == extension and filename not in bad_files:
+#                     good_files.append(filename)
 
-                    #We've already accounted for this bad file, so delete it from the list.
-                    bad_files.remove(f)
+#                     #We've already accounted for this bad file, so delete it from the list.
+#                     bad_files.remove(f)
 
-                    #Get the data from this good commit. The TODOs below should probably go here,
-                    #since we only want confirmed commits.
-                    parse_good(commit)
+#                     #Get the data from this good commit. The TODOs below should probably go here,
+#                     #since we only want confirmed commits.
+#                     parse_good(commit)
 
-                    #We're done with this file and we only want to use it to be associated with multiple
-                    #bad files
-                    break
+#                     #We're done with this file and we only want to use it to be associated with multiple
+#                     #bad files
+#                     break
 
-        # TODO: once all commits found with same file extension get the most recent one that's not the
-        #  dirty file and parse it
+#         # TODO: once all commits found with same file extension get the most recent one that's not the
+#         #  dirty file and parse it
 
-        # TODO: exit loops and store that data into database
-
+#         # TODO: exit loops and store that data into database
 
