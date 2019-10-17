@@ -363,27 +363,37 @@ if __name__ == "__main__":
 
         temp = get_repos()
 
-        index = 1
-        
-        # for each repo name in nested list grab repo name and then clone the repo and store the repo dir 
         for name in temp:
             github_repo = git.get_repo(name[0], lazy=False)
             repo_dir = clone_repo(name[0])
-            repo = Repo(clone_repo(repo_dir))
+            repo = Repo(str(repo_dir))
+
+            # PRINT DEBUGGING
+            print('Finished gathering  info and cloning: ' + name[0])            
 
             # here we check if we can access the actual repository object
             if not repo.bare:
-                # grab data and store in repo table
                 repo_database(repository_data(github_repo, repo, name[0], repo_dir))
-                # Here we loop through each hash for each repo and grab the data from it
-                for hash_commits in temp:
-                    dirty_data(github_repo, hash_commits[index])
-                    clean_data(github_repo, hash_commits[index])
-                    index += 1
+                
+                # remove repo name from list so we only have the commit hashes to look at
+                name.remove(name[0])
+                
+                # PRINT DEBUGGING
+                print('Finished storing repo data')
+
+                for hash_commits in name:
+                    dirty_data(repo, hash_commits)
+
+                    # PRINT DEBUGGING
+                    print('Finished dirty data')
+
+                    clean_data(github_repo, hash_commits)
+
+                    # PRINT DEBUGGING
+                    print('Finished clean data')
+
             else:
                 print('Could not load repository at {} :'.format(repo_dir))
-        # i beleive this will reset the index for the next iteration
-        index = 1
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
