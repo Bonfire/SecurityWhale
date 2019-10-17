@@ -7,16 +7,14 @@ from git import Repo
 from github import Github
 from mysql.connector import errorcode
 
+# grab cloning and parse functions
+from cloner import clone_repo
 # gain access to important data easily
 from config import database
 from config import git_access
 from config import host
 from config import password
 from config import user
-
-# grab cloning and parse functions
-from cloner import clone_repo
-from parse import get_repos
 
 # globals
 # increment through database
@@ -126,7 +124,7 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
             break
     number_of_files_in_project = len(files)
 
-    commit_list = list(repository.iter_commits('master'))[:5000]
+    commit_list = list(repository.iter_commits('master'))[:100]
     for commit in commit_list:
         commit_size_sum += commit.size
         # get data points from stats, since it's stored in a dictionary we had to use a nested for loop to gather it
@@ -198,7 +196,7 @@ def dirty_data(repository, commit_hash):
     :param commit_hash: a hash of a specific commit in a repository
     :return:
     """
-
+    global repo_id
     index = 0
     # these commits are known faults so flags will always be 1
     flag = 1
@@ -231,7 +229,7 @@ def dirty_data(repository, commit_hash):
         del_avg = key[4]
         total_lines = key[5]
         lines_avg = key[6]
-        commit_size = key[8]
+        commit_size = key[7]
 
         try:
             conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
@@ -240,7 +238,7 @@ def dirty_data(repository, commit_hash):
             # Updates multiple columns of a single row in table
             repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
         insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
-         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+         %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
             log_inserts = (
                 repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
@@ -270,6 +268,7 @@ def clean_data(repository, commit_hash):
     with the same extension. It strips the filename for the extension then checks to see it another filename
     matches that extension in the commit history. once found parse that commit to database as clean data
     :param repository:
+    :param git_repo:
     :param commit_hash:
     :return:
     """
@@ -280,7 +279,7 @@ def clean_data(repository, commit_hash):
     index = 0
 
     commit_log = repository.iter_commits(commit_hash)
-    commit_data = repository.commits(commit_hash)
+    commit_data = repository.commit(commit_hash)
 
     # grab the extension of the dirty file
     for path in commit_data.stats.files:
@@ -323,7 +322,7 @@ def clean_data(repository, commit_hash):
                     del_avg = key[4]
                     total_lines = key[5]
                     lines_avg = key[6]
-                    commit_size = key[8]
+                    commit_size = key[7]
 
                     try:
                         conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
@@ -332,7 +331,7 @@ def clean_data(repository, commit_hash):
                         # Updates multiple columns of a single row in table
                         repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
                         insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
-                         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+                         %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
                         log_inserts = (
                             repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
@@ -361,7 +360,11 @@ if __name__ == "__main__":
         start_time = time.time()
         git = access_github()
 
-        temp = get_repos()
+        # temp = get_repos()
+        # testing list
+        temp = [['bbengfort/confire', '8cc86a5ec2327e070f1d576d61bbaadf861597ea'],
+                ['fusesource/hawtjni', '92c266170ce98edc200c656bd034a237098b8aa5'],
+                ['cobbler/cobbler', '6d9167e5da44eca56bdf42b5776097a6779aaadf']]
 
         for name in temp:
             github_repo = git.get_repo(name[0], lazy=False)
@@ -369,25 +372,28 @@ if __name__ == "__main__":
             repo = Repo(str(repo_dir))
 
             # PRINT DEBUGGING
-            print('Finished gathering  info and cloning: ' + name[0])            
+            print('Finished gathering  info and cloning: ' + name[0])
 
             # here we check if we can access the actual repository object
             if not repo.bare:
                 repo_database(repository_data(github_repo, repo, name[0], repo_dir))
-                
+
                 # remove repo name from list so we only have the commit hashes to look at
                 name.remove(name[0])
-                
+
                 # PRINT DEBUGGING
                 print('Finished storing repo data')
 
                 for hash_commits in name:
+                    # PRINT DEBUGGING
+                    print('Entering dirty repo')
+
                     dirty_data(repo, hash_commits)
 
                     # PRINT DEBUGGING
                     print('Finished dirty data')
 
-                    clean_data(github_repo, hash_commits)
+                    clean_data(repo, hash_commits)
 
                     # PRINT DEBUGGING
                     print('Finished clean data')
@@ -398,6 +404,7 @@ if __name__ == "__main__":
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
         print("Could not check if repo existed", e)
+
 
 
 # =============================================================================================================================
