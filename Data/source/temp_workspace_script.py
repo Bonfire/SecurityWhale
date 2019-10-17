@@ -281,13 +281,13 @@ def clean_data(repository, commit_hash):
 
     # grab the extension of the dirty file
     for path in commit_data.stats.files:
-        dirty_ext = path.split(".")[:-1]
+        dirty_ext = path.split(".")[-1]
 
     # go through commit history up to dirty file commit and store all files with the same extension as the
     # dirty_ext into a list
     for commit in commit_log:
         for path in commit.stats.files:
-            if path.split(".")[:-1] == dirty_ext:
+            if path.split(".")[-1] == dirty_ext:
                 file_holder.append(path)
 
     # grab the last file in the list and run through the commit log again, once the filenames match parse that
