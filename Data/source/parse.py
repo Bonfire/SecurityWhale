@@ -1,7 +1,7 @@
 import re
 import csv
 
-def get_repos:
+def get_repos():
     count = 0
     commits = []
     repos = []
@@ -33,3 +33,4 @@ def get_repos:
     repo_hash = sorted(list_repo_commit, key=len)
 
     return repo_hash
+
