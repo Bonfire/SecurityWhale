@@ -14,6 +14,10 @@ from config import host
 from config import password
 from config import user
 
+# grab cloning and parse functions
+from cloner import clone_repo
+from parse import get_repos
+
 # globals
 # increment through database
 repo_id = 1
@@ -190,7 +194,7 @@ def dirty_data(repository, commit_hash):
     Dirty Data takes a given commit_hash and parses information from it which is then stored in the database
     it also stores the filename in a list that is stored globally
 
-    :param repository: The full name of a repository
+    :param repository: full repository object
     :param commit_hash: a hash of a specific commit in a repository
     :return:
     """
@@ -265,7 +269,6 @@ def clean_data(repository, commit_hash):
     Clean data looks through a repository history up until the given commit hash to find another file
     with the same extension. It strips the filename for the extension then checks to see it another filename
     matches that extension in the commit history. once found parse that commit to database as clean data
-
     :param repository:
     :param commit_hash:
     :return:
@@ -356,34 +359,36 @@ def clean_data(repository, commit_hash):
 if __name__ == "__main__":
     try:
         start_time = time.time()
-
         git = access_github()
 
-        # TODO: ASSUMING i get a text file with repo name and commit hash...ill need the path name too shit
-        # TODO: get path name
-        with open('path of stored file', 'r') as repo_info:
-            # grab each repo name and commit hash and dir
-            for row in repo_info.readlines():
-                repo_name, repo_dir = row.split(' ')
+        temp = get_repos()
 
-                # these are both important i forget which does what for which function..
-                # TODO: figure out which does which so we know which to pass to dirty/clean function
-                github_repo = git.get_repo(repo_name, lazy=False)
-                repo = Repo(repo_dir.rstrip())
+        index = 1
+        
+        # for each repo name in nested list grab repo name and then clone the repo and store the repo dir 
+        for name in temp:
+            github_repo = git.get_repo(name[0], lazy=False)
+            repo_dir = clone_repo(name[0])
+            repo = Repo(clone_repo(repo_dir))
 
-                # here we check if we can access the actual repository object
-                if not repo.bare:
-                    repo_database(repository_data(github_repo, repo,
-                                                  repo_name, repo_dir.rstrip()))
-                    # here the we grab and store the dirty data first
-                    # dirty_data(github_repo,commit_hash)
-                    # clean_data(github_repo, commit_hash)
-                else:
-                    print('Could not load repository at {} :'.format(repo_dir))
+            # here we check if we can access the actual repository object
+            if not repo.bare:
+                # grab data and store in repo table
+                repo_database(repository_data(github_repo, repo, name[0], repo_dir))
+                # Here we loop through each hash for each repo and grab the data from it
+                for hash_commits in temp:
+                    dirty_data(github_repo, hash_commits[index])
+                    clean_data(github_repo, hash_commits[index])
+                    index += 1
+            else:
+                print('Could not load repository at {} :'.format(repo_dir))
+        # i beleive this will reset the index for the next iteration
+        index = 1
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
         print("Could not check if repo existed", e)
+
 
 # =============================================================================================================================
 #  WORK TOM DID SHOULD BE SUPPER USEFUL JUST HAVE to FIND A WAY To INCORPERATE IT INTO ABOVE CODE
