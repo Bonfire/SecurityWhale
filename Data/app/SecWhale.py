@@ -291,7 +291,6 @@ def clean_data(repository, commit_hash):
     with the same extension. It strips the filename for the extension then checks to see it another filename
     matches that extension in the commit history. once found parse that commit to database as clean data
     :param repository:
-    :param git_repo:
     :param commit_hash:
     :return:
     """
@@ -302,6 +301,7 @@ def clean_data(repository, commit_hash):
     index = 0
 
     commit_log = repository.iter_commits(commit_hash)
+    commit_logx = repository.iter_commits(commit_hash)
     commit_data = repository.commit(commit_hash)
 
     # grab the extension of the dirty file
@@ -315,9 +315,12 @@ def clean_data(repository, commit_hash):
             if path.split(".")[-1] == dirty_ext:
                 file_holder.append(path)
 
+    print(file_holder[-1])
+
     # grab the last file in the list and run through the commit log again, once the filenames match parse that
     # commit and store in database
-    for commit in commit_log:
+
+    for commit in commit_logx:
         for path in commit.stats.files:
             if path == file_holder[-1]:
                 parse_dic(commit.stats.files)
@@ -384,9 +387,7 @@ if __name__ == "__main__":
         git = access_github()
 
         # temp = get_repos()
-        temp = [['bbengfort/confire', '8cc86a5ec2327e070f1d576d61bbaadf861597ea'],
-                ['fusesource/hawtjni', '92c266170ce98edc200c656bd034a237098b8aa5'],
-                ['cobbler/cobbler', '6d9167e5da44eca56bdf42b5776097a6779aaadf']]
+        temp = [['bbengfort/confire', '8cc86a5ec2327e070f1d576d61bbaadf861597ea']]
 
         for name in temp:
             github_repo = git.get_repo(name[0], lazy=False)
@@ -422,6 +423,10 @@ if __name__ == "__main__":
 
             else:
                 print('Could not load repository at {} :'.format(repo_dir))
+
+            # PRINT DEBUG
+            # print('DELETING FOLDER')
+            # obliterate(repo_dir)
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
