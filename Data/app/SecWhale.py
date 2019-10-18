@@ -299,6 +299,7 @@ def clean_data(repository, commit_hash):
     # we know these files dont have any faults
     flag = 0
     index = 0
+    check = 0
 
     commit_log = repository.iter_commits(commit_hash)
     commit_logx = repository.iter_commits(commit_hash)
@@ -322,10 +323,13 @@ def clean_data(repository, commit_hash):
     for commit in commit_logx:
         for path in commit.stats.files:
             if path == file_holder[-1]:
-                commit_file = commit.stats.files
+                check = 1
                 break
-            
-        break
+        if check == 1:
+            commit_file = commit.stats.files
+            break
+        else:
+            continue
     
     parse_dic(commit.stats.files)
 
