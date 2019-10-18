@@ -319,66 +319,70 @@ def clean_data(repository, commit_hash):
 
     # grab the last file in the list and run through the commit log again, once the filenames match parse that
     # commit and store in database
-
     for commit in commit_logx:
         for path in commit.stats.files:
             if path == file_holder[-1]:
-                parse_dic(commit.stats.files)
+                commit_file = commit.stats.files
+                break
+            break
+        break
+    
+    parse_dic(commit.stats.files)
 
-                # use totals to find averages
-                commit_size = commit.size
-                for key in totals:
-                    key_val = totals[key]
-                    tot_ins = key_val['ins_total']
-                    tot_del = key_val['del_total']
-                    tot_lin = key_val['lin_total']
-                    count = key_val['count']
+    # use totals to find averages
+    commit_size = commit.size
+    for key in totals:
+        key_val = totals[key]
+        tot_ins = key_val['ins_total']
+        tot_del = key_val['del_total']
+        tot_lin = key_val['lin_total']
+        count = key_val['count']
 
-                    averages.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
-                                     commit_size])
+        averages.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
+                         commit_size])
 
-                    index += 1
+        index += 1
 
-                for key in averages:
-                    clean_filenames.append(key[0])
-                    filename = key[0]
-                    total_ins = key[1]
-                    ins_avg = key[2]
-                    total_del = key[3]
-                    del_avg = key[4]
-                    total_lines = key[5]
-                    lines_avg = key[6]
-                    commit_size = key[7]
+    for key in averages:
+        clean_filenames.append(key[0])
+        filename = key[0]
+        total_ins = key[1]
+        ins_avg = key[2]
+        total_del = key[3]
+        del_avg = key[4]
+        total_lines = key[5]
+        lines_avg = key[6]
+        commit_size = key[7]
 
-                    try:
-                        conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
-                        cursor = conn.cursor()
+        try:
+            conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
+            cursor = conn.cursor()
 
-                        # Updates multiple columns of a single row in table
-                        repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
-                        insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
-                         %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+            # Updates multiple columns of a single row in table
+            repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
+            insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
+             %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-                        log_inserts = (
-                            repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
-                            commit_size)
+            log_inserts = (
+                repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+                commit_size)
 
-                        cursor.execute(repo_file_sql_update_query, log_inserts)
-                        conn.commit()
+            cursor.execute(repo_file_sql_update_query, log_inserts)
+            conn.commit()
 
-                    except mysql.connector.Error as err:
-                        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                            print("Something is wrong with your user name or password")
-                        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                            print("Database does not exist")
-                        else:
-                            print(err)
-                    else:
-                        conn.close()
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Something is wrong with your user name or password")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("Database does not exist")
+            else:
+                print(err)
+        else:
+            conn.close()
 
-                # clean up lists for next commit/ repo
-                totals.clear()
-                averages.clear()
+    # clean up lists for next commit/ repo
+    totals.clear()
+    averages.clear()
 
 
 if __name__ == "__main__":
