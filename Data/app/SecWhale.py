@@ -300,7 +300,8 @@ def clean_data(repository, commit_hash):
     flag = 0
     index = 0
     check = 0
-
+    
+    # since iter_commits does no reset the list each time its used in a loop we need 2 variable  one for each for loop
     commit_log = repository.iter_commits(commit_hash)
     commit_logx = repository.iter_commits(commit_hash)
     commit_data = repository.commit(commit_hash)
@@ -316,21 +317,22 @@ def clean_data(repository, commit_hash):
             if path.split(".")[-1] == dirty_ext:
                 file_holder.append(path)
 
-    print(file_holder[-1])
-
     # grab the last file in the list and run through the commit log again, once the filenames match parse that
     # commit and store in database
     for commit in commit_logx:
         for path in commit.stats.files:
+            # if files match confirm and breka second loop
             if path == file_holder[-1]:
                 check = 1
                 break
+        # check confirmation and grab that files commit object and breka other wise continue first loop 
         if check == 1:
             commit_file = commit.stats.files
             break
         else:
             continue
     
+    # Parse all the information form the Good data and store in database
     parse_dic(commit.stats.files)
 
     # use totals to find averages
@@ -348,6 +350,7 @@ def clean_data(repository, commit_hash):
         index += 1
 
     for key in averages:
+        # TODO: Might not need clean-filenames but could use it for checking duplicates
         clean_filenames.append(key[0])
         filename = key[0]
         total_ins = key[1]
@@ -393,8 +396,10 @@ if __name__ == "__main__":
     try:
         start_time = time.time()
         git = access_github()
-
+        
         # temp = get_repos()
+        
+        # THIS IS FOR TESTING ONLY AS TO NOT CLONE A BILLION FILES CONSTANTLY
         temp = [['bbengfort/confire', '8cc86a5ec2327e070f1d576d61bbaadf861597ea']]
 
         for name in temp:
@@ -431,7 +436,8 @@ if __name__ == "__main__":
 
             else:
                 print('Could not load repository at {} :'.format(repo_dir))
-
+                
+            # TODO: FIND A WAY TO DELETE ENTIRE REPO AFTER CLONING AND DATA PARSING IS COMPLETE.. CURRENT ISSUE INVOLVES IT DENYING ME ACCESS TO DELETING SPECIFIC FILES
             # PRINT DEBUG
             # print('DELETING FOLDER')
             # obliterate(repo_dir)
