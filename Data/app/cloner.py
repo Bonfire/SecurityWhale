@@ -12,4 +12,8 @@ def clone_repo(repository_name):
     """
 
     Repo.clone_from('https://github.com/' + repository_name, 'C:/Users/bbkyl/Desktop/Data Tool/data/' + repository_name)
+    
+    # this sould allow me ot delete the directory later
+    Repo.close()
+    
     return 'C:/Users/bbkyl/Desktop/Data Tool/data/' + str(repository_name)
