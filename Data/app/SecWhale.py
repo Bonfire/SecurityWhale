@@ -39,7 +39,7 @@ def access_github():
 
     return Github(git_access)
 
-
+# TODO: This will no longer work with new implementation needs revision
 def features_array(git_repo, repository, repository_name, repository_dir):
     """
     combines data points and creates a numpy array
