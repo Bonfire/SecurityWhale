@@ -324,7 +324,7 @@ def clean_data(repository, commit_hash):
             if path == file_holder[-1]:
                 commit_file = commit.stats.files
                 break
-            break
+            
         break
     
     parse_dic(commit.stats.files)
