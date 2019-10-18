@@ -328,6 +328,13 @@ def clean_data(repository, commit_hash):
         # check confirmation and grab that files commit object and breka other wise continue first loop 
         if check == 1:
             commit_file = commit.stats.files
+            # TODO: check if this code checks duplicates we dont want the same bad file to be marked as good 
+            '''for path in commit_file:
+                if path in dirty_filenames:
+                    break
+                else:
+                    continue
+            '''
             break
         else:
             continue
@@ -350,7 +357,7 @@ def clean_data(repository, commit_hash):
         index += 1
 
     for key in averages:
-        # TODO: Might not need clean-filenames but could use it for checking duplicates
+        # TODO: doesn't make sense to have this, better to do check as implemented as above but then again i could be wrong lol
         clean_filenames.append(key[0])
         filename = key[0]
         total_ins = key[1]
