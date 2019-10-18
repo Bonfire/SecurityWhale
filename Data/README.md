@@ -19,24 +19,16 @@ The second data type is the file data, This focuses on meta data we can pull fro
 
 ## How to Use
 
-In order to run this program you will need access to the internet, Python 3+, git access token, a file containing specifc information needed and a directory holding github repositories to collect data from and finally a MySQL database setup to hold the given data
+In order to run this program you will need access to the internet, Python 3+, git access token, and a MySQL database setup to hold the given data with that information stored in th econfig file
 
 **Training**
 
-In order for us to gather data for the training we had to have access to githubs API but also local copies of the repositories we wanted to train on. ONce you have both those stored and a file holding the full repo name and the filepath for the repos you can run the program
-
-**Application**
-
-TBD
+In order for us to gather data for the training we had to have access to githubs API but also local copies of the repositories we wanted to train on. Once you have both those stored you can run the program
 
 
 ### Testing
 
-```test
-# in order to run the python script outside an IDE
-
-Py whale_hunter.py
-```
+N/A
 
 
 ## Resources
