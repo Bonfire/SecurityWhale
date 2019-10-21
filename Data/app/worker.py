@@ -24,15 +24,16 @@ def access_github():
     return Github(git_access)
 
 
-def repo_get(name, git):
+def repo_get(name, git, repo_dir, db_sig=True):
     github_repo = git.get_repo(name, lazy=False)
-    repo_dir = clone_repo(name)
     repo = Repo(str(repo_dir))
 
-    if not repo.bare:
-        repo_database(repository_data(github_repo, repo, name, repo_dir))
-    else:
-        print('Could not load repository at {} :'.format(repo_dir))
+    if db_sig:
+        if not repo.bare:
+            repo_database(repository_data(github_repo, repo, name, repo_dir))
+        else:
+            print('Could not load repository at {} :'.format(repo_dir))
+
     return repo
 
 def repo_database(repository_data_points):
