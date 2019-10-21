@@ -172,8 +172,7 @@ namespace PSV
             includeHiddenItemsToolTip.SetToolTip(includeHiddenCheck, "Includes files/folders that may be hidden when creating the file tree");
             fileNamesToolTip.SetToolTip(fileNamesBox, "Exclude files by name, comma separated (e.g. \"File1.txt\", \"File2.exe\")");
             fileExtensionToolTip.SetToolTip(fileExtensionsBox, "Exclude files by extension, comma separated (e.g. \".txt\", \".exe\")");
-            foldersToolTip.SetToolTip(foldersBox, "Exclude folders by name, comma separated (e.g. \"Folder1\", \"Folder2\")");
-        }
+            foldersToolTip.SetToolTip(foldersBox, "Exclude folders by name, comma separated (e.g. \"Folder1\", \"Folder2\")");        }
 
         private void RemoteRadio_CheckedChanged(object sender, EventArgs e)
         {
@@ -220,35 +219,25 @@ namespace PSV
         private void BeginScanButton_Click(object sender, EventArgs e)
         {
             // Setup the base for our python environment and scripts
-            string pythonInterpreter = "python.exe";
-            string pythonScript = "appInterface.py";
+            string pythonInterpreter = @"C:\Python37\python.exe";
+            string pythonScript = @"..\..\..\..\Data\app\appInterface.py";
             string repoURL = projectURLTextBox.Text;
             string[] splitRepoURL = repoURL.Split('/');
             string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
-            MessageBox.Show(repoName);
 
-            // Python process info, includes silent running so it's not annoying to the user
-            // Also, pass the "send data?" argument
-            ProcessStartInfo pythonStartInfo = new ProcessStartInfo(pythonInterpreter)
+            ProcessStartInfo pythonStartInfo = new ProcessStartInfo();
+            pythonStartInfo.FileName = pythonInterpreter;
+            pythonStartInfo.Arguments = string.Format("{0} {1} {2} {3} {4} {5}", pythonScript, githubUsername, githubPassword, repoName, pathToCloneTextBox.Text, provideDataBox.Checked.ToString());
+            pythonStartInfo.UseShellExecute = false;
+            pythonStartInfo.RedirectStandardOutput = true;
+
+            using(Process pythonProcess = Process.Start(pythonStartInfo))
             {
-                UseShellExecute = false,
-                RedirectStandardOutput = true,
-                Arguments = pythonScript + " " + githubUsername + " " + githubPassword + " " + repoName + " " + pathToCloneTextBox.Text + " " + provideDataBox.Checked.ToString()
-            };
-
-            // Create the new process with our previous process information
-            Process pythonProcess = new Process
-            {
-                StartInfo = pythonStartInfo
-            };
-            pythonProcess.Start();
-
-            // View the output from the script
-            // TODO: Implement the output gathering from the script
-            StreamReader outputReader = pythonProcess.StandardOutput;
-            string outputString = outputReader.ReadLine();
-
-            MessageBox.Show(outputString);
+                using (StreamReader pythonStream = pythonProcess.StandardOutput)
+                {
+                    Console.WriteLine("Output: " + pythonStream.ReadToEnd());
+                }
+            }
         }
 
         // Update our scan/exclusion settings set by the user
