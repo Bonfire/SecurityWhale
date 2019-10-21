@@ -7,7 +7,7 @@ namespace PSV
 {
     public partial class GitHubLogInForm : Form
     {
-        public Credentials gitHubCredentials;
+        public Credentials gitHubCredentials, githubUsername, githubPassword;
         public String projectURL, pathToClone;
 
         public GitHubLogInForm(String projectURL, String pathToClone)
@@ -30,6 +30,7 @@ namespace PSV
                 Password = gitHubPasswordTextBox.Text
             };
 
+
             // Setup GitHub authentication
             SecretStore gitSecretStore = new SecretStore("git");
             BasicAuthentication authType = new BasicAuthentication(gitSecretStore);
@@ -45,6 +46,7 @@ namespace PSV
                 // Clone the repo and close the form
                 // We also want to nullify all credential objects to respect the user's privacy
                 // This should make the memory "out of scope" in the eyes of the garbage collector
+                MessageBox.Show("Attempting to Clone the Repository...");
                 Repository.Clone(projectURL, pathToClone, credCloneOptions);
                 userCredentials = null;
                 credCloneOptions = null;
@@ -55,6 +57,16 @@ namespace PSV
             {
                 MessageBox.Show("Failed to properly authenticate. Please verify that your credentials are correct.", "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public string getUsername()
+        {
+            return gitHubUsernameTextBox.Text; 
+        }
+
+        public string getPassword()
+        {
+            return gitHubPasswordTextBox.Text;
         }
     }
 }
