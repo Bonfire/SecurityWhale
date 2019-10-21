@@ -148,3 +148,27 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
                  commit_files_count, commit_insertion_count, commit_deletion_count, commit_lines_changed_count)
 
     return repo_data
+
+
+def parse_dic(dic):
+    """
+    Parses the data into a dictionary of total
+
+    :param dic: Dictionary of parsed github commit log history
+    :return:
+    """
+    # contains the totals from each commit (used in parse_dic)
+    totals = []
+    # This gives us the filepath itself
+    fp = list(dic.keys())[0]
+
+    for phile in fp:
+
+        # Insertions and deletions for this particular filepath
+        fp_ins = dic[fp]['insertions']
+        fp_del = dic[fp]['deletions']
+        fp_lin = dic[fp]['lines']
+
+        totals.append([phile, fp_ins, fp_del, fp_lin])
+
+    return totals
