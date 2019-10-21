@@ -28,13 +28,13 @@ def repo_get(name, git, repo_dir, db_sig=True):
     github_repo = git.get_repo(name, lazy=False)
     repo = Repo(str(repo_dir))
 
-    if db_sig:
-        if not repo.bare:
-            repo_database(repository_data(github_repo, repo, name, repo_dir))
-        else:
-            print('Could not load repository at {} :'.format(repo_dir))
+    if not repo.bare:
+        r_data = repository_data(github_repo, repo, name, repo_dir)
+        if db_sig:
+            repo_database(r_data)
 
-    return repo
+    return repo, r_data
+
 
 def repo_database(repository_data_points):
     """
