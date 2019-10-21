@@ -13,6 +13,9 @@ namespace PSV
         public String[] fileNameExclusions, fileExtensionExclusions, folderExclusions;
         public Boolean isRepoPrivate = false;
 
+        // User Credential Manager
+        public string githubUsername, githubPassword;
+
 
         public PSVForm()
         {
@@ -43,6 +46,8 @@ namespace PSV
                     isRepoPrivate = true;
                     GitHubLogInForm gitHubLoginForm = new GitHubLogInForm(projectURLTextBox.Text, pathToCloneTextBox.Text);
                     gitHubLoginForm.ShowDialog();
+                    githubUsername = gitHubLoginForm.getUsername();
+                    githubPassword = gitHubLoginForm.getPassword();
                 }
 
                 return false;
@@ -216,8 +221,11 @@ namespace PSV
         {
             // Setup the base for our python environment and scripts
             string pythonInterpreter = "python.exe";
-            string pythonScript = "dataScript.py";
-            bool sendData = provideDataBox.Checked;
+            string pythonScript = "appInterface.py";
+            string repoURL = projectURLTextBox.Text;
+            string[] splitRepoURL = repoURL.Split('/');
+            string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
+            MessageBox.Show(repoName);
 
             // Python process info, includes silent running so it's not annoying to the user
             // Also, pass the "send data?" argument
@@ -225,7 +233,7 @@ namespace PSV
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
-                Arguments = pythonScript + " " + sendData.ToString() // Arguments passed to the script (True or False)
+                Arguments = pythonScript + " " + githubUsername + " " + githubPassword + " " + repoName + " " + pathToCloneTextBox.Text + " " + provideDataBox.Checked.ToString()
             };
 
             // Create the new process with our previous process information

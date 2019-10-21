@@ -130,10 +130,10 @@
 
         private System.Windows.Forms.Label gitHubUsernameLabel;
         private System.Windows.Forms.Label gitHubPasswordLabel;
-        private System.Windows.Forms.TextBox gitHubUsernameTextBox;
-        private System.Windows.Forms.TextBox gitHubPasswordTextBox;
         private System.Windows.Forms.Button logInButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.TextBox gitHubUsernameTextBox;
+        public System.Windows.Forms.TextBox gitHubPasswordTextBox;
     }
 }
