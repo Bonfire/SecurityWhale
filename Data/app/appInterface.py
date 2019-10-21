@@ -30,5 +30,5 @@ def app_interface():
 	#Go through files
 
 #Main - delete later?
-if __name__ == "__main__":
-	app_interface()
+#if __name__ == "__main__":
+	#app_interface()
