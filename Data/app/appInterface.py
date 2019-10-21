@@ -20,10 +20,10 @@ def app_interface():
 	print("Arguments:\n" + username + " / " + password + " / " + repo_name + " / " + clone_dir + " / " + add_signal)
 	
 	#Get Github access
-	git = Github(username, password)
+	#git = Github(username, password)
 	
 	#Retrieve repo & github data
-	repo, git_data = repo_get(repo_name, git, clone_dir, add_signal)
+	#repo, git_data = repo_get(repo_name, git, clone_dir, add_signal)
 	
 	#Tuple into a list, calls to get file information for ALL of the commit history
 	#git data first in array sent to training
