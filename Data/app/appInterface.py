@@ -32,3 +32,4 @@ def app_interface():
 #Main - delete later?
 #if __name__ == "__main__":
 	#app_interface()
+app_interface()
