@@ -10,10 +10,10 @@ from config import database
 from config import host
 from config import password
 from config import user
-from worker import access_github
-from worker import get_averages
-from worker import parse_dic
-from worker import repo_get
+from application import access_github
+from application import get_averages
+from application import parse_dic
+from application import repo_get
 
 # increment through database
 # not sure what it actually does
@@ -89,7 +89,7 @@ def dirty_data(repository, commit_hash):
         # log_inserts = (
         #     repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
         #     commit_size)
-        
+
         log_inserts2 = (repo_id, averages[0], flag)
         for item in averages[1:]:
             log_inserts2 += item
