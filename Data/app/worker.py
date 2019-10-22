@@ -160,14 +160,14 @@ def parse_dic(dic):
     # contains the totals from each commit (used in parse_dic)
     totals = []
     # This gives us the filepath itself
-    fp = list(dic.keys())
+    fp = list(dic.keys())[0]
 
-    for phile in fp:
+    for phile in list(dic.keys()):
 
         # Insertions and deletions for this particular filepath
-        fp_ins = dic[fp]['insertions']
-        fp_del = dic[fp]['deletions']
-        fp_lin = dic[fp]['lines']
+        fp_ins = dic[phile]['insertions']
+        fp_del = dic[phile]['deletions']
+        fp_lin = dic[phile]['lines']
 
         totals.append([phile, fp_ins, fp_del, fp_lin])
 
