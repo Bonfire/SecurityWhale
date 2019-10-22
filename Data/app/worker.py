@@ -203,3 +203,5 @@ def get_averages(omni_list, commit_hash, repo):
                         file_info.append(0)
 
                 omni_totals.append(file_info)
+
+    return omni_totals
