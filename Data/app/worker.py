@@ -172,3 +172,34 @@ def parse_dic(dic):
         totals.append([phile, fp_ins, fp_del, fp_lin])
 
     return totals
+
+
+def get_averages(omni_list, commit_hash, repo):
+
+    commits = repo.iter_commits(commit_hash)
+    omni_totals = []
+
+    for commit in commits:
+        tots = parse_dic(commit.stats.files)
+        for path in tots:
+            check = True
+            for phile in omni_totals:
+                if phile[0] == path:
+                    adder = 1
+                    for index, vals in enumerate(path[1:]):
+                        phile[index+adder] += path[index+1]
+                        phile[index+adder+1] += 1
+                        adder += 1
+                    check = False
+                    break
+            if check:
+                file_info = []
+                file_info.append(path[0])
+                for vals in path[1:]:
+                    file_info.append(vals)
+                    if vals > 0:
+                        file_info.append(1)
+                    else:
+                        file_info.append(0)
+
+                omni_totals.append(file_info)
