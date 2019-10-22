@@ -68,49 +68,49 @@ def dirty_data(repository, commit_hash):
     # use totals to find averages
     commit_size = commit.size
 
-    averages = get_averages(black_list, commit_hash)
+    averages = get_averages(black_list, commit_hash, repository)
 
-    for key in averages:
-        dirty_filenames.append(key[0])
-        filename = key[0]
-        total_ins = key[1]
-        ins_avg = key[2]
-        total_del = key[3]
-        del_avg = key[4]
-        total_lines = key[5]
-        lines_avg = key[6]
-        commit_size = key[7]
+    # filename = averages[0]
+    # total_ins = averages[1]
+    # ins_avg = averages[2]
+    # total_del = averages[3]
+    # del_avg = averages[4]
+    # total_lines = averages[5]
+    # lines_avg = averages[6]
 
-        try:
-            conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
-            cursor = conn.cursor()
+    try:
+        conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
+        cursor = conn.cursor()
 
-            # Updates multiple columns of a single row in table
-            repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
-        insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
-         %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        # Updates multiple columns of a single row in table
+        repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
+    insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
+     %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-            log_inserts = (
-                repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
-                commit_size)
+        # log_inserts = (
+        #     repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+        #     commit_size)
+        log_inserts2 = (repo_id, averages[0], flag)
+        for item in averages[1:]:
+            log_inserts2 += item
 
-            cursor.execute(repo_file_sql_update_query, log_inserts)
-            conn.commit()
+        cursor.execute(repo_file_sql_update_query, log_inserts2)
+        conn.commit()
 
-        except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
-            else:
-                print(err)
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
         else:
-            conn.close()
+            print(err)
+    else:
+        conn.close()
 
-    return None, dirty_filenames
+    return None, black_list
 
 
-def clean_data(repository, commit_hash):
+def clean_data(repository, commit_hash, black, grey):
     """
     Clean data looks through a repository history up until the given commit hash to find another file
     with the same extension. It strips the filename for the extension then checks to see it another filename
@@ -125,23 +125,29 @@ def clean_data(repository, commit_hash):
     flag = 0
     index = 0
     check = 0
+    dirty_ext = []
 
     # since iter_commits does no reset the list each time its used in a loop we need 2 variable  one for each for loop
     commit_log = repository.iter_commits(commit_hash)
     commit_logx = repository.iter_commits(commit_hash)
     commit_data = repository.commit(commit_hash)
+    black_path = [t[0] for t in black]
+    grey_path = [t[0] for t in grey]
 
     # grab the extension of the dirty file
-    for path in commit_data.stats.files:
-        dirty_ext = path.split(".")[-1]
+    for path in black_path:
+        dirty_ext.append(path.split(".")[-1])
 
+    dup_path = black_path + grey_path
 
     # go through commit history up to dirty file commit and store all files with the same extension as the
     # dirty_ext into a list
     for commit in commit_log:
         for path in commit.stats.files:
-            if path.split(".")[-1] == dirty_ext:
-                file_holder.append(path)
+            if path.split(".")[-1] in dirty_ext:
+                if path not in dup_path:
+                    file_holder.append(path)
+                    dirty_ext.remove(path.split(".")[-1])
 
     # grab the last file in the list and run through the commit log again, once the filenames match parse that
     # commit and store in database
@@ -267,8 +273,9 @@ if __name__ == "__main__":
         #
         #         # PRINT DEBUGGING
         #         print('Finished dirty data')
+            for hash_commits in name:
         #
-        #         clean_data(repo, hash_commits)
+                clean_data(repo, hash_commits, black, grey)
         #
         #         # PRINT DEBUGGING
         #         print('Finished clean data')
