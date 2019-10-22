@@ -186,7 +186,6 @@ def get_averages(omni_list, commit_hash, repo):
             if path[0] in file_names:
                 check = True
                 for phile in omni_totals:
-                        print(phile)
                         adder = 1
                         for index, vals in enumerate(path[1:]):
                             phile[index+adder] += path[index+1]
@@ -206,6 +205,12 @@ def get_averages(omni_list, commit_hash, repo):
                             file_info.append(0)
 
                     omni_totals.append(file_info)
-        print()
+
+    for phile_info in omni_totals:
+        for index, update in enumerate(phile_info[1:]):
+            if index % 2 == 0:
+                val = phile_info[index + 1]
+            else:
+                phile_info[index + 1] = val / phile_info[index + 1]
 
     return omni_totals
