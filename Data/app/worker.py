@@ -160,7 +160,7 @@ def parse_dic(dic):
     # contains the totals from each commit (used in parse_dic)
     totals = []
     # This gives us the filepath itself
-    fp = list(dic.keys())[0]
+    fp = list(dic.keys())
 
     for phile in fp:
 
