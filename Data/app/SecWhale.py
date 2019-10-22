@@ -1,44 +1,45 @@
 import time
-from os import walk
 
 # error exceptions and API/repo access
 import mysql.connector
 import numpy as np
-
 from mysql.connector import errorcode
-from worker import *
 
-# gain access to important data easily
+from cloner import clone_repo
 from config import database
-from config import git_access
 from config import host
 from config import password
 from config import user
+from worker import access_github
+from worker import get_averages
+from worker import parse_dic
+from worker import repo_get
 
-# globals
 # increment through database
-# repo_id = 1
+# not sure what it actually does
+repo_id = 1
 
-# TODO: This will no longer work with new implementation needs revision
-def features_array(git_repo, repository, repository_name, repository_dir):
-    """
-    combines data points and creates a numpy array
-    :param git_repo: gitpython repo object to get data from api
-    :param repository: pygithub object used to get data from api
-    :param repository_name: name of repo on github
-    :param repository_dir: location of cloned repo
-    :return:
-    """
-    repo_data = list(repository_data(git_repo, repository, repository_name, repository_dir))
 
-    features = []
-
-    # Populates features with sub-arrays containing [filename, file_data[], repo_data[]]
-    for key in averages:
-        features.append([key, averages[key], repo_data])
-
-    # Converts to a numpy array before returning
-    return np.array(features)
+# TODO: needs to be worked on
+# def features_array(git_repo, repository, repository_name, repository_dir):
+#     """
+#     combines data points and creates a numpy array
+#     :param git_repo: gitpython repo object to get data from api
+#     :param repository: pygithub object used to get data from api
+#     :param repository_name: name of repo on github
+#     :param repository_dir: location of cloned repo
+#     :return:
+#     """
+#     repo_data = list(repository_data(git_repo, repository, repository_name, repository_dir))
+#
+#     features = []
+#
+#     # Populates features with sub-arrays containing [filename, file_data[], repo_data[]]
+#     for key in averages:
+#         features.append([key, averages[key], repo_data])
+#
+#     # Converts to a numpy array before returning
+#     return np.array(features)
 
 
 def dirty_data(repository, commit_hash):
@@ -51,9 +52,7 @@ def dirty_data(repository, commit_hash):
     :return:
     """
     global repo_id
-    averages = []
-    dirty_filenames = []
-    index = 0
+
     # these commits are known faults so flags will always be 1
     flag = 1
 
@@ -90,9 +89,11 @@ def dirty_data(repository, commit_hash):
         # log_inserts = (
         #     repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
         #     commit_size)
+        
         log_inserts2 = (repo_id, averages[0], flag)
         for item in averages[1:]:
             log_inserts2 += item
+        log_inserts2 += commit_size
 
         cursor.execute(repo_file_sql_update_query, log_inserts2)
         conn.commit()
@@ -123,7 +124,6 @@ def clean_data(repository, commit_hash, black, grey):
     file_holder = []
     # we know these files dont have any faults
     flag = 0
-    index = 0
     check = 0
     dirty_ext = []
 
@@ -176,65 +176,72 @@ def clean_data(repository, commit_hash, black, grey):
 
     # use totals to find averages
     commit_size = commit.size
-    for key in black_list:
-        key_val = black_list[key]
-        tot_ins = key_val['ins_total']
-        tot_del = key_val['del_total']
-        tot_lin = key_val['lin_total']
-        count = key_val['count']
+    averages = get_averages(black_list, commit_hash, repository)
 
-        averages.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
-                         commit_size])
+    # for key in black_list:
+    #     key_val = black_list[key]
+    #     tot_ins = key_val['ins_total']
+    #     tot_del = key_val['del_total']
+    #     tot_lin = key_val['lin_total']
+    #     count = key_val['count']
+    #
+    #     averages.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
+    #                      commit_size])
+    #
+    #     index += 1
+    #
+    # for key in averages:
+    #     clean_filenames.append(key[0])
+    #     filename = key[0]
+    #     total_ins = key[1]
+    #     ins_avg = key[2]
+    #     total_del = key[3]
+    #     del_avg = key[4]
+    #     total_lines = key[5]
+    #     lines_avg = key[6]
+    #     commit_size = key[7]
 
-        index += 1
+    try:
+        conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
+        cursor = conn.cursor()
 
-    for key in averages:
-        # TODO: doesn't make sense to have this, better to do check as implemented as above but then again i could be
-        #  wrong lol
-        clean_filenames.append(key[0])
-        filename = key[0]
-        total_ins = key[1]
-        ins_avg = key[2]
-        total_del = key[3]
-        del_avg = key[4]
-        total_lines = key[5]
-        lines_avg = key[6]
-        commit_size = key[7]
+        # Updates multiple columns of a single row in table
+        repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
+        insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
+         %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-        try:
-            conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
-            cursor = conn.cursor()
+        # log_inserts = (
+        #     repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+        #     commit_size)
+        log_inserts2 = (repo_id, averages[0], flag)
+        for item in averages[1:]:
+            log_inserts2 += item
 
-            # Updates multiple columns of a single row in table
-            repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
-            insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
-             %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        cursor.execute(repo_file_sql_update_query, log_inserts2)
+        conn.commit()
 
-            log_inserts = (
-                repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
-                commit_size)
+        cursor.execute(repo_file_sql_update_query, log_inserts2)
+        conn.commit()
 
-            cursor.execute(repo_file_sql_update_query, log_inserts)
-            conn.commit()
-
-        except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-                print("Something is wrong with your user name or password")
-            elif err.errno == errorcode.ER_BAD_DB_ERROR:
-                print("Database does not exist")
-            else:
-                print(err)
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
         else:
-            conn.close()
-
-    # clean up lists for next commit/ repo
-    averages.clear()
+            print(err)
+    else:
+        conn.close()
 
 
 if __name__ == "__main__":
     try:
         start_time = time.time()
         git = access_github()
+
+        # lists containing the files we know that have faults and those that may or may not have them
+        black = []
+        grey = []
 
         # temp = get_repos()
 
@@ -270,15 +277,11 @@ if __name__ == "__main__":
 
                 if black is not None:
                     black_dict.update(black)
-        #
-        #         # PRINT DEBUGGING
-        #         print('Finished dirty data')
+
+            # once we get the complete black and grey lists we parse them to find the clean data
             for hash_commits in name:
-        #
+                #
                 clean_data(repo, hash_commits, black, grey)
-        #
-        #         # PRINT DEBUGGING
-        #         print('Finished clean data')
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
