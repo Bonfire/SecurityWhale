@@ -189,8 +189,7 @@ def get_averages(omni_list, commit_hash, repo):
                         adder = 1
                         for index, vals in enumerate(path[1:]):
                             phile[index+adder] += path[index+1]
-                            if path[index+1] > 0:
-                                phile[index+adder+1] += 1
+                            phile[index+adder+1] += 1
                             adder += 1
                         check = False
                         break
