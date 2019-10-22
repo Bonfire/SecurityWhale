@@ -180,7 +180,8 @@ def get_averages(omni_list, commit_hash, repo):
     omni_totals = []
 
     for commit in commits:
-        tots = parse_dic(commit.stats.files)
+        # tots = parse_dic(commit.stats.files)
+        tots = omni_list
         for path in tots:
             check = True
             for phile in omni_totals:
