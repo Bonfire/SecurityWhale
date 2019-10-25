@@ -2,18 +2,17 @@ import time
 
 # error exceptions and API/repo access
 import mysql.connector
-import numpy as np
 from mysql.connector import errorcode
 
+from application import access_github
+from application import get_averages
+from application import parse_dic
+from application import repo_get
 from cloner import clone_repo
 from config import database
 from config import host
 from config import password
 from config import user
-from application import access_github
-from application import get_averages
-from application import parse_dic
-from application import repo_get
 
 # increment through database
 # not sure what it actually does
@@ -59,6 +58,7 @@ def dirty_data(repository, commit_hash):
     # get the data on a specific hash from the given repo
     commit = repository.commit(commit_hash)
 
+    print('parsing into black list')
     black_list = parse_dic(commit.stats.files)
 
     if len(black_list) != 1:
@@ -66,17 +66,18 @@ def dirty_data(repository, commit_hash):
 
     # use totals to find averages
     commit_size = commit.size
-
+    print('get averages in dirty data')
     averages = get_averages(black_list, commit_hash, repository)
 
-    # filename = averages[0]
-    # total_ins = averages[1]
-    # ins_avg = averages[2]
-    # total_del = averages[3]
-    # del_avg = averages[4]
-    # total_lines = averages[5]
-    # lines_avg = averages[6]
+    filename = averages[0]
+    total_ins = averages[1]
+    ins_avg = averages[2]
+    total_del = averages[3]
+    del_avg = averages[4]
+    total_lines = averages[5]
+    lines_avg = averages[6]
 
+    print('add to database')
     try:
         conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
         cursor = conn.cursor()
@@ -86,16 +87,16 @@ def dirty_data(repository, commit_hash):
     insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
      %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-        # log_inserts = (
-        #     repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
-        #     commit_size)
+        log_inserts = (
+            repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+            commit_size)
 
-        log_inserts2 = (repo_id, averages[0], flag)
-        for item in averages[1:]:
-            log_inserts2 += item
-        log_inserts2 += commit_size
+        # log_inserts2 = (repo_id, averages[0], flag)
+        # for item in averages[1:]:
+        #     log_inserts2 += item
+        # log_inserts2 += commit_size
 
-        cursor.execute(repo_file_sql_update_query, log_inserts2)
+        cursor.execute(repo_file_sql_update_query, log_inserts)
         conn.commit()
 
     except mysql.connector.Error as err:
@@ -120,9 +121,8 @@ def clean_data(repository, commit_hash, black, grey):
     :param commit_hash:
     :return:
     """
-    # data = repository.iter_commits(commit_hash) This gets all commits up to given hash
+
     file_holder = []
-    # we know these files dont have any faults
     flag = 0
     check = 0
     dirty_ext = []
@@ -131,6 +131,8 @@ def clean_data(repository, commit_hash, black, grey):
     commit_log = repository.iter_commits(commit_hash)
     commit_logx = repository.iter_commits(commit_hash)
     commit_data = repository.commit(commit_hash)
+
+    print('processing path names from black and grey lists')
     black_path = [t[0] for t in black]
     grey_path = [t[0] for t in grey]
 
@@ -142,6 +144,7 @@ def clean_data(repository, commit_hash, black, grey):
 
     # go through commit history up to dirty file commit and store all files with the same extension as the
     # dirty_ext into a list
+    print('processing loop 1')
     for commit in commit_log:
         for path in commit.stats.files:
             if path.split(".")[-1] in dirty_ext:
@@ -151,6 +154,7 @@ def clean_data(repository, commit_hash, black, grey):
 
     # grab the last file in the list and run through the commit log again, once the filenames match parse that
     # commit and store in database
+    print('processing loop 2')
     for commit in commit_logx:
         for path in commit.stats.files:
             # if files match confirm and breka second loop
@@ -159,48 +163,27 @@ def clean_data(repository, commit_hash, black, grey):
                 break
         # check confirmation and grab that files commit object and breka other wise continue first loop 
         if check == 1:
-            # commit_file = commit.stats.files
-            # TODO: check if this code checks duplicates we dont want the same bad file to be marked as good 
-            '''for path in commit_file:
-                if path in dirty_filenames:
-                    break
-                else:
-                    continue
-            '''
+            new_commit = commit.stats.files
             break
         else:
             continue
 
     # Parse all the information form the Good data and store in database
-    parse_dic(commit.stats.files)
-
+    white_list = parse_dic(new_commit.stats.files)
     # use totals to find averages
     commit_size = commit.size
-    averages = get_averages(black_list, commit_hash, repository)
+    print('get averages clean data')
+    averages = get_averages(white_list, commit_hash, repository)
 
-    # for key in black_list:
-    #     key_val = black_list[key]
-    #     tot_ins = key_val['ins_total']
-    #     tot_del = key_val['del_total']
-    #     tot_lin = key_val['lin_total']
-    #     count = key_val['count']
-    #
-    #     averages.append([key, tot_ins, tot_ins / count, tot_del, tot_del / count, tot_lin, tot_lin / count,
-    #                      commit_size])
-    #
-    #     index += 1
-    #
-    # for key in averages:
-    #     clean_filenames.append(key[0])
-    #     filename = key[0]
-    #     total_ins = key[1]
-    #     ins_avg = key[2]
-    #     total_del = key[3]
-    #     del_avg = key[4]
-    #     total_lines = key[5]
-    #     lines_avg = key[6]
-    #     commit_size = key[7]
+    filename = averages[0]
+    total_ins = averages[1]
+    ins_avg = averages[2]
+    total_del = averages[3]
+    del_avg = averages[4]
+    total_lines = averages[5]
+    lines_avg = averages[6]
 
+    print('add clean data to database')
     try:
         conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
         cursor = conn.cursor()
@@ -210,17 +193,14 @@ def clean_data(repository, commit_hash, black, grey):
         insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
          %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
-        # log_inserts = (
-        #     repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
-        #     commit_size)
-        log_inserts2 = (repo_id, averages[0], flag)
-        for item in averages[1:]:
-            log_inserts2 += item
+        log_inserts = (
+            repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+            commit_size)
+        # log_inserts2 = (repo_id, averages[0], flag)
+        # for item in averages[1:]:
+        #     log_inserts2 += item
 
-        cursor.execute(repo_file_sql_update_query, log_inserts2)
-        conn.commit()
-
-        cursor.execute(repo_file_sql_update_query, log_inserts2)
+        cursor.execute(repo_file_sql_update_query, log_inserts)
         conn.commit()
 
     except mysql.connector.Error as err:
@@ -256,7 +236,7 @@ if __name__ == "__main__":
         # ['NixOS/nixpkgs', '6c59d851e2967410cc8fb6ba3f374b1d3efa988e']]
 
         for name in temp:
-            repo_dir = clone_repo(name)
+            repo_dir = clone_repo(name[0])
             repo, _ = repo_get(name[0], git, repo_dir)
 
             # remove repo name from list so we only have the commit hashes to look at
@@ -269,19 +249,22 @@ if __name__ == "__main__":
             black_dict = {}
 
             for hash_commits in name:
-
+                print('processing dirty data')
                 grey, black = dirty_data(repo, hash_commits)
+                print('finished dirty data')
 
                 if grey is not None:
                     grey_dict.update(grey)
 
                 if black is not None:
                     black_dict.update(black)
+            print('finished updating black and grey lists')
 
             # once we get the complete black and grey lists we parse them to find the clean data
             for hash_commits in name:
-                #
+                print('processing clean data')
                 clean_data(repo, hash_commits, black, grey)
+                print('finished clean data')
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
     except Exception as e:
