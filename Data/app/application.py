@@ -184,11 +184,11 @@ def parse_dic(dic):
     return totals
 
 
-def get_averages(omni_list, commit_hash, repo):
+def get_averages(file_list, commit_hash, repo):
     """
     Creates a list containing the averages of all the commit history data
 
-    :param omni_list: a lst containing both dirty and grey files
+    :param file_list: a lst containing both dirty and grey files
     :param commit_hash: the hash of a given commit
     :param repo: the repository object
     :return: the filename, total inserts, insert averages, total deletions, deletion averages, total line changed,
@@ -198,7 +198,7 @@ def get_averages(omni_list, commit_hash, repo):
     omni_totals = []
 
     # list comprehension to get the filename in a list
-    file_names = [t[0] for t in omni_list]
+    file_names = [t[0] for t in file_list]
 
     """
     DONT TOUCH ANYTHING IN THE CODE BELOW
