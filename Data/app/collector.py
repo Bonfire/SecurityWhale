@@ -13,6 +13,7 @@ from config import database
 from config import host
 from config import password
 from config import user
+from parse import get_repos
 
 import shutil
 import os
@@ -65,16 +66,19 @@ def dirty_data(repository, commit_hash):
 
     print('parsing into black list')
     black_list = list(commit.stats.files.keys())
-
+    print(black_list)
     if len(black_list) != 1:
+        print("Current file_list has " + str(len(black_list)) + " files.")
         return black_list, None
+    
     
     
     # use totals to find averages
     commit_size = commit.size
-    print('get averages in dirty data')
-    averages = get_averages(black_list, commit_hash, repository)
-
+    print('get averages for ' + black_list[0])
+    # averages = get_averages(black_list, commit_hash, repository)
+    print("getting averages")
+    ''' 
     filename = averages[0]
     total_ins = averages[1]
     ins_avg = averages[2]
@@ -114,7 +118,7 @@ def dirty_data(repository, commit_hash):
             print(err)
     else:
         conn.close()
-
+    '''
     return None, black_list
 
 
@@ -134,30 +138,29 @@ def clean_data(repository, commit_hash, black, grey):
     dirty_ext = []
 
     # since iter_commits does no reset the list each time its used in a loop we need 2 variable  one for each for loop
-    commit_log = repository.iter_commits(commit_hash)
-    commit_logx = repository.iter_commits(commit_hash)
-    commit_data = repository.commit(commit_hash)
-
-    print('processing path names from black and grey lists')
-    black_path = [t[0] for t in black]
-    grey_path = [t[0] for t in grey]
-
+    commits = list(repository.iter_commits(commit_hash))
+     
     # grab the extension of the dirty file
-    for path in black_path:
+    for path in black:
         dirty_ext.append(path.split(".")[-1])
 
-    dup_path = black_path + grey_path
+    dup_path = list(set(black + grey))
 
+    
     # go through commit history up to dirty file commit and store all files with the same extension as the
     # dirty_ext into a list
-    print('processing loop 1')
-    for commit in commit_log:
+    print('processing clean files')
+    for commit in commits:
         for path in commit.stats.files:
             if path.split(".")[-1] in dirty_ext:
                 if path not in dup_path:
-                    file_holder.append(path)
+                    file_holder += get_averages(path, commit_hash,repository)
                     dirty_ext.remove(path.split(".")[-1])
+                    if len(dirty_ext) == 0:
+                        return file_holder
 
+
+    ''' 
     # grab the last file in the list and run through the commit log again, once the filenames match parse that
     # commit and store in database
     print('processing loop 2')
@@ -218,6 +221,7 @@ def clean_data(repository, commit_hash, black, grey):
             print(err)
     else:
         conn.close()
+    '''
 
 
 if __name__ == "__main__":
@@ -229,10 +233,19 @@ if __name__ == "__main__":
         # temp = get_repos()
 
         # THIS IS FOR TESTING ONLY AS TO NOT CLONE A BILLION FILES CONSTANTLY
-        # [['bbengfort/confire', '8cc86a5ec2327e070f1d576d61bbaadf861597ea']]
-        #temp = [['jcupitt/libvips','20d840e6da15c1574b3ed998bc92f91d1e36c2a5']]
-        temp = [['bratsche/pango', '4de30e5500eaeb49f4bf0b7a07f718e149a2ed5e']]
-        # ['pornel/pngquant', 'b7c217680cda02dddced245d237ebe8c383be285'],
+        #[['bbengfort/confire','8cc86a5ec2327e070f1d576d61bbaadf861597ea'],
+        #['jcupitt/libvips','20d840e6da15c1574b3ed998bc92f91d1e36c2a5'],
+        #['bratsche/pango', '4de30e5500eaeb49f4bf0b7a07f718e149a2ed5e'],
+        #temp = [['pornel/pngquant', 'b7c217680cda02dddced245d237ebe8c383be285']]
+        #['bestpractical/rt', '057552287159e801535e59b8fbd5bd98d1322069',
+        #'2338cd19ed7a7f4c1e94f639ab2789d6586d01f3']
+        temp = [['Telaxus/EPESI', 'dda3e5f3843e80fe9ed36115f4fe72c06a3a41bc',
+        '36be628c2597fd0209224a09b17858294f49c585',
+        '3cd666558c89d9c4b27eb74bf6b8e81b4f6e7118',
+        '48fb5e81cd7a47d98bade092a5a72d8177621dbd',
+        '48fb5e81cd7a47d98bade092a5a72d8177621dbd',
+        '48fb5e81cd7a47d98bade092a5a72d8177621dbd']]
+        
         # ['hapijs/hapi', 'aab2496e930dce5ee1ab28eecec94e0e45f03580'],
         # ['SickRage/SickRage', '8156a74a68aea930d1e1047baba8b115c3abfc44'],
         # ['reubenhwk/radvd', '92e22ca23e52066da2258df8c76a2dca8a428bcc'],
@@ -240,19 +253,24 @@ if __name__ == "__main__":
 
         for name in temp:
             
+
             # Pop the first item on the list to leave only hashes
             github_name = name.pop(0)
+            print("Starting process for " + github_name)
+#            if os.path.exists(os.path.basename(github_name)):
+#                shutil.rmtree(os.path.basename(github_name))
 
             # Clones repo to current directory and gets the github data
-            repo_dir = clone_repo(github_name)
-            #    repo, _ = repo_get(github_name, git, repo_dir)
+            #repo_dir = clone_repo(github_name)
+            #repo, _ = repo_get(github_name, git, repo_dir)
     
             # Curtis testing 
-            repo = Repo(repo_dir)
+            #repo = Repo(repo_dir)
+            repo = Repo("./EPESI")
 
             
             # PRINT DEBUGGING
-            print('Finished storing repo data')
+            print('Finished storing repo data\n')
 
             # lists containing the files we know that have faults and those that may or may not have them
             black_files = []
@@ -262,6 +280,7 @@ if __name__ == "__main__":
                 print('processing dirty data')
                 grey, black = dirty_data(repo, hash_commits)
                 print('finished dirty data')
+                print()
 
                 if grey is not None:
                     grey_files += grey
@@ -269,16 +288,27 @@ if __name__ == "__main__":
                 if black is not None:
                     black_files += black
 
+            grey_files = list(set(grey_files))
+            black_files = list(set(black_files))
+            print()
+            print(grey_files)
+            print(black_files)
+
             print('finished updating black and grey lists')
-            '''
+            clean_files = []     
             # once we get the complete black and grey lists we parse them to find the clean data
-            for hash_commits in name:
-                print('processing clean data')
-                clean_data(repo, hash_commits, black, grey)
-                print('finished clean data')
-            '''
+            if len(black_files) != 0:
+                for hash_commits in name:
+                    print('processing clean data')
+                    clean_files += clean_data(repo, hash_commits, black_files, grey_files)
+                    if len(clean_files) == len(black_files):
+                        break
+                    print('finished clean data')
+                    print()
+            
             # Removes the cloned repo from current directory
-            shutil.rmtree(repo_dir)
+#shutil.rmtree(repo_dir)
+            print()
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
             
