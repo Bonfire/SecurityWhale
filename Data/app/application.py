@@ -195,25 +195,26 @@ def get_averages(file_list, commit_hash, repo):
             lines changed averages
     """
     commits = repo.iter_commits(commit_hash)
-    omni_totals = []
+    file_totals = []
 
-    # list comprehension to get the filename in a list
-    file_names = [t[0] for t in file_list]
 
     """
     DONT TOUCH ANYTHING IN THE CODE BELOW
     
     for each commit in the commit history we look at its filenames and for each of those filenames we check to see
     if that filename is in the list [filenames] we mark our flag [check] as true which means the file does
-    exist in [omni_totals] therefor we create and update its values else if the file is not in [omni_totals] we
-    **DO SOMETHING I FORGET ASK CURTIS** and then we updated [omni_totals] with the averages of each file.  
+    exist in [file_totals] therefor we create and update its values else if the file is not in [file_totals] we
+    **DO SOMETHING I FORGET ASK CURTIS** and then we updated [file_totals] with the averages of each file.  
     """
+    count = 1
+
     for commit in commits:
-        tots = parse_dic(commit.stats.files)
-        for path in tots:
-            if path[0] in file_names:
+        commit_files = parse_dic(commit.stats.files)
+        
+        for path in commit_files:
+            if path[0] in file_list:
                 check = True
-                for phile in omni_totals:
+                for phile in file_totals:
                     adder = 1
                     for index, vals in enumerate(path[1:]):
                         phile[index + adder] += path[index + 1]
@@ -222,10 +223,8 @@ def get_averages(file_list, commit_hash, repo):
                     check = False
                     break
                 if check:
-                    # i believe this will solve the same problem but in one line
-                    file_info = [path[0]]
-                    # file_info = []
-                    # file_info.append(path[0])
+                    file_info = []
+                    file_info.append(path[0])
                     for vals in path[1:]:
                         file_info.append(vals)
                         if vals > 0:
@@ -233,13 +232,14 @@ def get_averages(file_list, commit_hash, repo):
                         else:
                             file_info.append(0)
 
-                    omni_totals.append(file_info)
-
-    for phile_info in omni_totals:
+                    file_totals.append(file_info)
+                    
+        
+    for phile_info in file_totals:
         for index, update in enumerate(phile_info[1:]):
             if index % 2 == 0:
                 val = phile_info[index + 1]
             else:
                 phile_info[index + 1] = val / phile_info[index + 1]
-
-    return omni_totals
+         
+    return file_totals
