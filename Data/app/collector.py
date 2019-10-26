@@ -14,6 +14,10 @@ from config import host
 from config import password
 from config import user
 
+import shutil
+import os
+from git import Repo
+
 # increment through database
 # not sure what it actually does
 repo_id = 1
@@ -44,6 +48,7 @@ repo_id = 1
 def dirty_data(repository, commit_hash):
     """
     Dirty Data takes a given commit_hash and parses information from it which is then stored in the database
+
     it also stores the filename in a list that is stored globally
 
     :param repository: full repository object
@@ -236,36 +241,50 @@ if __name__ == "__main__":
         # ['NixOS/nixpkgs', '6c59d851e2967410cc8fb6ba3f374b1d3efa988e']]
 
         for name in temp:
-            repo_dir = clone_repo(name[0])
-            repo, _ = repo_get(name[0], git, repo_dir)
+            
+            # Pop the first item on the list to leave only hashes
+            github_name = name.pop(0)
 
-            # remove repo name from list so we only have the commit hashes to look at
-            name.remove(name[0])
+            # Clones repo to current directory and gets the github data
+            repo_dir = clone_repo(github_name)
+            #    repo, _ = repo_get(github_name, git, repo_dir)
+    
+            # Curtis testing 
+            repo = Repo(repo_dir)
 
+            
             # PRINT DEBUGGING
             print('Finished storing repo data')
 
             grey_dict = {}
             black_dict = {}
-
+            
             for hash_commits in name:
                 print('processing dirty data')
                 grey, black = dirty_data(repo, hash_commits)
                 print('finished dirty data')
 
+                print(grey)
+
+                
                 if grey is not None:
                     grey_dict.update(grey)
 
                 if black is not None:
                     black_dict.update(black)
             print('finished updating black and grey lists')
-
+           
             # once we get the complete black and grey lists we parse them to find the clean data
             for hash_commits in name:
                 print('processing clean data')
                 clean_data(repo, hash_commits, black, grey)
                 print('finished clean data')
 
+            # Removes the cloned repo from current directory
+            shutil.rmtree(repo_dir)
+
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
+            
+
     except Exception as e:
         print("Could not check if repo existed", e)
