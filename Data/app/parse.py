@@ -14,7 +14,7 @@ def get_repos():
     commits = []
     repos = []
     commit_hash = []
-    with open("../docs/allitems.csv", newline="", encoding="utf8") as f:
+    with open("../source/allitems.csv", newline="", encoding="utf8") as f:
         reader = csv.DictReader(f)
         headers = reader.fieldnames
 
