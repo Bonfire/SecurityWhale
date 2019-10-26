@@ -64,11 +64,12 @@ def dirty_data(repository, commit_hash):
     commit = repository.commit(commit_hash)
 
     print('parsing into black list')
-    black_list = parse_dic(commit.stats.files)
+    black_list = list(commit.stats.files.keys())
 
     if len(black_list) != 1:
         return black_list, None
-
+    
+    
     # use totals to find averages
     commit_size = commit.size
     print('get averages in dirty data')
@@ -224,16 +225,13 @@ if __name__ == "__main__":
         start_time = time.time()
         git = access_github()
 
-        # lists containing the files we know that have faults and those that may or may not have them
-        black = []
-        grey = []
 
         # temp = get_repos()
 
         # THIS IS FOR TESTING ONLY AS TO NOT CLONE A BILLION FILES CONSTANTLY
-        temp = [['bbengfort/confire', '8cc86a5ec2327e070f1d576d61bbaadf861597ea']]
-        # ['jcupitt/libvips', '20d840e6da15c1574b3ed998bc92f91d1e36c2a5'],
-        # ['bratsche/pango', '4de30e5500eaeb49f4bf0b7a07f718e149a2ed5e'],
+        # [['bbengfort/confire', '8cc86a5ec2327e070f1d576d61bbaadf861597ea']]
+        #temp = [['jcupitt/libvips','20d840e6da15c1574b3ed998bc92f91d1e36c2a5']]
+        temp = [['bratsche/pango', '4de30e5500eaeb49f4bf0b7a07f718e149a2ed5e']]
         # ['pornel/pngquant', 'b7c217680cda02dddced245d237ebe8c383be285'],
         # ['hapijs/hapi', 'aab2496e930dce5ee1ab28eecec94e0e45f03580'],
         # ['SickRage/SickRage', '8156a74a68aea930d1e1047baba8b115c3abfc44'],
@@ -256,30 +254,29 @@ if __name__ == "__main__":
             # PRINT DEBUGGING
             print('Finished storing repo data')
 
-            grey_dict = {}
-            black_dict = {}
+            # lists containing the files we know that have faults and those that may or may not have them
+            black_files = []
+            grey_files = []
             
             for hash_commits in name:
                 print('processing dirty data')
                 grey, black = dirty_data(repo, hash_commits)
                 print('finished dirty data')
 
-                print(grey)
-
-                
                 if grey is not None:
-                    grey_dict.update(grey)
+                    grey_files += grey
 
                 if black is not None:
-                    black_dict.update(black)
+                    black_files += black
+
             print('finished updating black and grey lists')
-           
+            '''
             # once we get the complete black and grey lists we parse them to find the clean data
             for hash_commits in name:
                 print('processing clean data')
                 clean_data(repo, hash_commits, black, grey)
                 print('finished clean data')
-
+            '''
             # Removes the cloned repo from current directory
             shutil.rmtree(repo_dir)
 
