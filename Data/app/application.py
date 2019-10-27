@@ -101,13 +101,14 @@ def file_data(data):
 
 def make_query(table_name, cursor):
     
+    
+    execute = "SELECT * FROM " + table_name +" LIMIT 0"
+    cursor.execute(execute)
+    fields = [field[0] for field in cursor.description][1:]
+
     if table_name == "repo":
-        cursor.execute("SELECT * FROM repo LIMIT 0")
-        fields = [field[0] for field in cursor.description][1:]
         query = "INSERT INTO repo ("
     else:
-        cursor.execute("SELECT * FROM file LIMIT 0")
-        fields = [field[0] for field in cursor.description]
         query = "INSERT INTO file ("
 
     for field in fields:
@@ -154,9 +155,8 @@ def get_averages(file_list, commit_hash, repo):
     :return: the filename, total inserts, insert averages, total deletions, deletion averages, total line changed,
             lines changed averages
     """
-    commits = list(repo.iter_commits(commit_hash))
+    commits = repo.iter_commits(commit_hash)
     file_totals = []
-
 
     """
     DONT TOUCH ANYTHING IN THE CODE BELOW
@@ -168,13 +168,11 @@ def get_averages(file_list, commit_hash, repo):
     """
     count = 1
 
-    for commit in commits[0:50]:
+    for commit in commits:
         commit_files = parse_dic(commit.stats.files)
         
         for path in commit_files:
             if path[0] in file_list:
-                print(file_totals)
-                print(path) 
                 check = True
                 for phile in file_totals:
                     adder = 1
@@ -220,15 +218,13 @@ def update_db(update_files, github_name, repo_dir, repo):
         cursor = conn.cursor(buffered=True)
         
         query = make_query("repo", cursor)
-        #cursor.execute(query, repo_data)
+        cursor.execute(query, repo_data)
+        repo_id = cursor.lastrowid
 
         query = make_query("file", cursor)
-        print(query)
-    
-        for update_file in update_files:
-            print(file_data([cursor.lastrowid] + update_file))
-
-        
+        for update in update_files:
+            file_update = file_data([repo_id] + update)
+            cursor.execute(query, file_update)
 
         conn.commit()
         conn.close()
