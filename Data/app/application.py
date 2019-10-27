@@ -16,41 +16,7 @@ def access_github():
     Gain access to Github API and allow for the gathering of repositories data
     :return: access to the github api using access token
     """
-
     return Github(git_access)
-
-def get_last_id():
-    conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
-    cursor = conn.cursor()
-    query = "SELECT * FROM api.repo ORDER BY ID DESC LIMIT 1"
-    cursor.execute(query)
-    return cursor.fetchone()
-
-
-def repo_get(name, git, repo_dir, db_sig=True):
-    """
-    Get the repository objects and collect data.
-
-    :param name: Name of Repository
-    :param git: access token
-    :param repo_dir: directory of cloned repository
-    :param db_sig: if signal true collect data and store in database
-    :return: repository object and repository data
-    """
-    # grabs repo object for repo table data (collecting)
-    github_repo = git.get_repo(name, lazy=False)
-    # grabs repo object for repo file table data (parsing and collecting)
-    repo = Repo(str(repo_dir))
-
-    # make sure repo is accessible
-    if not repo.bare:
-        repo_data = repository_data(github_repo, repo, name, repo_dir)
-        # if the signal passed by application indicates user wants to add his data to our database we add it
-        if db_sig:
-            repo_database(repo_data)
-
-    return repo, repo_data
-
 
 def repository_data(git_repo, repository, repository_name, repository_dir):
     """
@@ -129,44 +95,32 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
 
     return repo_data
 
+def file_data(data):
+    return tuple(data)
 
-def repo_database(repository_data_points):
-    """
-    Connects to the SQL database and executes commands to insert to insert queries and data points into database
 
-    :param repository_data_points: tuple containing data points from repository data function
-    :return:
-    """
-
-    repo_id = 1
-
-    try:
-        conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
-        cursor = conn.cursor()
-
-        # this is for repo data database setup
-        repo_sql_insert_query = """INSERT INTO repo (repo_name, assignees,
-        size, commits, events, forks, branches, contributors, labels, language_count,
-        language_size, milestones, issues, refs, stargazers, subscribers, watchers, network, open_issues,
-        pulls, num_files, commit_size, commit_count, insertions, deletions,
-        lines_changed) VALUES (%s, %s, %s, %s, %s,
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-
-        repo_insert_tuple = repository_data_points
-
-        cursor.execute(repo_sql_insert_query, repo_insert_tuple)
-        repo_id = cursor.lastrowid
-        conn.commit()
-
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
+def make_query(table_name, cursor):
+    
+    if table_name == "repo":
+        cursor.execute("SELECT * FROM repo LIMIT 0")
+        fields = [field[0] for field in cursor.description][1:]
+        query = "INSERT INTO repo ("
     else:
-        conn.close()
+        cursor.execute("SELECT * FROM file LIMIT 0")
+        fields = [field[0] for field in cursor.description]
+        query = "INSERT INTO file ("
+
+    for field in fields:
+        query += field + ", "
+
+    query = query[:-2] + ") VALUES ("
+
+    for field in fields:
+        query += "%s, "
+
+    query = query[:-2] + ")"
+    
+    return query
 
 
 def parse_dic(dic):
@@ -200,7 +154,7 @@ def get_averages(file_list, commit_hash, repo):
     :return: the filename, total inserts, insert averages, total deletions, deletion averages, total line changed,
             lines changed averages
     """
-    commits = repo.iter_commits(commit_hash)
+    commits = list(repo.iter_commits(commit_hash))
     file_totals = []
 
 
@@ -214,7 +168,7 @@ def get_averages(file_list, commit_hash, repo):
     """
     count = 1
 
-    for commit in commits:
+    for commit in commits[0:50]:
         commit_files = parse_dic(commit.stats.files)
         
         for path in commit_files:
@@ -252,37 +206,32 @@ def get_averages(file_list, commit_hash, repo):
          
     return file_totals
 
-def update_db(update_files, repo_idi, repo):
+def update_db(update_files, github_name, repo_dir, repo):
+    
+    git = access_github()
 
-    filename = averages[0]
-    total_ins = averages[1]
-    ins_avg = averages[2]
-    total_del = averages[3]
-    del_avg = averages[4]
-    total_lines = averages[5]
-    lines_avg = averages[6]
+    # grabs repo object for repo table data (collecting)
+    github_repo = git.get_repo(github_name, lazy=False)
+    
+    repo_data = repository_data(github_repo, repo, github_name, repo_dir)
 
     try:
         conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
-        cursor = conn.cursor()
+        cursor = conn.cursor(buffered=True)
+        
+        query = make_query("repo", cursor)
+        #cursor.execute(query, repo_data)
 
-        # Updates multiple columns of a single row in table
-        repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
-    insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
-     %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        query = make_query("file", cursor)
+        print(query)
+    
+        for update_file in update_files:
+            print(file_data([cursor.lastrowid] + update_file))
 
-        log_inserts = (
-            repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
-            commit_size)
+        
 
-        # log_inserts2 = (repo_id, averages[0], flag)
-        # for item in averages[1:]:
-        #     log_inserts2 += item
-        # log_inserts2 += commit_size
-
-        cursor.execute(repo_file_sql_update_query, log_inserts)
         conn.commit()
-
+        conn.close()
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Something is wrong with your user name or password")
@@ -290,7 +239,4 @@ def update_db(update_files, repo_idi, repo):
             print("Database does not exist")
         else:
             print(err)
-    else:
-        conn.close()
-    
-    
+
