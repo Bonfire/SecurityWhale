@@ -44,7 +44,6 @@ def dirty_data(repository, commit_hash):
     # get the data on a specific hash from the given repo
     commit = repository.commit(commit_hash)
 
-# print('parsing into black list')
     black_list = list(commit.stats.files.keys())
     if len(black_list) != 1:
         print("Current file_list has " + str(len(black_list)) + " files.")
@@ -52,9 +51,7 @@ def dirty_data(repository, commit_hash):
     
     # use totals to find averages
     commit_size = commit.size
-#   print('get averages for ' + black_list[0])
-    #averages = get_averages(black_list, commit_hash, repository)
-    averages = []
+    averages = get_averages(black_list, commit_hash, repository)
 
     for fault_file in averages:
         fault_file.insert(1, 1)
@@ -91,7 +88,7 @@ def clean_data(repository, commit_hash, black, grey):
         for path in commit.stats.files:
             if path.split(".")[-1] in dirty_ext:
                 if path not in dup_path:
-                    clean_file = get_averages([path],commit_hash,repository)[0]
+                    clean_file = get_averages([path],commit,repository)[0]
                     clean_file.insert(1, 0)
                     clean_file.insert(1, commit_hash)
                     clean_file += [commit.size]
@@ -103,84 +100,15 @@ def clean_data(repository, commit_hash, black, grey):
 
 
 if __name__ == "__main__":
-    
-    
-#with open("./valid.repo.data", "rb") as f:
-#        temp2 = pickle.load(f)
-
-#    i = 40
-#    for t in temp2[-i:]:
-#        print(t[0])
-
-#    a, b = temp2[-i:][0].index(temp2[-i:][0][1]), temp2[-i:][0].index(temp2[-i:][0][0])
-    
-    #temp2[-i:][0][b], temp2[-i:][0][a] = temp2[-i:][0][a], temp2[-i:][0][b]
-
-#    with open("./valid.repo.data", "wb") as f:
-#        pickle.dump(temp2, f)
-
     try:
         start_time = time.time()
         
+        with open("./valid.repo.data", "rb") as f:
+            temp = pickle.load(f)
 
-        if not os.path.isfile("./repo.data"):
-            temp = get_repos()
-            with open("./repo.data", "wb") as f:
-                pickle.dump(temp, f)
-        else:
-            with open("./repo.data", "rb") as f:
-                temp = pickle.load(f)
+            i = 10
         
-        print(len(temp))
-        valid = []
-        #temp = temp[1:]
-        i = 5 
         for name in temp[:i]:
-            if name[0] == "microweber/microweber":
-                name.remove("9177d134960c24cb642d5cf3b42a1fba286219cc")
-
-            print(name)
-            valid.append([name[0]]+list(set(name[1:])))
-            github_name = name[0]
-            if os.path.exists(os.path.basename(github_name)):
-                shutil.rmtree(os.path.basename(github_name))
-            
-            repo_dir = clone_repo(github_name)
-            repo = Repo(repo_dir)
-            
-            black_list = []
-            add = False
-                
-            for hash_commits in name[1:]:
-                grey, black, update = dirty_data(repo, hash_commits)
-                black_list.append(black)
-                    
-            for b in black_list:
-                if b is not None:
-                    print(name[0] + " is valid")
-                    add = True
-
-            if add == False:
-                valid = valid[:-1]
-            shutil.rmtree(repo_dir)
-
-        with open("./repo.data", "wb") as f:
-            pickle.dump(temp[i:], f)
-        print(valid)
-        
-        if not os.path.isfile("./valid.repo.data"):
-            with open("./valid.repo.data", "wb") as f:
-                pickle.dump(valid, f)
-        else:
-            with open("./valid.repo.data", "rb") as f:
-                temp = pickle.load(f)
-            valid = temp + valid
-            print(len(valid))
-            with open("./valid.repo.data", "wb") as f:
-                pickle.dump(valid, f)
-
-        '''
-        for name in temp:
 
             # Pop the first item on the list to leave only hashes
             github_name = name.pop(0)
@@ -211,8 +139,6 @@ if __name__ == "__main__":
                     black_files += black
                     db_update += update
 
-            grey_files = list(set(grey_files))
-            black_files = list(set(black_files))
 
             print('finished updating black and grey lists')
             # once we get the complete black and grey lists we parse them to find the clean data
@@ -223,9 +149,8 @@ if __name__ == "__main__":
                     db_update += clean_files
                     if len(clean_files) == len(black_files):
                         break
-                    print('finished clean data')
+                        print('finished clean data')
             
-        
             if len(db_update) > 0:
                 print("Updating db")
                 update_db(db_update, github_name, repo_dir, repo) 
@@ -236,12 +161,12 @@ if __name__ == "__main__":
             
             # Removes the cloned repo from current directory
             shutil.rmtree(repo_dir)
-        '''
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
         print()
             
+        with open("./valid.repo.data", "wb") as f:
+            pickle.dump(temp[i:],f)
 
     except Exception as e:
         print(e)
-        pass
