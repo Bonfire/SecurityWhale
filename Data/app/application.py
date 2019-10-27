@@ -11,9 +11,6 @@ from config import host
 from config import password
 from config import user
 
-repo_id = 1
-
-
 def access_github():
     """
     Gain access to Github API and allow for the gathering of repositories data
@@ -21,6 +18,13 @@ def access_github():
     """
 
     return Github(git_access)
+
+def get_last_id():
+    conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
+    cursor = conn.cursor()
+    query = "SELECT * FROM api.repo ORDER BY ID DESC LIMIT 1"
+    cursor.execute(query)
+    return cursor.fetchone()
 
 
 def repo_get(name, git, repo_dir, db_sig=True):
@@ -120,7 +124,8 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
     repo_data = (repository_name, assignees, size, commits, events, forks, branches, contributors,
                  labels, language_count, language_size, milestone, issues, refs, stargazer, subscribers, watchers,
                  network_count, count_open_issues, pulls, number_of_files_in_project, commit_size_sum,
-                 commit_files_count, commit_insertion_count, commit_deletion_count, commit_lines_changed_count)
+                 commit_files_count, commit_insertion_count,
+                 commit_deletion_count, commit_lines_changed_count)
 
     return repo_data
 
@@ -133,7 +138,7 @@ def repo_database(repository_data_points):
     :return:
     """
 
-    global repo_id
+    repo_id = 1
 
     try:
         conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
@@ -143,7 +148,8 @@ def repo_database(repository_data_points):
         repo_sql_insert_query = """INSERT INTO repo (repo_name, assignees,
         size, commits, events, forks, branches, contributors, labels, language_count,
         language_size, milestones, issues, refs, stargazers, subscribers, watchers, network, open_issues,
-        pulls, num_files, commit_size, commit_count, insertions, deletions, lines_changed) VALUES (%s, %s, %s, %s, %s,
+        pulls, num_files, commit_size, commit_count, insertions, deletions,
+        lines_changed) VALUES (%s, %s, %s, %s, %s,
         %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
 
         repo_insert_tuple = repository_data_points
@@ -213,6 +219,8 @@ def get_averages(file_list, commit_hash, repo):
         
         for path in commit_files:
             if path[0] in file_list:
+                print(file_totals)
+                print(path) 
                 check = True
                 for phile in file_totals:
                     adder = 1
@@ -243,3 +251,46 @@ def get_averages(file_list, commit_hash, repo):
                 phile_info[index + 1] = val / phile_info[index + 1]
          
     return file_totals
+
+def update_db(update_files, repo_idi, repo):
+
+    filename = averages[0]
+    total_ins = averages[1]
+    ins_avg = averages[2]
+    total_del = averages[3]
+    del_avg = averages[4]
+    total_lines = averages[5]
+    lines_avg = averages[6]
+
+    try:
+        conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
+        cursor = conn.cursor()
+
+        # Updates multiple columns of a single row in table
+        repo_file_sql_update_query = """INSERT INTO file (repoID, filename, has_fault,total_inserts,
+    insert_averages, total_deletions, deletion_averages, total_lines, line_averages, commit_size) VALUES (%s,
+     %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+
+        log_inserts = (
+            repo_id, filename, flag, total_ins, ins_avg, total_del, del_avg, total_lines, lines_avg,
+            commit_size)
+
+        # log_inserts2 = (repo_id, averages[0], flag)
+        # for item in averages[1:]:
+        #     log_inserts2 += item
+        # log_inserts2 += commit_size
+
+        cursor.execute(repo_file_sql_update_query, log_inserts)
+        conn.commit()
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+    else:
+        conn.close()
+    
+    
