@@ -223,10 +223,12 @@ def update_db(update_files, github_name, repo_dir, repo):
 
         query = make_query("file", cursor)
         for update in update_files:
+            print("Adding " + update[0] + " to database.")
             file_update = file_data([repo_id] + update)
             cursor.execute(query, file_update)
 
         conn.commit()
+        cursor.close()
         conn.close()
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
