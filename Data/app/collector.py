@@ -90,7 +90,7 @@ def clean_data(repository, commit_hash, black, grey):
                 if path not in dup_path:
                     clean_file = get_averages([path],commit,repository)[0]
                     clean_file.insert(1, 0)
-                    clean_file.insert(1, commit_hash)
+                    clean_file.insert(1, commit)
                     clean_file += [commit.size]
                     clean_files.append(clean_file)
 
@@ -105,11 +105,8 @@ if __name__ == "__main__":
         
         with open("./valid.repo.data", "rb") as f:
             temp = pickle.load(f)
-
-            i = 10
-        
-        for name in temp[:i]:
-
+           
+        for index, name in enumerate(temp[:5]):
             # Pop the first item on the list to leave only hashes
             github_name = name.pop(0)
             print("Starting process for " + github_name)
@@ -162,11 +159,14 @@ if __name__ == "__main__":
             # Removes the cloned repo from current directory
             shutil.rmtree(repo_dir)
 
+            print(temp[index+1][0])
+            with open("./valid.repo.data", "wb") as f:
+                pickle.dump(temp[index+1:],f)
+
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
         print()
             
-        with open("./valid.repo.data", "wb") as f:
-            pickle.dump(temp[i:],f)
 
+        
     except Exception as e:
         print(e)
