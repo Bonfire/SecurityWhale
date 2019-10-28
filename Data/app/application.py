@@ -71,7 +71,7 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
     number_of_files_in_project = len(files)
 
     # parses all commits in commit log for repository
-    commit_list = list(repository.iter_commits('master'))[:]
+    commit_list = list(repository.iter_commits())[:]
     for commit in commit_list:
         commit_size_sum += commit.size
         # get data points from stats, since it's stored in a dictionary we had to use a nested for loop to gather it
@@ -200,7 +200,8 @@ def get_averages(file_list, commit_hash, repo):
             if index % 2 == 0:
                 val = phile_info[index + 1]
             else:
-                phile_info[index + 1] = val / phile_info[index + 1]
+                if phile_info[index+1] != 0:
+                    phile_info[index + 1] = val / phile_info[index + 1]
          
     return file_totals
 
