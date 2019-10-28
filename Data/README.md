@@ -17,19 +17,6 @@ This program involves two different data points that are broken up into two main
 
 The second data type is the file data, This focuses on meta data we can pull from the individual files in a github repository. Using githubs commit log history we were able to gather information such as lines edited as well as line count and the file size.
 
-## How to Use
-
-In order to run this program you will need access to the internet, Python 3+, git access token, and a MySQL database setup to hold the given data with that information stored in th econfig file
-
-**Training**
-
-In order for us to gather data for the training we had to have access to githubs API but also local copies of the repositories we wanted to train on. Once you have both those stored you can run the program
-
-
-### Testing
-
-N/A
-
 
 ## Resources
 
