@@ -1,6 +1,6 @@
 import sys
 from github import Github
-import worker.py
+import application.py
 
 '''
 Interfaces the desktop application with the data parsing layer
