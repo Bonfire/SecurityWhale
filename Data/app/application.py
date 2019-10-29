@@ -175,13 +175,14 @@ def get_averages(file_list, commit_hash, repo):
             if path[0] in file_list:
                 check = True
                 for phile in file_totals:
-                    adder = 1
-                    for index, vals in enumerate(path[1:]):
-                        phile[index + adder] += path[index + 1]
-                        phile[index + adder + 1] += 1
-                        adder += 1
-                    check = False
-                    break
+                    if path[0] == phile:
+                        adder = 1
+                        for index, vals in enumerate(path[1:]):
+                            phile[index + adder] += path[index + 1]
+                            phile[index + adder + 1] += 1
+                            adder += 1
+                        check = False
+                        break
                 if check:
                     file_info = []
                     file_info.append(path[0])
@@ -193,7 +194,6 @@ def get_averages(file_list, commit_hash, repo):
                             file_info.append(0)
 
                     file_totals.append(file_info)
-                    
         
     for phile_info in file_totals:
         for index, update in enumerate(phile_info[1:]):
