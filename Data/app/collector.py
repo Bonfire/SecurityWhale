@@ -94,6 +94,7 @@ def clean_data(repository, commit_hash, black, grey):
                     clean_file += [commit.size]
                     clean_files.append(clean_file)
 
+                    dup_path.append(path)
                     dirty_ext.remove(path.split(".")[-1])
                     if len(dirty_ext) == 0:
                         return clean_files
