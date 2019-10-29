@@ -1,9 +1,9 @@
 import mysql.connector
 import numpy as np
-import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras import models
-from sklearn import preprocessing
+from keras import layers
+from keras import models
+from sklearn.preprocessing import StandardScaler
+from sklearn.externals import joblib
 
 def pull_data():
     db = mysql.connector.connect(
@@ -66,15 +66,17 @@ data, labels = pull_data()
 data, labels = shuffle(data, labels)
 
 # normalize data
-data = preprocessing.scale(data)
-
-
+scaler = StandardScaler()
+data = scaler.fit_transform(data)
+joblib.dump(scaler, "scaler.save") 
+    
 validation_percentage = 20
 (train_data, train_labels), (validation_data, validation_labels) = hold_out_validation(data, labels, validation_percentage)
 
     
 model = models.Sequential()
 model.add(layers.Dense(512, activation="relu", input_shape=(data.shape[1],)))
+model.add(layers.Dense(512, activation="relu"))
 model.add(layers.Dense(1, activation="sigmoid"))
 
 model.summary()
@@ -83,6 +85,6 @@ model.compile(optimizer="adam", loss="binary_crossentropy",
         metrics=["accuracy"])
 
 model.fit(train_data, train_labels, validation_data=(validation_data,
-            validation_labels), epochs=100, batch_size=20)
+            validation_labels), epochs=100)
 
 model.save("model.h5")
