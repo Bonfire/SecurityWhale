@@ -90,13 +90,14 @@ def clean_data(repository, commit_hash, black, grey):
                 if path not in dup_path:
                     clean_file = get_averages([path],commit,repository)[0]
                     clean_file.insert(1, 0)
-                    clean_file.insert(1, commit)
+                    clean_file.insert(1, commit.hexsha)
                     clean_file += [commit.size]
                     clean_files.append(clean_file)
 
                     dirty_ext.remove(path.split(".")[-1])
                     if len(dirty_ext) == 0:
                         return clean_files
+    
 
 
 if __name__ == "__main__":
@@ -105,8 +106,9 @@ if __name__ == "__main__":
         
         with open("./valid.repo.data", "rb") as f:
             temp = pickle.load(f)
-           
-        for index, name in enumerate(temp[:5]):
+            
+        #temp = temp[1:]
+        for index, name in enumerate(temp):
             # Pop the first item on the list to leave only hashes
             github_name = name.pop(0)
             print("Starting process for " + github_name)
@@ -142,11 +144,14 @@ if __name__ == "__main__":
             if len(black_files) != 0:
                 for hash_commits in name:
                     print('processing clean data')
-                    clean_files += clean_data(repo, hash_commits, black_files, grey_files)
-                    db_update += clean_files
-                    if len(clean_files) == len(black_files):
-                        break
-                        print('finished clean data')
+                    clean_file = clean_data(repo, hash_commits, black_files, grey_files)
+                    if clean_file is not None:
+                        clean_files += clean_file
+                        db_update += clean_files
+                        if len(clean_files) == len(black_files):
+                            break
+                
+                print('finished clean data')
             
             if len(db_update) > 0:
                 print("Updating db")
@@ -160,8 +165,10 @@ if __name__ == "__main__":
             shutil.rmtree(repo_dir)
 
             print(temp[index+1][0])
-            with open("./valid.repo.data", "wb") as f:
-                pickle.dump(temp[index+1:],f)
+
+            if index + 1 < len(temp): 
+                with open("./valid.repo.data", "wb") as f:
+                    pickle.dump(temp[index+1:],f)
 
         print('Script Complete|Runtime: {} Seconds'.format(time.time() - start_time))
         print()
