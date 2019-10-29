@@ -210,9 +210,13 @@ def update_db(update_files, github_name, repo_dir, repo):
     git = access_github()
 
     # grabs repo object for repo table data (collecting)
-    github_repo = git.get_repo(github_name, lazy=False)
+    try:
+        github_repo = git.get_repo(github_name, lazy=False)
+        repo_data = repository_data(github_repo, repo, github_name, repo_dir)
+    except:
+        print("Could not access github api for" + repo_dir)
+        return
     
-    repo_data = repository_data(github_repo, repo, github_name, repo_dir)
 
     try:
         conn = mysql.connector.connect(user=user, host=host, password=password, database=database)
