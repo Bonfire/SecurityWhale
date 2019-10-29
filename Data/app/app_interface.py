@@ -48,6 +48,18 @@ def app_interface():
 	for a in avgs:
 		final_data.append(a + repo_data)
 	
+	print("\n==========")
+	print("AVERAGES:")
+	print(avgs)
+	
+	print("\n\n==========")
+	print("REPO DATA:")
+	print(repo_data)
+	
+	print("\n\n==========")
+	print("FINAL DATA:")
+	print(final_data)
+	
 	#TODO: Predict and print results data to std out
 	'''
 	fin_csv
