@@ -46,11 +46,11 @@ def app_interface():
     avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
     
     #Separate file names from avgs
-	file_names = []
-	avgs_final = []
-	for a in avgs:
-		file_names.append(a[0])
-		avgs_final.append(a[1:])
+    file_names = []
+    avgs_final = []
+    for a in avgs:
+	file_names.append(a[0])
+	avgs_final.append(a[1:])
     
     #Collect data together into a single list
     final_data = []
