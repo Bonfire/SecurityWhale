@@ -1,9 +1,9 @@
 '''
 Author: Thomas Serrano
-Last Updated: OCT-28-2019
+Last Updated: OCT-29-2019
 '''
 from application import *   #Application stuff
-#import conn                    #ML stuff
+import predict                    #ML stuff
 import sys                  #For command-line arguments
 from git import Repo
 from github import Github
@@ -47,8 +47,8 @@ def app_interface():
     
     #Collect data together into a single list
     final_data = []
-#   for a in avgs:
-#       final_data.append(a + repo_data)
+    for a in avgs:
+        final_data.append(a + repo_data)
     
     print("\n==========")
     print("AVERAGES:")
@@ -56,22 +56,17 @@ def app_interface():
     
     print("\n\n==========")
     print("REPO DATA:")
-#   print(repo_data)
+    print(repo_data)
     
     print("\n\n==========")
     print("FINAL DATA:")
     print(final_data)
     
-    #TODO: Predict and print results data to std out
-    '''
-    fin_csv
-    i = 0
+    #Predict and print results data to std out
     results = predict(final_data)
-    for r in results:
-        fin_csv.append(files[i] + "," + str(r))
-        
-    print(fin_csv)
-    '''
+    print("\n\n==========")
+    print("RESULTS:")
+    print(results)
 
 #Main - delete later?
 if __name__ == "__main__":
