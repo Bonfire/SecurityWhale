@@ -1,5 +1,5 @@
 '''
-Author: Thomas Serrano
+Authors: Thomas Serrano, Curtis Helsel
 Last Updated: OCT-29-2019
 '''
 from application import *   #Application stuff
@@ -45,14 +45,28 @@ def app_interface():
     #Get a list of data points for each file
     avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
     
+    #Separate file names from avgs
+	file_names = []
+	avgs_final = []
+	for a in avgs:
+		file_names.append(a[0])
+		avgs_final.append(a[1:])
+    
     #Collect data together into a single list
     final_data = []
-    for a in avgs:
-        final_data.append(a + repo_data)
+    for af in avgs_final:
+        final_data.append(af + repo_data)
+        
+    #Predict and print results data to std out
+    results = predict(final_data)
     
     print("\n==========")
     print("AVERAGES:")
     print(avgs)
+    
+    print("\n\n==========")
+    print("FINAL AVERAGES:")
+    print(avgs_final)
     
     print("\n\n==========")
     print("REPO DATA:")
@@ -62,8 +76,6 @@ def app_interface():
     print("FINAL DATA:")
     print(final_data)
     
-    #Predict and print results data to std out
-    results = predict(final_data)
     print("\n\n==========")
     print("RESULTS:")
     print(results)
