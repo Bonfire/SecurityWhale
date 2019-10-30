@@ -49,8 +49,8 @@ def app_interface():
     file_names = []
     avgs_final = []
     for a in avgs:
-	file_names.append(a[0])
-	avgs_final.append(a[1:])
+        file_names.append(a[0])
+        avgs_final.append(a[1:])
     
     #Collect data together into a single list
     final_data = []
