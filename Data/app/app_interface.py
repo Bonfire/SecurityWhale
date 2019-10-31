@@ -60,6 +60,7 @@ def app_interface():
     #Predict and print results data to std out
     results = predict(final_data)
     
+    #Debug prints
     print("\n==========")
     print("AVERAGES:")
     print(avgs)
@@ -79,6 +80,13 @@ def app_interface():
     print("\n\n==========")
     print("RESULTS:")
     print(results)
+    #End debug prints
+    
+    #Final results output
+    count = 0
+    for f in file_names:
+        print(f + "," + str(results[count]))
+        count = count + 1
 
 #Main - delete later?
 if __name__ == "__main__":
