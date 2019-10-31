@@ -35,7 +35,7 @@
             this.gitHubPasswordTextBox = new System.Windows.Forms.TextBox();
             this.logInButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // gitHubUsernameLabel
@@ -73,7 +73,7 @@
             // 
             // logInButton
             // 
-            this.logInButton.Location = new System.Drawing.Point(216, 76);
+            this.logInButton.Location = new System.Drawing.Point(216, 58);
             this.logInButton.Name = "logInButton";
             this.logInButton.Size = new System.Drawing.Size(75, 23);
             this.logInButton.TabIndex = 4;
@@ -83,7 +83,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(297, 76);
+            this.cancelButton.Location = new System.Drawing.Point(297, 58);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -91,23 +91,22 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // label3
+            // progressBar1
             // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.SystemColors.ControlDark;
-            this.label3.Location = new System.Drawing.Point(14, 81);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(137, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Your password is not saved";
+            this.progressBar1.Location = new System.Drawing.Point(17, 58);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(193, 23);
+            this.progressBar1.Step = 1;
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 6;
             // 
             // GitHubLogInForm
             // 
             this.AcceptButton = this.logInButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 111);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(384, 86);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.logInButton);
             this.Controls.Add(this.gitHubPasswordTextBox);
@@ -116,9 +115,9 @@
             this.Controls.Add(this.gitHubUsernameLabel);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(400, 150);
+            this.MaximumSize = new System.Drawing.Size(400, 125);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(400, 150);
+            this.MinimumSize = new System.Drawing.Size(400, 125);
             this.Name = "GitHubLogInForm";
             this.Text = "GitHub Log In";
             this.ResumeLayout(false);
@@ -132,8 +131,8 @@
         private System.Windows.Forms.Label gitHubPasswordLabel;
         private System.Windows.Forms.Button logInButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Label label3;
         public System.Windows.Forms.TextBox gitHubUsernameTextBox;
         public System.Windows.Forms.TextBox gitHubPasswordTextBox;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }

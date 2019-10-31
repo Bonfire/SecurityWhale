@@ -219,8 +219,8 @@ namespace PSV
         private void BeginScanButton_Click(object sender, EventArgs e)
         {
             // Setup the base for our python environment and scripts
-            string pythonInterpreter = @"C:\Python37\python.exe";
-            string pythonScript = @"..\..\..\..\Data\app\appInterface.py";
+            string pythonInterpreter = "python";
+            string pythonScript = @"..\..\..\..\Data\app\app_interface.py";
             string repoURL = projectURLTextBox.Text;
             string[] splitRepoURL = repoURL.Split('/');
             string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];

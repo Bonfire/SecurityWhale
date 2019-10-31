@@ -1,6 +1,7 @@
 ﻿using LibGit2Sharp;
 using Microsoft.Alm.Authentication;
 using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PSV
@@ -22,7 +23,7 @@ namespace PSV
             this.Close();
         }
 
-        private void LogInButton_Click(object sender, EventArgs e)
+        private async void LogInButton_Click(object sender, EventArgs e)
         {
             gitHubCredentials = new UsernamePasswordCredentials()
             {
@@ -47,7 +48,12 @@ namespace PSV
                 // We also want to nullify all credential objects to respect the user's privacy
                 // This should make the memory "out of scope" in the eyes of the garbage collector
                 MessageBox.Show("Attempting to Clone the Repository...");
-                Repository.Clone(projectURL, pathToClone, credCloneOptions);
+
+                await Task.Run(() =>
+                {
+                    Repository.Clone(projectURL, pathToClone, credCloneOptions);
+                });
+                
                 userCredentials = null;
                 credCloneOptions = null;
                 MessageBox.Show("Repository cloned successfully! Closing login form.", "Cloned Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
