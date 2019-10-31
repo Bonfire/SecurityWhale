@@ -1,4 +1,5 @@
 ﻿using LibGit2Sharp;
+using LibGit2Sharp.Handlers;
 using Microsoft.Alm.Authentication;
 using System;
 using System.Threading.Tasks;
@@ -38,6 +39,12 @@ namespace PSV
             Credential userCredentials = authType.GetCredentials(new TargetUri("https://github.com"));
             CloneOptions credCloneOptions = new CloneOptions
             {
+                OnTransferProgress = cloneProgress =>
+                {
+                    var clonePercentage = (100 * cloneProgress.ReceivedObjects) / cloneProgress.TotalObjects;
+                    cloneProgressBar.Invoke(new Action(() => cloneProgressBar.Value = clonePercentage));
+                    return true;
+                },
                 CredentialsProvider = (_url, _user, _cred) => gitHubCredentials,
             };
 
@@ -49,10 +56,7 @@ namespace PSV
                 // This should make the memory "out of scope" in the eyes of the garbage collector
                 MessageBox.Show("Attempting to Clone the Repository...");
 
-                await Task.Run(() =>
-                {
-                    Repository.Clone(projectURL, pathToClone, credCloneOptions);
-                });
+                await Task.Run(() => Repository.Clone(projectURL, pathToClone, credCloneOptions));
                 
                 userCredentials = null;
                 credCloneOptions = null;
@@ -63,6 +67,11 @@ namespace PSV
             {
                 MessageBox.Show("Failed to properly authenticate. Please verify that your credentials are correct.", "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private TransferProgressHandler CloneTransferProgress()
+        {
+            throw new NotImplementedException();
         }
 
         public string getUsername()

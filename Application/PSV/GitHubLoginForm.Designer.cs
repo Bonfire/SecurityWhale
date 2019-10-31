@@ -35,7 +35,7 @@
             this.gitHubPasswordTextBox = new System.Windows.Forms.TextBox();
             this.logInButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.cloneProgressBar = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // gitHubUsernameLabel
@@ -91,14 +91,14 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // progressBar1
+            // cloneProgressBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(17, 58);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(193, 23);
-            this.progressBar1.Step = 1;
-            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar1.TabIndex = 6;
+            this.cloneProgressBar.Location = new System.Drawing.Point(17, 58);
+            this.cloneProgressBar.Name = "cloneProgressBar";
+            this.cloneProgressBar.Size = new System.Drawing.Size(193, 23);
+            this.cloneProgressBar.Step = 1;
+            this.cloneProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.cloneProgressBar.TabIndex = 6;
             // 
             // GitHubLogInForm
             // 
@@ -106,7 +106,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 86);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.cloneProgressBar);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.logInButton);
             this.Controls.Add(this.gitHubPasswordTextBox);
@@ -133,6 +133,6 @@
         private System.Windows.Forms.Button cancelButton;
         public System.Windows.Forms.TextBox gitHubUsernameTextBox;
         public System.Windows.Forms.TextBox gitHubPasswordTextBox;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar cloneProgressBar;
     }
 }
