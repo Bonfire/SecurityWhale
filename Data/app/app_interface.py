@@ -2,7 +2,7 @@
 Authors: Thomas Serrano, Curtis Helsel
 Last Updated: OCT-29-2019
 '''
-from application import *   #Application stuff
+from config import *   #Application stuff
 import predict                    #ML stuff
 import sys                  #For command-line arguments
 from git import Repo
