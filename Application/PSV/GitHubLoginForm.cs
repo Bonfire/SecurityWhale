@@ -2,6 +2,7 @@
 using LibGit2Sharp.Handlers;
 using Microsoft.Alm.Authentication;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -54,18 +55,29 @@ namespace PSV
                 // Clone the repo and close the form
                 // We also want to nullify all credential objects to respect the user's privacy
                 // This should make the memory "out of scope" in the eyes of the garbage collector
-                MessageBox.Show("Attempting to Clone the Repository...");
+                new Thread(new ThreadStart(delegate
+                {
+                    MessageBox.Show("Attempting to Clone the Repository...");
+                })).Start();
 
                 await Task.Run(() => Repository.Clone(projectURL, pathToClone, credCloneOptions));
                 
                 userCredentials = null;
                 credCloneOptions = null;
-                MessageBox.Show("Repository cloned successfully! Closing login form.", "Cloned Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                new Thread(new ThreadStart(delegate
+                {
+                    MessageBox.Show("Repository cloned successfully! Closing login form.", "Cloned Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                })).Start();
+
                 this.Close();
             }
             catch (LibGit2SharpException)
             {
-                MessageBox.Show("Failed to properly authenticate. Please verify that your credentials are correct.", "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                new Thread(new ThreadStart(delegate
+                {
+                    MessageBox.Show("Failed to properly authenticate. Please verify that your credentials are correct.", "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                })).Start();
             }
         }
 
