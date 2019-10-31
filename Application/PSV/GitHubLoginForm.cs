@@ -81,17 +81,12 @@ namespace PSV
             }
         }
 
-        private TransferProgressHandler CloneTransferProgress()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string getUsername()
+        public string GetUsername()
         {
             return gitHubUsernameTextBox.Text; 
         }
 
-        public string getPassword()
+        public string GetPassword()
         {
             return gitHubPasswordTextBox.Text;
         }

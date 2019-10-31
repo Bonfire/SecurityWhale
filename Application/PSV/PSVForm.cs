@@ -44,10 +44,10 @@ namespace PSV
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     isRepoPrivate = true;
-                    GitHubLogInForm gitHubLoginForm = new GitHubLogInForm(projectURLTextBox.Text, pathToCloneTextBox.Text);
+                    using GitHubLogInForm gitHubLoginForm = new GitHubLogInForm(projectURLTextBox.Text, pathToCloneTextBox.Text);
                     gitHubLoginForm.ShowDialog();
-                    githubUsername = gitHubLoginForm.getUsername();
-                    githubPassword = gitHubLoginForm.getPassword();
+                    githubUsername = gitHubLoginForm.GetUsername();
+                    githubPassword = gitHubLoginForm.GetPassword();
                 }
 
                 return false;
@@ -142,7 +142,7 @@ namespace PSV
         private void LoadProjectButton_Click(object sender, EventArgs e)
         {
             // Update our scan settings and exclusions
-            updateScanSettings();
+            UpdateScanSettings();
 
             // Clear the current file tree
             scanTree.Nodes.Clear();
@@ -168,7 +168,6 @@ namespace PSV
 
         private void PSVForm_Load(object sender, EventArgs e)
         {
-            provideDataToolTip.SetToolTip(provideDataBox, "Send extracted metadata to our servers for future training");
             includeHiddenItemsToolTip.SetToolTip(includeHiddenCheck, "Includes files/folders that may be hidden when creating the file tree");
             fileNamesToolTip.SetToolTip(fileNamesBox, "Exclude files by name, comma separated (e.g. \"File1.txt\", \"File2.exe\")");
             fileExtensionToolTip.SetToolTip(fileExtensionsBox, "Exclude files by extension, comma separated (e.g. \".txt\", \".exe\")");
@@ -225,23 +224,21 @@ namespace PSV
             string[] splitRepoURL = repoURL.Split('/');
             string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
 
-            ProcessStartInfo pythonStartInfo = new ProcessStartInfo();
-            pythonStartInfo.FileName = pythonInterpreter;
-            pythonStartInfo.Arguments = string.Format("{0} {1} {2} {3} {4} {5}", pythonScript, githubUsername, githubPassword, repoName, pathToCloneTextBox.Text, provideDataBox.Checked.ToString());
-            pythonStartInfo.UseShellExecute = false;
-            pythonStartInfo.RedirectStandardOutput = true;
-
-            using(Process pythonProcess = Process.Start(pythonStartInfo))
+            ProcessStartInfo pythonStartInfo = new ProcessStartInfo
             {
-                using (StreamReader pythonStream = pythonProcess.StandardOutput)
-                {
-                    Console.WriteLine("Output: " + pythonStream.ReadToEnd());
-                }
-            }
+                FileName = pythonInterpreter,
+                Arguments = string.Format("{0} {1} {2} {3} {4}", pythonScript, githubUsername, githubPassword, repoName, pathToCloneTextBox.Text),
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+
+            using Process pythonProcess = Process.Start(pythonStartInfo);
+            using StreamReader pythonStream = pythonProcess.StandardOutput;
+            Console.WriteLine("Output: " + pythonStream.ReadToEnd());
         }
 
         // Update our scan/exclusion settings set by the user
-        public void updateScanSettings()
+        public void UpdateScanSettings()
         {
             // Our scan exclusions
             fileNameExclusions = fileNamesBox.Text.Split(',');

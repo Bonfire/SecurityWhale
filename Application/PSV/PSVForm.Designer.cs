@@ -61,7 +61,6 @@
             this.fileExtensionsBox = new System.Windows.Forms.TextBox();
             this.fileExtensionsLabel = new System.Windows.Forms.Label();
             this.includeHiddenCheck = new System.Windows.Forms.CheckBox();
-            this.provideDataBox = new System.Windows.Forms.CheckBox();
             this.projectURLLabel = new System.Windows.Forms.Label();
             this.projectURLTextBox = new System.Windows.Forms.TextBox();
             this.cloneProjectButton = new System.Windows.Forms.Button();
@@ -326,7 +325,6 @@
             // 
             this.settingsGroupBox.Controls.Add(this.exclusionGroupBox);
             this.settingsGroupBox.Controls.Add(this.includeHiddenCheck);
-            this.settingsGroupBox.Controls.Add(this.provideDataBox);
             this.settingsGroupBox.Location = new System.Drawing.Point(9, 227);
             this.settingsGroupBox.Name = "settingsGroupBox";
             this.settingsGroupBox.Size = new System.Drawing.Size(354, 184);
@@ -342,9 +340,9 @@
             this.exclusionGroupBox.Controls.Add(this.fileNamesLabel);
             this.exclusionGroupBox.Controls.Add(this.fileExtensionsBox);
             this.exclusionGroupBox.Controls.Add(this.fileExtensionsLabel);
-            this.exclusionGroupBox.Location = new System.Drawing.Point(6, 65);
+            this.exclusionGroupBox.Location = new System.Drawing.Point(6, 42);
             this.exclusionGroupBox.Name = "exclusionGroupBox";
-            this.exclusionGroupBox.Size = new System.Drawing.Size(342, 113);
+            this.exclusionGroupBox.Size = new System.Drawing.Size(342, 136);
             this.exclusionGroupBox.TabIndex = 10;
             this.exclusionGroupBox.TabStop = false;
             this.exclusionGroupBox.Text = "Exclusions (Comma Separated)";
@@ -400,22 +398,12 @@
             // includeHiddenCheck
             // 
             this.includeHiddenCheck.AutoSize = true;
-            this.includeHiddenCheck.Location = new System.Drawing.Point(6, 42);
+            this.includeHiddenCheck.Location = new System.Drawing.Point(6, 19);
             this.includeHiddenCheck.Name = "includeHiddenCheck";
             this.includeHiddenCheck.Size = new System.Drawing.Size(126, 17);
             this.includeHiddenCheck.TabIndex = 9;
             this.includeHiddenCheck.Text = "Include Hidden Items";
             this.includeHiddenCheck.UseVisualStyleBackColor = true;
-            // 
-            // provideDataBox
-            // 
-            this.provideDataBox.AutoSize = true;
-            this.provideDataBox.Location = new System.Drawing.Point(6, 19);
-            this.provideDataBox.Name = "provideDataBox";
-            this.provideDataBox.Size = new System.Drawing.Size(144, 17);
-            this.provideDataBox.TabIndex = 7;
-            this.provideDataBox.Text = "Provide Data for Training";
-            this.provideDataBox.UseVisualStyleBackColor = true;
             // 
             // projectURLLabel
             // 
@@ -596,7 +584,6 @@
         private System.Windows.Forms.TextBox fileExtensionsBox;
         private System.Windows.Forms.Label fileExtensionsLabel;
         private System.Windows.Forms.CheckBox includeHiddenCheck;
-        private System.Windows.Forms.CheckBox provideDataBox;
         private System.Windows.Forms.TextBox foldersBox;
         private System.Windows.Forms.Button loadProjectButton;
         private System.Windows.Forms.Label localSeparatorRight;
