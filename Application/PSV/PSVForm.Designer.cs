@@ -68,19 +68,17 @@
             this.viewPage = new System.Windows.Forms.TabPage();
             this.infoTabControl = new System.Windows.Forms.TabControl();
             this.tableTab = new System.Windows.Forms.TabPage();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.severityColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.vulnColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.faultListView = new System.Windows.Forms.ListView();
             this.fileColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.dateTimeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.graphTab = new System.Windows.Forms.TabPage();
-            this.viewTree = new System.Windows.Forms.TreeView();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.provideDataToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.includeHiddenItemsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileNamesToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileExtensionToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.foldersToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.probColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.faultChart = new LiveCharts.WinForms.CartesianChart();
             this.tabControl.SuspendLayout();
             this.scanPage.SuspendLayout();
             this.settingsGroupBox.SuspendLayout();
@@ -88,6 +86,7 @@
             this.viewPage.SuspendLayout();
             this.infoTabControl.SuspendLayout();
             this.tableTab.SuspendLayout();
+            this.graphTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -443,7 +442,6 @@
             // viewPage
             // 
             this.viewPage.Controls.Add(this.infoTabControl);
-            this.viewPage.Controls.Add(this.viewTree);
             this.viewPage.Location = new System.Drawing.Point(4, 22);
             this.viewPage.Name = "viewPage";
             this.viewPage.Padding = new System.Windows.Forms.Padding(3);
@@ -456,74 +454,64 @@
             // 
             this.infoTabControl.Controls.Add(this.tableTab);
             this.infoTabControl.Controls.Add(this.graphTab);
-            this.infoTabControl.Location = new System.Drawing.Point(168, 6);
+            this.infoTabControl.Location = new System.Drawing.Point(6, 6);
             this.infoTabControl.Name = "infoTabControl";
             this.infoTabControl.SelectedIndex = 0;
-            this.infoTabControl.Size = new System.Drawing.Size(628, 405);
+            this.infoTabControl.Size = new System.Drawing.Size(790, 405);
             this.infoTabControl.TabIndex = 2;
             // 
             // tableTab
             // 
-            this.tableTab.Controls.Add(this.listView1);
+            this.tableTab.Controls.Add(this.faultListView);
             this.tableTab.Location = new System.Drawing.Point(4, 22);
             this.tableTab.Name = "tableTab";
             this.tableTab.Padding = new System.Windows.Forms.Padding(3);
-            this.tableTab.Size = new System.Drawing.Size(620, 379);
+            this.tableTab.Size = new System.Drawing.Size(782, 379);
             this.tableTab.TabIndex = 0;
             this.tableTab.Text = "Table";
             this.tableTab.UseVisualStyleBackColor = true;
             // 
-            // listView1
+            // faultListView
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.severityColumn,
-            this.vulnColumn,
+            this.faultListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.fileColumn,
-            this.dateTimeColumn});
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(624, 383);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // severityColumn
-            // 
-            this.severityColumn.Text = "Severity";
-            this.severityColumn.Width = 56;
-            // 
-            // vulnColumn
-            // 
-            this.vulnColumn.Text = "Vulnerability";
-            this.vulnColumn.Width = 178;
+            this.probColumn});
+            this.faultListView.HideSelection = false;
+            this.faultListView.Location = new System.Drawing.Point(6, 6);
+            this.faultListView.Name = "faultListView";
+            this.faultListView.Size = new System.Drawing.Size(770, 367);
+            this.faultListView.TabIndex = 0;
+            this.faultListView.UseCompatibleStateImageBehavior = false;
+            this.faultListView.View = System.Windows.Forms.View.Details;
             // 
             // fileColumn
             // 
-            this.fileColumn.Text = "File";
-            this.fileColumn.Width = 267;
-            // 
-            // dateTimeColumn
-            // 
-            this.dateTimeColumn.Text = "Date/Time";
-            this.dateTimeColumn.Width = 120;
+            this.fileColumn.Text = "Filename";
+            this.fileColumn.Width = 620;
             // 
             // graphTab
             // 
+            this.graphTab.Controls.Add(this.faultChart);
             this.graphTab.Location = new System.Drawing.Point(4, 22);
             this.graphTab.Name = "graphTab";
             this.graphTab.Padding = new System.Windows.Forms.Padding(3);
-            this.graphTab.Size = new System.Drawing.Size(620, 379);
+            this.graphTab.Size = new System.Drawing.Size(782, 379);
             this.graphTab.TabIndex = 1;
             this.graphTab.Text = "Graph";
             this.graphTab.UseVisualStyleBackColor = true;
             // 
-            // viewTree
+            // probColumn
             // 
-            this.viewTree.Location = new System.Drawing.Point(6, 6);
-            this.viewTree.Name = "viewTree";
-            this.viewTree.Size = new System.Drawing.Size(156, 405);
-            this.viewTree.TabIndex = 0;
+            this.probColumn.Text = "Fault Probability";
+            this.probColumn.Width = 143;
+            // 
+            // faultChart
+            // 
+            this.faultChart.Location = new System.Drawing.Point(6, 6);
+            this.faultChart.Name = "faultChart";
+            this.faultChart.Size = new System.Drawing.Size(770, 367);
+            this.faultChart.TabIndex = 0;
+            this.faultChart.Text = "cartesianChart1";
             // 
             // PSVForm
             // 
@@ -548,6 +536,7 @@
             this.viewPage.ResumeLayout(false);
             this.infoTabControl.ResumeLayout(false);
             this.tableTab.ResumeLayout(false);
+            this.graphTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -563,18 +552,14 @@
 		private System.Windows.Forms.Button cloneProjectButton;
 		private System.Windows.Forms.TreeView scanTree;
 		private System.Windows.Forms.TabPage viewPage;
-		private System.Windows.Forms.TreeView viewTree;
 		private System.Windows.Forms.TabControl infoTabControl;
 		private System.Windows.Forms.TabPage tableTab;
 		private System.Windows.Forms.TabPage graphTab;
-		private System.Windows.Forms.ListView listView1;
+		private System.Windows.Forms.ListView faultListView;
 		private System.Windows.Forms.Label projectNameLabel;
 		private System.Windows.Forms.Button openFolderButton;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-		private System.Windows.Forms.ColumnHeader severityColumn;
-		private System.Windows.Forms.ColumnHeader vulnColumn;
 		private System.Windows.Forms.ColumnHeader fileColumn;
-		private System.Windows.Forms.ColumnHeader dateTimeColumn;
 		public System.Windows.Forms.TextBox projectURLTextBox;
 		public System.Windows.Forms.TextBox pathToCloneTextBox;
         private System.Windows.Forms.GroupBox exclusionGroupBox;
@@ -605,6 +590,8 @@
         private System.Windows.Forms.ToolTip fileNamesToolTip;
         private System.Windows.Forms.ToolTip fileExtensionToolTip;
         private System.Windows.Forms.ToolTip foldersToolTip;
+        private System.Windows.Forms.ColumnHeader probColumn;
+        private LiveCharts.WinForms.CartesianChart faultChart;
     }
 }
 

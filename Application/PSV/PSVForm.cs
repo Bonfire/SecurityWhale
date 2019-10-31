@@ -1,4 +1,7 @@
 ﻿using LibGit2Sharp;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -44,7 +47,7 @@ namespace PSV
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     isRepoPrivate = true;
-                    using GitHubLogInForm gitHubLoginForm = new GitHubLogInForm(projectURLTextBox.Text, pathToCloneTextBox.Text);
+                    GitHubLogInForm gitHubLoginForm = new GitHubLogInForm(projectURLTextBox.Text, pathToCloneTextBox.Text);
                     gitHubLoginForm.ShowDialog();
                     githubUsername = gitHubLoginForm.GetUsername();
                     githubPassword = gitHubLoginForm.GetPassword();
@@ -217,7 +220,27 @@ namespace PSV
         // Begin the scan by calling the data script which calls the ML predictor
         private void BeginScanButton_Click(object sender, EventArgs e)
         {
-            // Setup the base for our python environment and scripts
+            string fileLine;
+            StreamReader fileReader = new StreamReader(@"PATH");
+            while ((fileLine = fileReader.ReadLine()) != null)
+            {
+                // Remove the single-quotes and split the string
+                string[] splitResult = fileLine.Trim('\'').Split(',');
+                string fileName = splitResult[0];
+                double faultProbability = Double.Parse(splitResult[1]);
+
+                if (faultProbability >= 0.5)
+                {
+                    string[] newRow = { fileName, splitResult[1] };
+                    ListViewItem newItem = new ListViewItem(newRow);
+                    faultListView.Items.Add(newItem);
+                }
+            }
+
+            faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            /*// Setup the base for our python environment and scripts
             string pythonInterpreter = "python";
             string pythonScript = @"..\..\..\..\Data\app\app_interface.py";
             string repoURL = projectURLTextBox.Text;
@@ -234,7 +257,7 @@ namespace PSV
 
             using Process pythonProcess = Process.Start(pythonStartInfo);
             using StreamReader pythonStream = pythonProcess.StandardOutput;
-            Console.WriteLine("Output: " + pythonStream.ReadToEnd());
+            Console.WriteLine("Output: " + pythonStream.ReadToEnd());*/
         }
 
         // Update our scan/exclusion settings set by the user
