@@ -20,7 +20,7 @@ def app_interface():
     repo_name = sys.argv[3]
     repo_dir = sys.argv[4]
     
-    print("Starting interface...")
+    #print("Starting interface...")
     #print("Arguments:\n" + username + " / " + password + " / " + repo_name + " / " + repo_dir)
     
     #Get Github access
@@ -60,6 +60,7 @@ def app_interface():
     #Predict and print results data to std out
     results = predict(final_data)
     
+    '''
     #Debug prints
     print("\n==========")
     print("AVERAGES:")
@@ -81,12 +82,11 @@ def app_interface():
     print("RESULTS:")
     print(results)
     #End debug prints
+    '''
     
     #Final results output
-    count = 0
-    for f in file_names:
-        print(f + "," + str(results[count]))
-        count = count + 1
+    for i, f in enumerate(file_names):
+        print(f + "," + str(results[i][0]))
 
 #Main - delete later?
 if __name__ == "__main__":
