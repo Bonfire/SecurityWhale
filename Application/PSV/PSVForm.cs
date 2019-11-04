@@ -212,6 +212,12 @@ namespace PSV
             System.Diagnostics.Process.Start(e.LinkText);
         }
 
+        private void richTextBox1_LinkClicked_1(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
+
+        }
+
         private void localBrowserButton_Click(object sender, EventArgs e)
         {
             DialogResult openFolderDialogResult = folderBrowserDialog.ShowDialog();

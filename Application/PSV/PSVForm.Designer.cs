@@ -81,14 +81,14 @@
             this.foldersToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.aboutTab = new System.Windows.Forms.TabPage();
             this.aboutPicture = new System.Windows.Forms.PictureBox();
-            this.aboutHeaderLabel = new System.Windows.Forms.Label();
-            this.aboutVersionLabel = new System.Windows.Forms.Label();
+            this.aboutProgramLabel = new System.Windows.Forms.Label();
             this.aboutLicenseLabel = new System.Windows.Forms.Label();
             this.aboutDevelopedByLabel = new System.Windows.Forms.Label();
             this.aboutDevelopersRTB = new System.Windows.Forms.RichTextBox();
             this.aboutHelpLabel = new System.Windows.Forms.Label();
             this.aboutHelpersRTB = new System.Windows.Forms.RichTextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.aboutModelLabel = new System.Windows.Forms.Label();
+            this.aboutHeaderLabel = new System.Windows.Forms.RichTextBox();
             this.tabControl.SuspendLayout();
             this.scanPage.SuspendLayout();
             this.settingsGroupBox.SuspendLayout();
@@ -528,14 +528,14 @@
             // 
             // aboutTab
             // 
-            this.aboutTab.Controls.Add(this.label1);
+            this.aboutTab.Controls.Add(this.aboutHeaderLabel);
+            this.aboutTab.Controls.Add(this.aboutModelLabel);
             this.aboutTab.Controls.Add(this.aboutHelpersRTB);
             this.aboutTab.Controls.Add(this.aboutHelpLabel);
             this.aboutTab.Controls.Add(this.aboutDevelopersRTB);
             this.aboutTab.Controls.Add(this.aboutDevelopedByLabel);
             this.aboutTab.Controls.Add(this.aboutLicenseLabel);
-            this.aboutTab.Controls.Add(this.aboutVersionLabel);
-            this.aboutTab.Controls.Add(this.aboutHeaderLabel);
+            this.aboutTab.Controls.Add(this.aboutProgramLabel);
             this.aboutTab.Controls.Add(this.aboutPicture);
             this.aboutTab.Location = new System.Drawing.Point(4, 22);
             this.aboutTab.Name = "aboutTab";
@@ -556,31 +556,21 @@
             this.aboutPicture.TabIndex = 0;
             this.aboutPicture.TabStop = false;
             // 
-            // aboutHeaderLabel
+            // aboutProgramLabel
             // 
-            this.aboutHeaderLabel.AutoSize = true;
-            this.aboutHeaderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutHeaderLabel.Location = new System.Drawing.Point(112, 6);
-            this.aboutHeaderLabel.Name = "aboutHeaderLabel";
-            this.aboutHeaderLabel.Size = new System.Drawing.Size(124, 20);
-            this.aboutHeaderLabel.TabIndex = 1;
-            this.aboutHeaderLabel.Text = "SecurityWhale";
-            // 
-            // aboutVersionLabel
-            // 
-            this.aboutVersionLabel.AutoSize = true;
-            this.aboutVersionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutVersionLabel.Location = new System.Drawing.Point(112, 32);
-            this.aboutVersionLabel.Name = "aboutVersionLabel";
-            this.aboutVersionLabel.Size = new System.Drawing.Size(170, 20);
-            this.aboutVersionLabel.TabIndex = 2;
-            this.aboutVersionLabel.Text = "Program Version: 1.0.0";
+            this.aboutProgramLabel.AutoSize = true;
+            this.aboutProgramLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutProgramLabel.Location = new System.Drawing.Point(112, 58);
+            this.aboutProgramLabel.Name = "aboutProgramLabel";
+            this.aboutProgramLabel.Size = new System.Drawing.Size(170, 20);
+            this.aboutProgramLabel.TabIndex = 2;
+            this.aboutProgramLabel.Text = "Program Version: 1.0.0";
             // 
             // aboutLicenseLabel
             // 
             this.aboutLicenseLabel.AutoSize = true;
             this.aboutLicenseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutLicenseLabel.Location = new System.Drawing.Point(112, 84);
+            this.aboutLicenseLabel.Location = new System.Drawing.Point(112, 32);
             this.aboutLicenseLabel.Name = "aboutLicenseLabel";
             this.aboutLicenseLabel.Size = new System.Drawing.Size(384, 20);
             this.aboutLicenseLabel.TabIndex = 3;
@@ -628,15 +618,26 @@
             this.aboutHelpersRTB.Text = "• Dr. Mark Heinrich\t\t-\tSenior Design Professor\n• Dr. Paul Gazzillo\t\t-\tAdvisor\n• D" +
     "r. Elaine Weyuker\t-\tContributor";
             // 
-            // label1
+            // aboutModelLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(112, 58);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(153, 20);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "Model Version: 1.0.0";
+            this.aboutModelLabel.AutoSize = true;
+            this.aboutModelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutModelLabel.Location = new System.Drawing.Point(112, 84);
+            this.aboutModelLabel.Name = "aboutModelLabel";
+            this.aboutModelLabel.Size = new System.Drawing.Size(153, 20);
+            this.aboutModelLabel.TabIndex = 8;
+            this.aboutModelLabel.Text = "Model Version: 1.0.0";
+            // 
+            // aboutHeaderLabel
+            // 
+            this.aboutHeaderLabel.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.aboutHeaderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutHeaderLabel.Location = new System.Drawing.Point(116, 7);
+            this.aboutHeaderLabel.Name = "aboutHeaderLabel";
+            this.aboutHeaderLabel.Size = new System.Drawing.Size(380, 22);
+            this.aboutHeaderLabel.TabIndex = 9;
+            this.aboutHeaderLabel.Text = "SecurityWhale - https://psv-ucf.ddns.net/";
+            this.aboutHeaderLabel.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked_1);
             // 
             // PSVForm
             // 
@@ -722,14 +723,14 @@
         private LiveCharts.WinForms.CartesianChart faultChart;
         private System.Windows.Forms.TabPage aboutTab;
         private System.Windows.Forms.PictureBox aboutPicture;
-        private System.Windows.Forms.Label aboutHeaderLabel;
         private System.Windows.Forms.RichTextBox aboutHelpersRTB;
         private System.Windows.Forms.Label aboutHelpLabel;
         private System.Windows.Forms.RichTextBox aboutDevelopersRTB;
         private System.Windows.Forms.Label aboutDevelopedByLabel;
         private System.Windows.Forms.Label aboutLicenseLabel;
-        private System.Windows.Forms.Label aboutVersionLabel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label aboutProgramLabel;
+        private System.Windows.Forms.Label aboutModelLabel;
+        private System.Windows.Forms.RichTextBox aboutHeaderLabel;
     }
 }
 
