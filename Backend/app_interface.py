@@ -9,7 +9,6 @@ import sys                  #For command-line arguments
 from git import Repo
 from github import Github
 from os import walk, path         #For parsing through directories
-import re
 
 '''
 Provides an interface to connect the application with the machine learning model
@@ -60,30 +59,6 @@ def app_interface():
         
     #Predict and print results data to std out
     results = predict(final_data)
-    
-    '''
-    #Debug prints
-    print("\n==========")
-    print("AVERAGES:")
-    print(avgs)
-    
-    print("\n\n==========")
-    print("FINAL AVERAGES:")
-    print(avgs_final)
-    
-    print("\n\n==========")
-    print("REPO DATA:")
-    print(repo_data)
-    
-    print("\n\n==========")
-    print("FINAL DATA:")
-    print(final_data)
-    
-    print("\n\n==========")
-    print("RESULTS:")
-    print(results)
-    #End debug prints
-    '''
     
     #Final results output
     for i, f in enumerate(file_names):
