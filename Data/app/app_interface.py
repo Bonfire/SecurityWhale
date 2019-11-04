@@ -3,7 +3,8 @@ Authors: Thomas Serrano, Curtis Helsel
 Last Updated: OCT-29-2019
 '''
 from config import *   #Application stuff
-import predict                    #ML stuff
+from predictor import *                    #ML stuff
+from application import *
 import sys                  #For command-line arguments
 from git import Repo
 from github import Github
