@@ -45,7 +45,7 @@ def app_interface():
 
     #Get a list of data points for each file
     avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
-    
+
     #Separate file names from avgs
     file_names = []
     avgs_final = []
@@ -56,7 +56,7 @@ def app_interface():
     #Collect data together into a single list
     final_data = []
     for af in avgs_final:
-        final_data.append(af + repo_data)
+        final_data.append(af + repo_data[1:])
         
     #Predict and print results data to std out
     results = predict(final_data)
