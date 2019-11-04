@@ -253,16 +253,24 @@ namespace PSV
             Process pythonProcess = Process.Start(pythonStartInfo);
             StreamReader pythonStream = pythonProcess.StandardOutput;
 
-            // Remove the single-quotes and split the string
-            string[] splitResult = pythonStream.ReadToEnd().Trim('\'').Split(',');
-            string fileName = splitResult[0];
-            double faultProbability = Double.Parse(splitResult[1]);
+            // Wait until the scan is finished
+            pythonProcess.WaitForExit();
 
-            if (faultProbability >= 0.5)
+            // Remove the single-quotes and split the string
+            StringReader outputReader = new StringReader(pythonStream.ReadToEnd());
+            string outputLine;
+            while((outputLine = outputReader.ReadLine()) != null)
             {
-                string[] newRow = { fileName, splitResult[1] };
-                ListViewItem newItem = new ListViewItem(newRow);
-                faultListView.Items.Add(newItem);
+                string[] splitResult = outputLine.Trim('\'').Split(Environment.NewLine.ToCharArray());
+                string fileName = splitResult[0];
+                double faultProbability = Double.Parse(splitResult[1]);
+
+                if (faultProbability >= 0.5)
+                {
+                    string[] newRow = { fileName, splitResult[1] };
+                    ListViewItem newItem = new ListViewItem(newRow);
+                    faultListView.Items.Add(newItem);
+                }
             }
 
             Console.WriteLine("Output: " + pythonStream.ReadToEnd());
