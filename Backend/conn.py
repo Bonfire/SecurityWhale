@@ -17,7 +17,7 @@ def pull_data():
 
     cursor.execute("SELECT file.total_inserts, file.insert_averages, " \
                "file.total_deletions, file.deletion_averages, total_lines, " \
-               "file.line_averages, file.commit_size, " \
+               "file.line_averages, " \
                "repo.assignees, repo.size, repo.commits, repo.events, " \
                "repo.forks, repo.branches, repo.contributors, repo.labels, " \
                "repo.language_count, repo.language_size, repo.milestones, " \
