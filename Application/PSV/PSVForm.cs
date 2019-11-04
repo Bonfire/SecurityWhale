@@ -237,7 +237,7 @@ namespace PSV
 
             // Setup the base for our python environment and scripts
             string pythonInterpreter = "python";
-            string pythonScript = @"..\..\..\..\Data\app\app_interface.py";
+            string pythonScript = @"..\..\..\..\Backend\app_interface.py";
             string repoURL = projectURLTextBox.Text;
             string[] splitRepoURL = repoURL.Split('/');
             string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
