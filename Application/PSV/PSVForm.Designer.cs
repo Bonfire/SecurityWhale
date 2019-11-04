@@ -70,15 +70,25 @@
             this.tableTab = new System.Windows.Forms.TabPage();
             this.faultListView = new System.Windows.Forms.ListView();
             this.fileColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.probColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.graphTab = new System.Windows.Forms.TabPage();
+            this.faultChart = new LiveCharts.WinForms.CartesianChart();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.provideDataToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.includeHiddenItemsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileNamesToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileExtensionToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.foldersToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.probColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.faultChart = new LiveCharts.WinForms.CartesianChart();
+            this.aboutTab = new System.Windows.Forms.TabPage();
+            this.aboutPicture = new System.Windows.Forms.PictureBox();
+            this.aboutHeaderLabel = new System.Windows.Forms.Label();
+            this.aboutVersionLabel = new System.Windows.Forms.Label();
+            this.aboutLicenseLabel = new System.Windows.Forms.Label();
+            this.aboutDevelopedByLabel = new System.Windows.Forms.Label();
+            this.aboutDevelopersRTB = new System.Windows.Forms.RichTextBox();
+            this.aboutHelpLabel = new System.Windows.Forms.Label();
+            this.aboutHelpersRTB = new System.Windows.Forms.RichTextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.scanPage.SuspendLayout();
             this.settingsGroupBox.SuspendLayout();
@@ -87,12 +97,15 @@
             this.infoTabControl.SuspendLayout();
             this.tableTab.SuspendLayout();
             this.graphTab.SuspendLayout();
+            this.aboutTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.aboutPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
             // 
             this.tabControl.Controls.Add(this.scanPage);
             this.tabControl.Controls.Add(this.viewPage);
+            this.tabControl.Controls.Add(this.aboutTab);
             this.tabControl.Location = new System.Drawing.Point(12, 6);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -445,7 +458,7 @@
             this.viewPage.Location = new System.Drawing.Point(4, 22);
             this.viewPage.Name = "viewPage";
             this.viewPage.Padding = new System.Windows.Forms.Padding(3);
-            this.viewPage.Size = new System.Drawing.Size(802, 417);
+            this.viewPage.Size = new System.Drawing.Size(802, 411);
             this.viewPage.TabIndex = 1;
             this.viewPage.Text = "View";
             this.viewPage.UseVisualStyleBackColor = true;
@@ -489,6 +502,11 @@
             this.fileColumn.Text = "Filename";
             this.fileColumn.Width = 620;
             // 
+            // probColumn
+            // 
+            this.probColumn.Text = "Fault Probability";
+            this.probColumn.Width = 143;
+            // 
             // graphTab
             // 
             this.graphTab.Controls.Add(this.faultChart);
@@ -500,11 +518,6 @@
             this.graphTab.Text = "Graph";
             this.graphTab.UseVisualStyleBackColor = true;
             // 
-            // probColumn
-            // 
-            this.probColumn.Text = "Fault Probability";
-            this.probColumn.Width = 143;
-            // 
             // faultChart
             // 
             this.faultChart.Location = new System.Drawing.Point(6, 6);
@@ -512,6 +525,118 @@
             this.faultChart.Size = new System.Drawing.Size(770, 367);
             this.faultChart.TabIndex = 0;
             this.faultChart.Text = "cartesianChart1";
+            // 
+            // aboutTab
+            // 
+            this.aboutTab.Controls.Add(this.label1);
+            this.aboutTab.Controls.Add(this.aboutHelpersRTB);
+            this.aboutTab.Controls.Add(this.aboutHelpLabel);
+            this.aboutTab.Controls.Add(this.aboutDevelopersRTB);
+            this.aboutTab.Controls.Add(this.aboutDevelopedByLabel);
+            this.aboutTab.Controls.Add(this.aboutLicenseLabel);
+            this.aboutTab.Controls.Add(this.aboutVersionLabel);
+            this.aboutTab.Controls.Add(this.aboutHeaderLabel);
+            this.aboutTab.Controls.Add(this.aboutPicture);
+            this.aboutTab.Location = new System.Drawing.Point(4, 22);
+            this.aboutTab.Name = "aboutTab";
+            this.aboutTab.Padding = new System.Windows.Forms.Padding(3);
+            this.aboutTab.Size = new System.Drawing.Size(802, 417);
+            this.aboutTab.TabIndex = 2;
+            this.aboutTab.Text = "About";
+            this.aboutTab.UseVisualStyleBackColor = true;
+            // 
+            // aboutPicture
+            // 
+            this.aboutPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.aboutPicture.Image = global::PSV.Properties.Resources.Bug_Icon_3;
+            this.aboutPicture.Location = new System.Drawing.Point(6, 6);
+            this.aboutPicture.Name = "aboutPicture";
+            this.aboutPicture.Size = new System.Drawing.Size(100, 100);
+            this.aboutPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.aboutPicture.TabIndex = 0;
+            this.aboutPicture.TabStop = false;
+            // 
+            // aboutHeaderLabel
+            // 
+            this.aboutHeaderLabel.AutoSize = true;
+            this.aboutHeaderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutHeaderLabel.Location = new System.Drawing.Point(112, 6);
+            this.aboutHeaderLabel.Name = "aboutHeaderLabel";
+            this.aboutHeaderLabel.Size = new System.Drawing.Size(124, 20);
+            this.aboutHeaderLabel.TabIndex = 1;
+            this.aboutHeaderLabel.Text = "SecurityWhale";
+            // 
+            // aboutVersionLabel
+            // 
+            this.aboutVersionLabel.AutoSize = true;
+            this.aboutVersionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutVersionLabel.Location = new System.Drawing.Point(112, 32);
+            this.aboutVersionLabel.Name = "aboutVersionLabel";
+            this.aboutVersionLabel.Size = new System.Drawing.Size(170, 20);
+            this.aboutVersionLabel.TabIndex = 2;
+            this.aboutVersionLabel.Text = "Program Version: 1.0.0";
+            // 
+            // aboutLicenseLabel
+            // 
+            this.aboutLicenseLabel.AutoSize = true;
+            this.aboutLicenseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutLicenseLabel.Location = new System.Drawing.Point(112, 84);
+            this.aboutLicenseLabel.Name = "aboutLicenseLabel";
+            this.aboutLicenseLabel.Size = new System.Drawing.Size(384, 20);
+            this.aboutLicenseLabel.TabIndex = 3;
+            this.aboutLicenseLabel.Text = "Licensed under the GNU General Public License v3.0";
+            // 
+            // aboutDevelopedByLabel
+            // 
+            this.aboutDevelopedByLabel.AutoSize = true;
+            this.aboutDevelopedByLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutDevelopedByLabel.Location = new System.Drawing.Point(6, 121);
+            this.aboutDevelopedByLabel.Name = "aboutDevelopedByLabel";
+            this.aboutDevelopedByLabel.Size = new System.Drawing.Size(111, 20);
+            this.aboutDevelopedByLabel.TabIndex = 4;
+            this.aboutDevelopedByLabel.Text = "Developed By:";
+            // 
+            // aboutDevelopersRTB
+            // 
+            this.aboutDevelopersRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.aboutDevelopersRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutDevelopersRTB.Location = new System.Drawing.Point(20, 144);
+            this.aboutDevelopersRTB.Name = "aboutDevelopersRTB";
+            this.aboutDevelopersRTB.Size = new System.Drawing.Size(476, 130);
+            this.aboutDevelopersRTB.TabIndex = 5;
+            this.aboutDevelopersRTB.Text = resources.GetString("aboutDevelopersRTB.Text");
+            this.aboutDevelopersRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
+            // 
+            // aboutHelpLabel
+            // 
+            this.aboutHelpLabel.AutoSize = true;
+            this.aboutHelpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutHelpLabel.Location = new System.Drawing.Point(6, 254);
+            this.aboutHelpLabel.Name = "aboutHelpLabel";
+            this.aboutHelpLabel.Size = new System.Drawing.Size(123, 20);
+            this.aboutHelpLabel.TabIndex = 6;
+            this.aboutHelpLabel.Text = "With Help From:";
+            // 
+            // aboutHelpersRTB
+            // 
+            this.aboutHelpersRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.aboutHelpersRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutHelpersRTB.Location = new System.Drawing.Point(20, 280);
+            this.aboutHelpersRTB.Name = "aboutHelpersRTB";
+            this.aboutHelpersRTB.Size = new System.Drawing.Size(476, 131);
+            this.aboutHelpersRTB.TabIndex = 7;
+            this.aboutHelpersRTB.Text = "• Dr. Mark Heinrich\t\t-\tSenior Design Professor\n• Dr. Paul Gazzillo\t\t-\tAdvisor\n• D" +
+    "r. Elaine Weyuker\t-\tContributor";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(112, 58);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(153, 20);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Model Version: 1.0.0";
             // 
             // PSVForm
             // 
@@ -524,7 +649,7 @@
             this.MaximumSize = new System.Drawing.Size(850, 500);
             this.MinimumSize = new System.Drawing.Size(850, 500);
             this.Name = "PSVForm";
-            this.Text = "PSV";
+            this.Text = "SecurityWhale";
             this.Load += new System.EventHandler(this.PSVForm_Load);
             this.tabControl.ResumeLayout(false);
             this.scanPage.ResumeLayout(false);
@@ -537,6 +662,9 @@
             this.infoTabControl.ResumeLayout(false);
             this.tableTab.ResumeLayout(false);
             this.graphTab.ResumeLayout(false);
+            this.aboutTab.ResumeLayout(false);
+            this.aboutTab.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.aboutPicture)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -592,6 +720,16 @@
         private System.Windows.Forms.ToolTip foldersToolTip;
         private System.Windows.Forms.ColumnHeader probColumn;
         private LiveCharts.WinForms.CartesianChart faultChart;
+        private System.Windows.Forms.TabPage aboutTab;
+        private System.Windows.Forms.PictureBox aboutPicture;
+        private System.Windows.Forms.Label aboutHeaderLabel;
+        private System.Windows.Forms.RichTextBox aboutHelpersRTB;
+        private System.Windows.Forms.Label aboutHelpLabel;
+        private System.Windows.Forms.RichTextBox aboutDevelopersRTB;
+        private System.Windows.Forms.Label aboutDevelopedByLabel;
+        private System.Windows.Forms.Label aboutLicenseLabel;
+        private System.Windows.Forms.Label aboutVersionLabel;
+        private System.Windows.Forms.Label label1;
     }
 }
 
