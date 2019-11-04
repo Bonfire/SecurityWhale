@@ -83,9 +83,7 @@
             this.aboutPicture = new System.Windows.Forms.PictureBox();
             this.aboutProgramLabel = new System.Windows.Forms.Label();
             this.aboutLicenseLabel = new System.Windows.Forms.Label();
-            this.aboutDevelopedByLabel = new System.Windows.Forms.Label();
             this.aboutDevelopersRTB = new System.Windows.Forms.RichTextBox();
-            this.aboutHelpLabel = new System.Windows.Forms.Label();
             this.aboutHelpersRTB = new System.Windows.Forms.RichTextBox();
             this.aboutModelLabel = new System.Windows.Forms.Label();
             this.aboutHeaderLabel = new System.Windows.Forms.RichTextBox();
@@ -531,9 +529,7 @@
             this.aboutTab.Controls.Add(this.aboutHeaderLabel);
             this.aboutTab.Controls.Add(this.aboutModelLabel);
             this.aboutTab.Controls.Add(this.aboutHelpersRTB);
-            this.aboutTab.Controls.Add(this.aboutHelpLabel);
             this.aboutTab.Controls.Add(this.aboutDevelopersRTB);
-            this.aboutTab.Controls.Add(this.aboutDevelopedByLabel);
             this.aboutTab.Controls.Add(this.aboutLicenseLabel);
             this.aboutTab.Controls.Add(this.aboutProgramLabel);
             this.aboutTab.Controls.Add(this.aboutPicture);
@@ -576,47 +572,27 @@
             this.aboutLicenseLabel.TabIndex = 3;
             this.aboutLicenseLabel.Text = "Licensed under the GNU General Public License v3.0";
             // 
-            // aboutDevelopedByLabel
-            // 
-            this.aboutDevelopedByLabel.AutoSize = true;
-            this.aboutDevelopedByLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutDevelopedByLabel.Location = new System.Drawing.Point(6, 121);
-            this.aboutDevelopedByLabel.Name = "aboutDevelopedByLabel";
-            this.aboutDevelopedByLabel.Size = new System.Drawing.Size(111, 20);
-            this.aboutDevelopedByLabel.TabIndex = 4;
-            this.aboutDevelopedByLabel.Text = "Developed By:";
-            // 
             // aboutDevelopersRTB
             // 
             this.aboutDevelopersRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.aboutDevelopersRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutDevelopersRTB.Location = new System.Drawing.Point(20, 144);
+            this.aboutDevelopersRTB.Location = new System.Drawing.Point(6, 112);
             this.aboutDevelopersRTB.Name = "aboutDevelopersRTB";
-            this.aboutDevelopersRTB.Size = new System.Drawing.Size(476, 130);
+            this.aboutDevelopersRTB.Size = new System.Drawing.Size(790, 130);
             this.aboutDevelopersRTB.TabIndex = 5;
             this.aboutDevelopersRTB.Text = resources.GetString("aboutDevelopersRTB.Text");
             this.aboutDevelopersRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
-            // 
-            // aboutHelpLabel
-            // 
-            this.aboutHelpLabel.AutoSize = true;
-            this.aboutHelpLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutHelpLabel.Location = new System.Drawing.Point(6, 254);
-            this.aboutHelpLabel.Name = "aboutHelpLabel";
-            this.aboutHelpLabel.Size = new System.Drawing.Size(123, 20);
-            this.aboutHelpLabel.TabIndex = 6;
-            this.aboutHelpLabel.Text = "With Help From:";
             // 
             // aboutHelpersRTB
             // 
             this.aboutHelpersRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.aboutHelpersRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutHelpersRTB.Location = new System.Drawing.Point(20, 280);
+            this.aboutHelpersRTB.Location = new System.Drawing.Point(6, 248);
             this.aboutHelpersRTB.Name = "aboutHelpersRTB";
             this.aboutHelpersRTB.Size = new System.Drawing.Size(476, 131);
             this.aboutHelpersRTB.TabIndex = 7;
-            this.aboutHelpersRTB.Text = "• Dr. Mark Heinrich\t\t-\tSenior Design Professor\n• Dr. Paul Gazzillo\t\t-\tAdvisor\n• D" +
-    "r. Elaine Weyuker\t-\tContributor";
+            this.aboutHelpersRTB.Text = "With Help From:\n\t• Dr. Mark Heinrich\t\t-\tSenior Design Professor\n\t• Dr. Paul Gazzi" +
+    "llo\t\t-\tAdvisor\n\t• Dr. Elaine Weyuker\t-\tContributor";
             // 
             // aboutModelLabel
             // 
@@ -724,9 +700,7 @@
         private System.Windows.Forms.TabPage aboutTab;
         private System.Windows.Forms.PictureBox aboutPicture;
         private System.Windows.Forms.RichTextBox aboutHelpersRTB;
-        private System.Windows.Forms.Label aboutHelpLabel;
         private System.Windows.Forms.RichTextBox aboutDevelopersRTB;
-        private System.Windows.Forms.Label aboutDevelopedByLabel;
         private System.Windows.Forms.Label aboutLicenseLabel;
         private System.Windows.Forms.Label aboutProgramLabel;
         private System.Windows.Forms.Label aboutModelLabel;
