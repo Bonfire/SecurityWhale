@@ -36,12 +36,13 @@ def app_interface():
     #Retrieve all filenames for all directories
     files_path = []
     for root, dirs, files in walk(repo_dir):
-        f_path = root.split(path.basename(repo_name) + "/")[-1]
+        f_path = root.split(path.basename(repo_name) + "\\")[-1]
         if f_path is not "":
             f_path += "/"
         files_path += [str(f_path + f) for f in files if not f[0] == '.']
         dirs[:] = [d for d in dirs if not d[0] == '.']
 
+    print(files_path)
     #Get a list of data points for each file
     avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
 
@@ -56,7 +57,7 @@ def app_interface():
     final_data = []
     for af in avgs_final:
         final_data.append(af + repo_data[1:])
-        
+	       
     #Predict and print results data to std out
     results = predict(final_data)
     
