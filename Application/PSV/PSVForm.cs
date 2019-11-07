@@ -260,11 +260,13 @@ namespace PSV
                 FileName = pythonInterpreter,
                 Arguments = string.Format("{0} {1} {2} {3} {4}", pythonScript, githubUsername, githubPassword, repoName, combinedPath),
                 UseShellExecute = false,
-                RedirectStandardOutput = true
+                RedirectStandardOutput = true,
+                // RedirectStandardError = true
             };
 
             Process pythonProcess = Process.Start(pythonStartInfo);
-            StreamReader pythonStream = pythonProcess.StandardOutput;
+            StreamReader pythonOutStream = pythonProcess.StandardOutput;
+            // StreamReader pythonErrStream = pythonProcess.StandardError;
 
             // Wait until the scan is finished
             pythonProcess.WaitForExit();
@@ -279,7 +281,7 @@ namespace PSV
             };
 
             // Remove the single-quotes and split the string
-            StringReader outputReader = new StringReader(pythonStream.ReadToEnd());
+            StringReader outputReader = new StringReader(pythonOutStream.ReadToEnd());
             string outputLine;
             while((outputLine = outputReader.ReadLine()) != null)
             {
@@ -298,7 +300,8 @@ namespace PSV
                 }
             }
 
-            Console.WriteLine("Output: " + pythonStream.ReadToEnd());
+            Console.WriteLine("Output: " + pythonOutStream.ReadToEnd());
+            // Console.WriteLine("Error: " + pythonErrStream.ReadToEnd());
         }
 
     // Update our scan/exclusion settings set by the user
