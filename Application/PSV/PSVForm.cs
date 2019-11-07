@@ -256,6 +256,15 @@ namespace PSV
             // Wait until the scan is finished
             pythonProcess.WaitForExit();
 
+            faultChart.Series = new SeriesCollection
+            {
+                new ColumnSeries
+                {
+                    Title = "Fault Probabilities",
+                    Values = new ChartValues<double> { }
+                }
+            };
+
             // Remove the single-quotes and split the string
             StringReader outputReader = new StringReader(pythonStream.ReadToEnd());
             string outputLine;
@@ -270,6 +279,9 @@ namespace PSV
                     string[] newRow = { fileName, splitResult[1] };
                     ListViewItem newItem = new ListViewItem(newRow);
                     faultListView.Items.Add(newItem);
+
+                    // Add the value to our fault chart
+                    faultChart.Series[0].Values.Add(faultProbability);
                 }
             }
 
