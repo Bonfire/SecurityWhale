@@ -162,7 +162,12 @@ namespace PSV
             }
             else
             {
-                rootDirectoryInfo = new DirectoryInfo(pathToCloneTextBox.Text);
+                // Extract the repo name from the URL, then combine it with the path to make the full path
+                string[] repoSplit = projectURLTextBox.Text.Trim().Split('/');
+                string repoName = repoSplit[repoSplit.Length - 1].Split('.')[0];
+                string combinedPath = Path.Combine(pathToCloneTextBox.Text, repoName);
+
+                rootDirectoryInfo = new DirectoryInfo(combinedPath);
             }
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
