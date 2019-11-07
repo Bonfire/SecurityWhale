@@ -55,13 +55,8 @@ namespace PSV
                 // Clone the repo and close the form
                 // We also want to nullify all credential objects to respect the user's privacy
                 // This should make the memory "out of scope" in the eyes of the garbage collector
-                new Thread(new ThreadStart(delegate
-                {
-                    MessageBox.Show("Attempting to Clone the Repository...");
-                })).Start();
+                Repository.Clone(projectURL, pathToClone, credCloneOptions);
 
-                await Task.Run(() => Repository.Clone(projectURL, pathToClone, credCloneOptions));
-                
                 userCredentials = null;
                 credCloneOptions = null;
 
@@ -76,7 +71,7 @@ namespace PSV
             {
                 new Thread(new ThreadStart(delegate
                 {
-                    MessageBox.Show("Failed to properly authenticate. Please verify that your credentials are correct.", "Authentication Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Failed to clone the repo. Please check your internet connection or credentials.", "Cloning Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 })).Start();
             }
         }
