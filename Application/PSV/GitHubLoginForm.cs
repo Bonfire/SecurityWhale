@@ -2,6 +2,7 @@
 using LibGit2Sharp.Handlers;
 using Microsoft.Alm.Authentication;
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -55,7 +56,14 @@ namespace PSV
                 // Clone the repo and close the form
                 // We also want to nullify all credential objects to respect the user's privacy
                 // This should make the memory "out of scope" in the eyes of the garbage collector
-                Repository.Clone(projectURL, pathToClone, credCloneOptions);
+
+                // Extract the repo name from the URL, then combine it with the path to make the full path
+                string[] repoSplit = projectURL.Trim().Split('/');
+                string repoName = repoSplit[repoSplit.Length - 1].Split('.')[0];
+                string combinedPath = Path.Combine(pathToClone, repoName);
+
+
+                Repository.Clone(projectURL, combinedPath, credCloneOptions);
 
                 userCredentials = null;
                 credCloneOptions = null;

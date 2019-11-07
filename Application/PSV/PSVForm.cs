@@ -57,11 +57,10 @@ namespace PSV
             }
         }
 
-        // See if the path is valid by verifying that it exists and there are no files in it
+        // See if the path is valid by verifying that it exists
         public bool IsPathValid()
         {
-            string[] files = Directory.GetFiles(pathToCloneTextBox.Text);
-            return files.Length == 0 ? true : false;
+            return Directory.Exists(pathToCloneTextBox.Text);
         }
 
         // Open the project in the application (this is NOT the scan)
@@ -77,7 +76,12 @@ namespace PSV
             // Clone the repo if it isn't private (already cloned)
             if (IsGitURLValid() && !isRepoPrivate)
             {
-                Repository.Clone(projectURLTextBox.Text, pathToCloneTextBox.Text);
+                // Extract the repo name from the URL, then combine it with the path to make the full path
+                string[] repoSplit = projectURLTextBox.Text.Trim().Split('/');
+                string repoName = repoSplit[repoSplit.Length - 1].Split('.')[0];
+                string combinedPath = Path.Combine(pathToCloneTextBox.Text, repoName);
+
+                Repository.Clone(projectURLTextBox.Text, combinedPath);
             }
         }
 
