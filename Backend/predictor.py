@@ -1,7 +1,7 @@
 import numpy as np
 from keras import models
 from sklearn.preprocessing import StandardScaler
-from sklearn.externals import joblib 
+import joblib
 import os.path
 import os
 import warnings
