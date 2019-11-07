@@ -75,7 +75,14 @@ namespace PSV
 
                 this.Close();
             }
-            catch (LibGit2SharpException)
+            catch (LibGit2Sharp.NameConflictException)
+            {
+                new Thread(new ThreadStart(delegate
+                {
+                    MessageBox.Show("Failed to clone the repo. Directory already exists with that name.", "Cloning Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                })).Start();
+            }
+            catch (LibGit2Sharp.LibGit2SharpException)
             {
                 new Thread(new ThreadStart(delegate
                 {

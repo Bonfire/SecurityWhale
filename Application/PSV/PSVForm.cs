@@ -251,10 +251,14 @@ namespace PSV
             string[] splitRepoURL = repoURL.Split('/');
             string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
 
+            // Get the repo path from the repo name
+            string repoPath = repoName.Split('/')[1];
+            string combinedPath = Path.Combine(pathToCloneTextBox.Text, repoPath);
+
             ProcessStartInfo pythonStartInfo = new ProcessStartInfo
             {
                 FileName = pythonInterpreter,
-                Arguments = string.Format("{0} {1} {2} {3} {4}", pythonScript, githubUsername, githubPassword, repoName, pathToCloneTextBox.Text),
+                Arguments = string.Format("{0} {1} {2} {3} {4}", pythonScript, githubUsername, githubPassword, repoName, combinedPath),
                 UseShellExecute = false,
                 RedirectStandardOutput = true
             };
