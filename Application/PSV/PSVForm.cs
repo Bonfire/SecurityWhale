@@ -289,7 +289,7 @@ namespace PSV
                     string fileName = splitResult[0];
                     double faultProbability = Double.Parse(splitResult[1]);
 
-                    string[] newRow = { fileName, faultProbability };
+                    string[] newRow = { fileName, splitResult[1] };
                     ListViewItem newItem = new ListViewItem(newRow);
                     faultListView.Items.Add(newItem);
 
