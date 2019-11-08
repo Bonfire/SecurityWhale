@@ -42,7 +42,6 @@ def app_interface():
         files_path += [str(f_path + f) for f in files if not f[0] == '.']
         dirs[:] = [d for d in dirs if not d[0] == '.']
 
-    print(files_path)
     #Get a list of data points for each file
     avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
 

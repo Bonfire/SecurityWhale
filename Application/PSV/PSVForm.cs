@@ -280,16 +280,16 @@ namespace PSV
 
             // Remove the single-quotes and split the string
             StringReader outputReader = new StringReader(pythonOutStream.ReadToEnd());
-            string outputLine = outputReader.ReadLine();
-            while((outputLine = outputReader.ReadLine()) != null)
+            string outputLine;
+            while ((outputLine = outputReader.ReadLine()) != null)
             {
-                string[] splitResult = outputLine.Trim('\'').Split(Environment.NewLine.ToCharArray());
-                string fileName = splitResult[0];
-                double faultProbability = Double.Parse(splitResult[1]);
-
-                if (faultProbability >= 0.5)
+                if (!outputLine.Contains("Using TensorFlow backend."))
                 {
-                    string[] newRow = { fileName, splitResult[1] };
+                    string[] splitResult = outputLine.Trim().Split(',');
+                    string fileName = splitResult[0];
+                    double faultProbability = Double.Parse(splitResult[1]);
+
+                    string[] newRow = { fileName, faultProbability };
                     ListViewItem newItem = new ListViewItem(newRow);
                     faultListView.Items.Add(newItem);
 
