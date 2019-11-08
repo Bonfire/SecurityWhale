@@ -253,10 +253,21 @@ def dirParser(repository_dir):
     """
     num_dir_files = 0
     files = []
+    count = 0
+    path = repository_dir
     
     # runs through the complete repository directory to get number of files
-    for (dirpath, dirnames, filenames) in walk(repository_dir):
+    for (dirpath, dirnames, filenames) in walk(path):
         for filename in [f for f in filenames]:
             files.extend(filenames)
             break
     num_dir_files = len(files)
+    
+    # mmm should get count of subdirs...buut also might just do the first level of the directories..
+    # TODO: Test lol 0.0 *cough*
+    # check is list of director
+    for f in os.listdir(path):
+        # for each folder in path check if directory, if so increment count
+        child = os.path.join(path,f)
+        if os.path.isdir(child):
+            count += 1
