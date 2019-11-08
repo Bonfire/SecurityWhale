@@ -243,3 +243,20 @@ def update_db(update_files, github_name, repo_dir, repo):
         else:
             print(err)
 
+            
+def dirParser(repository_dir):
+    """
+    Parses repository directory for number of files,subdirectories, deepest level of subdirectories, etc.
+    
+    @param repository_dir: project path of given directory
+    @return:
+    """
+    num_dir_files = 0
+    files = []
+    
+    # runs through the complete repository directory to get number of files
+    for (dirpath, dirnames, filenames) in walk(repository_dir):
+        for filename in [f for f in filenames]:
+            files.extend(filenames)
+            break
+    num_dir_files = len(files)
