@@ -1,4 +1,5 @@
 from os import walk
+import re
 
 import mysql.connector
 from git import Repo
@@ -244,17 +245,16 @@ def update_db(update_files, github_name, repo_dir, repo):
             print(err)
 
             
-def dirParser(repository_dir):
+def dirParser(path):
     """
     Parses repository directory for number of files,subdirectories, deepest level of subdirectories, etc.
     
-    @param repository_dir: project path of given directory
+    @param path: project path of given directory
     @return:
     """
     num_dir_files = 0
     files = []
     count = 0
-    path = repository_dir
     
     # runs through the complete repository directory to get number of files
     for (dirpath, dirnames, filenames) in walk(path):
@@ -271,3 +271,20 @@ def dirParser(repository_dir):
         child = os.path.join(path,f)
         if os.path.isdir(child):
             count += 1
+            
+
+def indentParser(path):
+    """
+    reads given file and grabs number of indentations
+    
+    @param path: file path
+    """
+    indentationCount = 0
+    
+    # opens file and grabs the line number and the number of indentations for each line and adds them up
+    #TODO TEST
+    with open(path) as file:
+        for mark, line in enumerate(file.readlines()):
+            indentationCount += (len(re.findall("^ *", line)[0]))
+            
+    return indentationCount
