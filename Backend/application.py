@@ -213,9 +213,6 @@ def num_subdirs(path):
 		for d in dirnames:
 			dirs.append(d)
 	
-	for i in dirs:
-		print(i)
-	
 	return len(dirs)
 
 def update_db(update_files, github_name, repo_dir, repo):
