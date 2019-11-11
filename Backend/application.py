@@ -208,12 +208,12 @@ def get_averages(file_list, commit_hash, repo):
 #Takes a path to a directory and returns the total amount of subdirectories it contains.
 def num_subdirs(path):
 
-    dirs = []
+    count = 0
     for (dirpath, dirnames, filenames) in walk(path):
         for d in dirnames:
-            dirs.append(d)
+            count += 1
 
-    return len(dirs)
+    return count
 
 #Takes a path to a directory and returns the deepest level of subdirectories as an int
 def max_subdirs(path):
@@ -222,12 +222,12 @@ def max_subdirs(path):
     for (dirpath, dirnames, filenames) in walk(path):
         '''
         Adjust dir to only get count local subdirectories.
-        Ex: if path is 'C:\Users\Desktop\foobar\' and the current directory is
-        'C:\Users\Desktop\foobar\example\', we cut out the path to just look at
-        '\example\'.
+        Ex: if path is 'C:/Users/Desktop/foobar/' and the current directory is
+        'C:/Users/Desktop/foobar/example/', we cut out the path to just look at
+        '/example/', which is one 'layer' deep.
         '''
         dir_adjust = dirpath.replace(path, '')
-        count = len(dir_adjust.split('\\'))
+        count = dir_adjust.count('\\')
 
         if count > max_subs:
             max_subs = count
