@@ -207,13 +207,32 @@ def get_averages(file_list, commit_hash, repo):
 
 #Takes a path to a directory and returns the total amount of subdirectories it contains.
 def num_subdirs(path):
-	
-	dirs = []
-	for (dirpath, dirnames, filenames) in walk(path):
-		for d in dirnames:
-			dirs.append(d)
-	
-	return len(dirs)
+
+    dirs = []
+    for (dirpath, dirnames, filenames) in walk(path):
+        for d in dirnames:
+            dirs.append(d)
+
+    return len(dirs)
+
+#Takes a path to a directory and returns the deepest level of subdirectories as an int
+def max_subdirs(path):
+
+    max_subs = 0
+    for (dirpath, dirnames, filenames) in walk(path):
+        '''
+        Adjust dir to only get count local subdirectories.
+        Ex: if path is 'C:\Users\Desktop\foobar\' and the current directory is
+        'C:\Users\Desktop\foobar\example\', we cut out the path to just look at
+        '\example\'.
+        '''
+        dir_adjust = dirpath.replace(path, '')
+        count = len(dir_adjust.split('\\'))
+
+        if count > max_subs:
+            max_subs = count
+
+    return max_subs
 
 def update_db(update_files, github_name, repo_dir, repo):
     
