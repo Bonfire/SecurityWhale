@@ -205,6 +205,19 @@ def get_averages(file_list, commit_hash, repo):
          
     return file_totals
 
+#Takes a path to a directory and returns the total amount of subdirectories it contains.
+def num_subdirs(path):
+	
+	dirs = []
+	for (dirpath, dirnames, filenames) in walk(path):
+		for d in dirnames:
+			dirs.append(d)
+	
+	for i in dirs:
+		print(i)
+	
+	return len(dirs)
+
 def update_db(update_files, github_name, repo_dir, repo):
     
     git = access_github()
