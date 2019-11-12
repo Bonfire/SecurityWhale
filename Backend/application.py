@@ -283,13 +283,18 @@ def indent_parser(path):
     reads given file and grabs number of indentations
     
     @param path: file path
+    @return indentation_count: total number of indentations from a file
     """
     indentation_count = 0
     
     # opens file and grabs the line number and the number of indentations for each line and adds them up
+    with open(path) as file_path:
+        line = file_path.readline()
+        indentation_count += (len(line) - len(line.lstrip()))
+    
     #TODO TEST
-    with open(path) as file:
-        for mark, line in enumerate(file.readlines()):
-            indentation_count += (len(re.findall("^ *", line)[0]))
-            
+    #with open(path) as file:
+    #    for mark, line in enumerate(file.readlines()):
+    #        indentation_count += (len(re.findall("^ *", line)[0]))       
     return indentation_count
+
