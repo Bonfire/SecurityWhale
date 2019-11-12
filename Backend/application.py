@@ -245,16 +245,15 @@ def update_db(update_files, github_name, repo_dir, repo):
             print(err)
 
             
-def dirParser(path):
+def dir_num_parser(path):
     """
     Parses repository directory for number of files,subdirectories, deepest level of subdirectories, etc.
     
     @param path: project path of given directory
-    @return:
+    @return num_dir_files: total number of files in project
     """
     num_dir_files = 0
     files = []
-    count = 0
     
     # runs through the complete repository directory to get number of files
     for (dirpath, dirnames, filenames) in walk(path):
@@ -262,29 +261,35 @@ def dirParser(path):
             files.extend(filenames)
             break
     num_dir_files = len(files)
+
+def sub_dir_parser(path):
+    """
+    Gets count of subdirs...buut also might just do the first level of the directories..
+    @param path: project path of given directory
+    @return sub_dirs: total number of sub directories in project
+    """
+    sub_dir = 0
     
-    # mmm should get count of subdirs...buut also might just do the first level of the directories..
-    # TODO: Test lol 0.0 *cough*
     # check is list of director
     for f in os.listdir(path):
         # for each folder in path check if directory, if so increment count
         child = os.path.join(path,f)
         if os.path.isdir(child):
-            count += 1
+            sub_dir += 1
             
 
-def indentParser(path):
+def indent_parser(path):
     """
     reads given file and grabs number of indentations
     
     @param path: file path
     """
-    indentationCount = 0
+    indentation_count = 0
     
     # opens file and grabs the line number and the number of indentations for each line and adds them up
     #TODO TEST
     with open(path) as file:
         for mark, line in enumerate(file.readlines()):
-            indentationCount += (len(re.findall("^ *", line)[0]))
+            indentation_count += (len(re.findall("^ *", line)[0]))
             
-    return indentationCount
+    return indentation_count
