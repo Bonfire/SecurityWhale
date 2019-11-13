@@ -227,7 +227,7 @@ def max_subdirs(path):
         '/example/', which is one 'layer' deep.
         '''
         dir_adjust = dirpath.replace(path, '')
-        count = dir_adjust.count('\\')
+        count = dir_adjust.count('/')
 
         if count > max_subs:
             max_subs = count
