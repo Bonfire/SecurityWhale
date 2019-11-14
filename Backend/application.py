@@ -208,12 +208,7 @@ def get_averages(file_list, commit_hash, repo):
 #Takes a path to a directory and returns the total amount of subdirectories it contains.
 def num_subdirs(path):
 
-    count = 0
-    for (dirpath, dirnames, filenames) in walk(path):
-        for d in dirnames:
-            count += 1
-
-    return count
+    return max(0, len([dirName for _, dirName, in walk(path)]) - 1)
 
 #Takes a path to a directory and returns the deepest level of subdirectories as an int
 def max_subdirs(path):
@@ -229,8 +224,7 @@ def max_subdirs(path):
         dir_adjust = dirpath.replace(path, '')
         count = dir_adjust.count('/')
 
-        if count > max_subs:
-            max_subs = count
+        max_subs = count if (count > max_subs) else max_subs
 
     return max_subs
 
