@@ -268,14 +268,15 @@ def sub_dir_parser(path):
     @param path: project path of given directory
     @return sub_dirs: total number of sub directories in project
     """
-    sub_dir = 0
+    sub_dir = []
     
-    # check is list of director
-    for f in os.listdir(path):
-        # for each folder in path check if directory, if so increment count
-        child = os.path.join(path,f)
-        if os.path.isdir(child):
-            sub_dir += 1
+    # returns number of sub folders in directory
+    for (dirpath, dirnames, filenames) in walk(path):
+        for dirname in [d for d in dirnames]:
+            sub_dirs.extend(dirnames)
+            break
+    
+    return len(sub_dirs)
             
 
 def indent_parser(path):
@@ -288,13 +289,9 @@ def indent_parser(path):
     indentation_count = 0
     
     # opens file and grabs the line number and the number of indentations for each line and adds them up
-    with open(path) as file_path:
-        line = file_path.readline()
-        indentation_count += (len(line) - len(line.lstrip()))
+    with open(path) as file:
+        for mark, line in enumerate(file.readlines()):
+            indentation_count += (len(re.findall("^ *", line)[0]))       
     
-    #TODO TEST
-    #with open(path) as file:
-    #    for mark, line in enumerate(file.readlines()):
-    #        indentation_count += (len(re.findall("^ *", line)[0]))       
     return indentation_count
 
