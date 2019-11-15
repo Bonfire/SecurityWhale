@@ -1,4 +1,7 @@
 from os import walk
+from os import path
+from os import listdir
+#from os import *
 
 import mysql.connector
 from git import Repo
@@ -204,6 +207,32 @@ def get_averages(file_list, commit_hash, repo):
                     phile_info[index + 1] = val / phile_info[index + 1]
          
     return file_totals
+
+#Takes a path to a directory and returns the total amount of subdirectories it contains.
+def num_subdirs(path):
+    return max(0, len([dirName for _, dirName, in walk(path)]) - 1)
+
+#Takes a path to a directory and returns the deepest level of subdirectories as an int.
+#Uses a recursive depth-first search. The current directory is considered to have a depth of 0.
+def max_subdirs(file_path, depth = 0):
+	max_depth = depth
+	
+	#Go through each thing in this directory and find it's depth.
+	for cur in listdir(file_path):
+	
+		'''
+		Concatenates the file path with what we're currently looking at to get the full
+		path of the object we're looking at (note that these are NOT strings).
+		ex: 'C:/Users/Desktop/example/' + 'file1.txt' = 'C:/Users/Desktop/example/file1.txt'
+		'''
+		full_path = path.join(file_path, cur)
+		
+		#If this thing is a directory, parse through it with a recursive call to max_subdirs,
+		#incrementing depth as we're going another layer deep.
+		if path.isdir(full_path):
+			max_depth = max(max_depth, max_subdirs(full_path, depth + 1))
+		
+	return max_depth
 
 def update_db(update_files, github_name, repo_dir, repo):
     
