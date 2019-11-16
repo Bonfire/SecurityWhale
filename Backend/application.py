@@ -1,4 +1,5 @@
 from os import walk
+from os import path
 import re
 
 import mysql.connector
@@ -244,42 +245,9 @@ def update_db(update_files, github_name, repo_dir, repo):
         else:
             print(err)
 
-            
-def dir_num_parser(path):
-    """
-    Parses repository directory for number of files,subdirectories, deepest level of subdirectories, etc.
     
-    @param path: project path of given directory
-    @return num_dir_files: total number of files in project
-    """
-    num_dir_files = 0
-    files = []
-    
-    # runs through the complete repository directory to get number of files
-    for (dirpath, dirnames, filenames) in walk(path):
-        for filename in [f for f in filenames]:
-            files.extend(filenames)
-            break
-    num_dir_files = len(files)
 
-def sub_dir_parser(path):
-    """
-    Gets count of subdirs...buut also might just do the first level of the directories..
-    @param path: project path of given directory
-    @return sub_dirs: total number of sub directories in project
-    """
-    sub_dir = []
-    
-    # returns number of sub folders in directory
-    for (dirpath, dirnames, filenames) in walk(path):
-        for dirname in [d for d in dirnames]:
-            sub_dirs.extend(dirnames)
-            break
-    
-    return len(sub_dirs)
-            
-
-def indent_parser(path):
+def indent_parser(file_path):
     """
     reads given file and grabs number of indentations
     
@@ -289,9 +257,43 @@ def indent_parser(path):
     indentation_count = 0
     
     # opens file and grabs the line number and the number of indentations for each line and adds them up
-    with open(path) as file:
+    with open(path.file_path) as file:
         for mark, line in enumerate(file.readlines()):
             indentation_count += (len(re.findall("^ *", line)[0]))       
     
     return indentation_count
 
+
+def indented_lines(file_path):
+    lines_indented = 0
+    count = 0
+    
+    with open(path.file_path) as file:
+        for mark, line in enumerate(file.readlines()):
+            count = (len(re.findall("^ *", line)[0]))
+            if count > 1:
+                lines_indented += 1
+                
+    return lines_indented
+
+def indentation_depth(file_path):
+    """
+    reads given file and returns deepest indentation level in file (as a number)
+    
+    @param path: file path
+    @return deepest: deepest level of indentation
+    """
+    indentation_count = 0
+    depths = []
+    deepest = 0
+    i = 0
+    
+    # opens file and grabs the line number and the number of indentations for each line and adds them up
+    with open(path.file_path) as file:
+        for mark, line in enumerate(file.readlines()):
+            indentation_count = (len(re.findall("^ *", line)[0]))
+            depths.append(indentation_count%4)
+            
+    deepest = max(depths)
+    
+    return deepest
