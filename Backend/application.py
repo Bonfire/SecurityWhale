@@ -238,10 +238,14 @@ def max_subdirs(file_path, depth=0):
 
 
 def fileLineCount(path):
-	lineCount = 0
 	with open(path) as pathFile:
 		lineCount = sum(1 for _ in pathFile)
-	return lineCount
+	return max(0, lineCount)
+
+
+def fileWordCount(path):
+	with open(path) as pathFile:
+		return len(pathFile.read().split())
 
 
 def update_db(update_files, github_name, repo_dir, repo):
