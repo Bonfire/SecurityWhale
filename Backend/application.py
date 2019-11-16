@@ -253,10 +253,11 @@ def fileCharacterCount(path):
 
 
 def fileAvgWordsPerLine(path):
-	wordCount = fileWordCount(path)
-	lineCount = fileLineCount(path)
+	return fileWordCount(path) / fileLineCount(path)
 
-	return wordCount / lineCount
+
+def fileAvgCharPerLine(path):
+	return fileCharacterCount(path) / fileLineCount(path)
 
 
 def update_db(update_files, github_name, repo_dir, repo):
