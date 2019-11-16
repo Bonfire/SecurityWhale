@@ -1,5 +1,6 @@
 from os import walk
 from os import path
+from pathlib import path
 import re
 
 import mysql.connector
@@ -204,7 +205,7 @@ def get_averages(file_list, commit_hash, repo):
             else:
                 if phile_info[index+1] != 0:
                     phile_info[index + 1] = val / phile_info[index + 1]
-         
+     
     return file_totals
 
 def update_db(update_files, github_name, repo_dir, repo):
@@ -257,9 +258,9 @@ def indent_parser(file_path):
     indentation_count = 0
     
     # opens file and grabs the line number and the number of indentations for each line and adds them up
-    with open(path.file_path) as file:
+    with open(file_path) as file:
         for mark, line in enumerate(file.readlines()):
-            indentation_count += (len(re.findall("^ *", line)[0]))       
+            indentation_count += (len(re.findall(r"\t", line)))       
     
     return indentation_count
 
@@ -274,9 +275,9 @@ def indented_lines(file_path):
     lines_indented = 0
     count = 0
     
-    with open(path.file_path) as file:
+    with open(file_path) as file:
         for mark, line in enumerate(file.readlines()):
-            count = (len(re.findall("^ *", line)[0]))
+            count = (len(re.findall(r"\t", line)))
             if count > 1:
                 lines_indented += 1
                 
@@ -295,10 +296,10 @@ def indentation_depth(file_path):
     i = 0
     
     # opens file and grabs the line number and the number of indentations for each line and adds them up
-    with open(path.file_path) as file:
+    with open(file_path) as file:
         for mark, line in enumerate(file.readlines()):
-            indentation_count = (len(re.findall("^ *", line)[0]))
-            depths.append(indentation_count)
+            indentation_count = (len(re.findall(r"\t", line)))
+            depths.append(indentation_count/4)
             
     deepest = max(depths)
     
