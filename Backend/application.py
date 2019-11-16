@@ -252,6 +252,13 @@ def fileCharacterCount(path):
 		return sum(len(word) for word in pathFile.read().strip().strip())
 
 
+def fileAvgWordsPerLine(path):
+	wordCount = fileWordCount(path)
+	lineCount = fileLineCount(path)
+
+	return wordCount / lineCount
+
+
 def update_db(update_files, github_name, repo_dir, repo):
 	git = access_github()
 
