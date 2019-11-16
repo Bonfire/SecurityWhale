@@ -249,7 +249,7 @@ def update_db(update_files, github_name, repo_dir, repo):
 
 def indent_parser(file_path):
     """
-    reads given file and grabs number of indentations
+    reads given file and grabs number of indentations (counts by spaces)
     
     @param path: file path
     @return indentation_count: total number of indentations from a file
@@ -265,6 +265,12 @@ def indent_parser(file_path):
 
 
 def indented_lines(file_path):
+    """
+    reads given file and number of lines that have indentations in them (goes by spaces)
+    
+    @param path: file path
+    @return deepest: deepest level of indentation
+    """
     lines_indented = 0
     count = 0
     
