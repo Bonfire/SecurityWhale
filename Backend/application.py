@@ -12,7 +12,6 @@ from config import host
 from config import password
 from config import user
 
-
 # from os import *
 
 def access_github():
@@ -236,6 +235,13 @@ def max_subdirs(file_path, depth=0):
 			max_depth = max(max_depth, max_subdirs(full_path, depth + 1))
 
 	return max_depth
+
+
+def fileLineCount(path):
+	lineCount = 0
+	with open(path) as pathFile:
+		lineCount = sum(1 for _ in pathFile)
+	return lineCount
 
 
 def update_db(update_files, github_name, repo_dir, repo):
