@@ -278,7 +278,7 @@ def indented_lines(file_path):
 
 def indentation_depth(file_path):
     """
-    reads given file and returns deepest indentation level in file (as a number)
+    reads given file and returns deepest indentation level in file (as deepest number of spaces)
     
     @param path: file path
     @return deepest: deepest level of indentation
@@ -292,7 +292,7 @@ def indentation_depth(file_path):
     with open(path.file_path) as file:
         for mark, line in enumerate(file.readlines()):
             indentation_count = (len(re.findall("^ *", line)[0]))
-            depths.append(indentation_count%4)
+            depths.append(indentation_count)
             
     deepest = max(depths)
     
