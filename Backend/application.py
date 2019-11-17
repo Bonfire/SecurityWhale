@@ -1,3 +1,4 @@
+import re
 from os import listdir
 from os import path
 from os import walk
@@ -11,6 +12,7 @@ from config import git_access
 from config import host
 from config import password
 from config import user
+
 
 # from os import *
 
@@ -163,7 +165,7 @@ def get_averages(file_list, commit_hash, repo):
 
 	"""
 	DONT TOUCH ANYTHING IN THE CODE BELOW
-	
+
 	for each commit in the commit history we look at its filenames and for each of those filenames we check to see
 	if that filename is in the list [filenames] we mark our flag [check] as true which means the file does
 	exist in [file_totals] therefor we create and update its values else if the file is not in [file_totals] we
@@ -258,6 +260,64 @@ def fileAvgWordsPerLine(path):
 
 def fileAvgCharPerLine(path):
 	return fileCharacterCount(path) / fileLineCount(path)
+
+
+def indent_parser(file_path):
+	"""
+	reads given file and grabs number of indentations (counts by spaces)
+
+	@param path: file path
+	@return indentation_count: total number of indentations from a file
+	"""
+	indentation_count = 0
+
+	# opens file and grabs the line number and the number of indentations for each line and adds them up
+	with open(file_path) as file:
+		for mark, line in enumerate(file.readlines()):
+			indentation_count += (len(re.findall(r"\t", line)))
+
+	return indentation_count
+
+
+def indented_lines(file_path):
+	"""
+	reads given file and number of lines that have indentations in them (goes by spaces)
+
+	@param path: file path
+	@return deepest: deepest level of indentation
+	"""
+	lines_indented = 0
+	count = 0
+
+	with open(file_path) as file:
+		for mark, line in enumerate(file.readlines()):
+			count = (len(re.findall(r"\t", line)))
+			if count > 0:
+				lines_indented += 1
+
+	return lines_indented
+
+
+def indentation_depth(file_path):
+	"""
+	reads given file and returns deepest indentation level in file (as deepest number of spaces)
+
+	@param path: file path
+	@return deepest: deepest level of indentation
+	"""
+	indentation_count = 0
+	depths = []
+	deepest = 0
+
+	# opens file and grabs the line number and the number of indentations for each line and adds them up
+	with open(file_path) as file:
+		for mark, line in enumerate(file.readlines()):
+			indentation_count = (len(re.findall(r"\t", line)))
+			depths.append(indentation_count / 4)
+
+	deepest = max(depths)
+
+	return deepest
 
 
 def update_db(update_files, github_name, repo_dir, repo):
