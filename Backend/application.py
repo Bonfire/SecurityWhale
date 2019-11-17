@@ -1,8 +1,7 @@
+import re
 from os import listdir
 from os import path
 from os import walk
-from pathlib import Path
-import re
 
 import mysql.connector
 from github import Github
@@ -13,6 +12,7 @@ from config import git_access
 from config import host
 from config import password
 from config import user
+
 
 # from os import *
 
@@ -149,8 +149,9 @@ def parse_dic(dic):
 
 	return totals
 
+
 def get_averages(file_list, commit_hash, repo):
-    """
+	"""
 	Creates a list containing the averages of all the commit history data
 
 	:param file_list: a lst containing both dirty and grey files
@@ -159,59 +160,12 @@ def get_averages(file_list, commit_hash, repo):
 	:return: the filename, total inserts, insert averages, total deletions, deletion averages, total line changed,
 			lines changed averages
 	"""
-    commits = repo.iter_commits(commit_hash)
-    file_totals = []
-
-    """
-	DONT TOUCH ANYTHING IN THE CODE BELOW
-
-	for each commit in the commit history we look at its filenames and for each of those filenames we check to see
-	if that filename is in the list [filenames] we mark our flag [check] as true which means the file does
-	exist in [file_totals] therefor we create and update its values else if the file is not in [file_totals] we
-	**DO SOMETHING I FORGET ASK CURTIS** and then we updated [file_totals] with the averages of each file.  
-	"""
-    count = 1
-
-    for commit in commits:
-        commit_files = parse_dic(commit.stats.files)
-
-        for path in commit_files:
-            if path[0] in file_list:
-                check = True
-                for phile in file_totals:
-                    if path[0] == phile[0]:
-                        adder = 1
-                        for index, vals in enumerate(path[1:]):
-                            phile[index + adder] += path[index + 1]
-                            phile[index + adder + 1] += 1
-                            adder += 1
-                        check = False
-                        break
-                if check:
-                    file_info = []
-                    file_info.append(path[0])
-                    for vals in path[1:]:
-                        file_info.append(vals)
-                        if vals > 0:
-                            file_info.append(1)
-                        else:
-                            file_info.append(0)
-
-                    file_totals.append(file_info)
-
-    for phile_info in file_totals:
-        for index, update in enumerate(phile_info[1:]):
-            if index % 2 == 0:
-                val = phile_info[index + 1]
-            else:
-                if phile_info[index + 1] != 0:
-                    phile_info[index + 1] = val / phile_info[index + 1]
-
-    return file_totals
+	commits = repo.iter_commits(commit_hash)
+	file_totals = []
 
 	"""
 	DONT TOUCH ANYTHING IN THE CODE BELOW
-	
+
 	for each commit in the commit history we look at its filenames and for each of those filenames we check to see
 	if that filename is in the list [filenames] we mark our flag [check] as true which means the file does
 	exist in [file_totals] therefor we create and update its values else if the file is not in [file_totals] we
@@ -261,6 +215,7 @@ def get_averages(file_list, commit_hash, repo):
 def num_subdirs(path):
 	return max(0, len([dirName for _, dirName, in walk(path)]) - 1)
 
+
 # Takes a path to a directory and returns the deepest level of subdirectories as an int.
 # Uses a recursive depth-first search. The current directory is considered to have a depth of 0.
 def max_subdirs(file_path, depth=0):
@@ -308,82 +263,61 @@ def fileAvgCharPerLine(path):
 
 
 def indent_parser(file_path):
-    """
-    reads given file and grabs number of indentations (counts by spaces)
-    
-    @param path: file path
-    @return indentation_count: total number of indentations from a file
-    """
-    indentation_count = 0
-    
-    # opens file and grabs the line number and the number of indentations for each line and adds them up
-    with open(file_path) as file:
-        for mark, line in enumerate(file.readlines()):
-            indentation_count += (len(re.findall(r"\t", line)))       
-    
-    return indentation_count
+	"""
+	reads given file and grabs number of indentations (counts by spaces)
+
+	@param path: file path
+	@return indentation_count: total number of indentations from a file
+	"""
+	indentation_count = 0
+
+	# opens file and grabs the line number and the number of indentations for each line and adds them up
+	with open(file_path) as file:
+		for mark, line in enumerate(file.readlines()):
+			indentation_count += (len(re.findall(r"\t", line)))
+
+	return indentation_count
 
 
 def indented_lines(file_path):
-    """
-    reads given file and number of lines that have indentations in them (goes by spaces)
-    
-    @param path: file path
-    @return deepest: deepest level of indentation
-    """
-    lines_indented = 0
-    count = 0
-    
-    with open(file_path) as file:
-        for mark, line in enumerate(file.readlines()):
-            count = (len(re.findall(r"\t", line)))
-            if count > 0:
-                lines_indented += 1
-                
-    return lines_indented
+	"""
+	reads given file and number of lines that have indentations in them (goes by spaces)
+
+	@param path: file path
+	@return deepest: deepest level of indentation
+	"""
+	lines_indented = 0
+	count = 0
+
+	with open(file_path) as file:
+		for mark, line in enumerate(file.readlines()):
+			count = (len(re.findall(r"\t", line)))
+			if count > 0:
+				lines_indented += 1
+
+	return lines_indented
+
 
 def indentation_depth(file_path):
-    """
-    reads given file and returns deepest indentation level in file (as deepest number of spaces)
-    
-    @param path: file path
-    @return deepest: deepest level of indentation
-    """
-    indentation_count = 0
-    depths = []
-    deepest = 0
-    
-    # opens file and grabs the line number and the number of indentations for each line and adds them up
-    with open(file_path) as file:
-        for mark, line in enumerate(file.readlines()):
-            indentation_count = (len(re.findall(r"\t", line)))
-            depths.append(indentation_count/4)
-            
-    deepest = max(depths)
-    
-    return deepest
+	"""
+	reads given file and returns deepest indentation level in file (as deepest number of spaces)
 
-def fileLineCount(path):
-	with open(path) as pathFile:
-		return sum(1 for _ in pathFile)
+	@param path: file path
+	@return deepest: deepest level of indentation
+	"""
+	indentation_count = 0
+	depths = []
+	deepest = 0
 
+	# opens file and grabs the line number and the number of indentations for each line and adds them up
+	with open(file_path) as file:
+		for mark, line in enumerate(file.readlines()):
+			indentation_count = (len(re.findall(r"\t", line)))
+			depths.append(indentation_count / 4)
 
-def fileWordCount(path):
-	with open(path) as pathFile:
-		return len(pathFile.read().split())
+	deepest = max(depths)
 
-
-def fileCharacterCount(path):
-	with open(path) as pathFile:
-		return sum(len(word) for word in pathFile.read().strip().strip())
-
-
-def fileAvgWordsPerLine(path):
-	return fileWordCount(path) / fileLineCount(path)
-
-
-def fileAvgCharPerLine(path):
-	return fileCharacterCount(path) / fileLineCount(path)
+	return deepest
 
 
 def update_db(update_files, github_name, repo_dir, repo):
