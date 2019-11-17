@@ -150,30 +150,30 @@ def parse_dic(dic):
 
 def get_averages(file_list, commit_hash, repo):
     """
-    Creates a list containing the averages of all the commit history data
+	Creates a list containing the averages of all the commit history data
 
-    :param file_list: a lst containing both dirty and grey files
-    :param commit_hash: the hash of a given commit
-    :param repo: the repository object
-    :return: the filename, total inserts, insert averages, total deletions, deletion averages, total line changed,
-            lines changed averages
-    """
+	:param file_list: a lst containing both dirty and grey files
+	:param commit_hash: the hash of a given commit
+	:param repo: the repository object
+	:return: the filename, total inserts, insert averages, total deletions, deletion averages, total line changed,
+			lines changed averages
+	"""
     commits = repo.iter_commits(commit_hash)
     file_totals = []
 
     """
-    DONT TOUCH ANYTHING IN THE CODE BELOW
-    
-    for each commit in the commit history we look at its filenames and for each of those filenames we check to see
-    if that filename is in the list [filenames] we mark our flag [check] as true which means the file does
-    exist in [file_totals] therefor we create and update its values else if the file is not in [file_totals] we
-    **DO SOMETHING I FORGET ASK CURTIS** and then we updated [file_totals] with the averages of each file.  
-    """
+	DONT TOUCH ANYTHING IN THE CODE BELOW
+
+	for each commit in the commit history we look at its filenames and for each of those filenames we check to see
+	if that filename is in the list [filenames] we mark our flag [check] as true which means the file does
+	exist in [file_totals] therefor we create and update its values else if the file is not in [file_totals] we
+	**DO SOMETHING I FORGET ASK CURTIS** and then we updated [file_totals] with the averages of each file.  
+	"""
     count = 1
 
     for commit in commits:
         commit_files = parse_dic(commit.stats.files)
-        
+
         for path in commit_files:
             if path[0] in file_list:
                 check = True
@@ -197,15 +197,15 @@ def get_averages(file_list, commit_hash, repo):
                             file_info.append(0)
 
                     file_totals.append(file_info)
-        
+
     for phile_info in file_totals:
         for index, update in enumerate(phile_info[1:]):
             if index % 2 == 0:
                 val = phile_info[index + 1]
             else:
-                if phile_info[index+1] != 0:
+                if phile_info[index + 1] != 0:
                     phile_info[index + 1] = val / phile_info[index + 1]
-     
+
     return file_totals
 
 def update_db(update_files, github_name, repo_dir, repo):
@@ -246,7 +246,54 @@ def update_db(update_files, github_name, repo_dir, repo):
         else:
             print(err)
 
-    
+# Takes a path to a directory and returns the total amount of subdirectories it contains.
+def num_subdirs(path):
+	return max(0, len([dirName for _, dirName, in walk(path)]) - 1)
+
+# Takes a path to a directory and returns the deepest level of subdirectories as an int.
+# Uses a recursive depth-first search. The current directory is considered to have a depth of 0.
+def max_subdirs(file_path, depth=0):
+	max_depth = depth
+
+	# Go through each thing in this directory and find it's depth.
+	for cur in listdir(file_path):
+
+		'''
+		Concatenates the file path with what we're currently looking at to get the full
+		path of the object we're looking at (note that these are NOT strings).
+		ex: 'C:/Users/Desktop/example/' + 'file1.txt' = 'C:/Users/Desktop/example/file1.txt'
+		'''
+		full_path = path.join(file_path, cur)
+
+		# If this thing is a directory, parse through it with a recursive call to max_subdirs,
+		# incrementing depth as we're going another layer deep.
+		if path.isdir(full_path):
+			max_depth = max(max_depth, max_subdirs(full_path, depth + 1))
+
+	return max_depth
+
+
+def fileLineCount(path):
+	with open(path) as pathFile:
+		return sum(1 for _ in pathFile)
+
+
+def fileWordCount(path):
+	with open(path) as pathFile:
+		return len(pathFile.read().split())
+
+
+def fileCharacterCount(path):
+	with open(path) as pathFile:
+		return sum(len(word) for word in pathFile.read().strip().strip())
+
+
+def fileAvgWordsPerLine(path):
+	return fileWordCount(path) / fileLineCount(path)
+
+
+def fileAvgCharPerLine(path):
+	return fileCharacterCount(path) / fileLineCount(path)
 
 def indent_parser(file_path):
     """
