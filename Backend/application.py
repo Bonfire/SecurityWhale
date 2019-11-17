@@ -278,7 +278,7 @@ def indented_lines(file_path):
     with open(file_path) as file:
         for mark, line in enumerate(file.readlines()):
             count = (len(re.findall(r"\t", line)))
-            if count > 1:
+            if count > 0:
                 lines_indented += 1
                 
     return lines_indented
