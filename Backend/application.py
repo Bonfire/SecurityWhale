@@ -1,6 +1,5 @@
 from os import walk
-from os import path
-from pathlib import path
+from pathlib import Path
 import re
 
 import mysql.connector
@@ -293,7 +292,6 @@ def indentation_depth(file_path):
     indentation_count = 0
     depths = []
     deepest = 0
-    i = 0
     
     # opens file and grabs the line number and the number of indentations for each line and adds them up
     with open(file_path) as file:
