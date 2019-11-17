@@ -2,6 +2,7 @@ import re
 from os import listdir
 from os import path
 from os import walk
+from pathlib import Path
 
 import mysql.connector
 from github import Github
