@@ -77,7 +77,7 @@ def app_interface():
 			for f in filenames:
 				files_path += [f]
 
-    #Get a list of data points for each file
+    #Get a list of data points for each file.
     avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
 
     #Separate file names from avgs
