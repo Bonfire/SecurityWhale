@@ -38,12 +38,12 @@ def app_interface():
 	#argument for local repos.
 	repo_dir = sys.argv[1]
 	repo = Repo(repo_dir)
-    
+	
 	#Repo name is required for remote & public repos.
 	if argc > 2:
 		repo_remote = True
 		repo_name = sys.argv[2]
-		
+
 		#Login information is required for remote & private repos.
 		if argc > 3:
 			repo_private = True
@@ -58,13 +58,13 @@ def app_interface():
 
 		#Grabs repo object for data collection
 		github_repo = git.get_repo(repo_name, lazy=False)
-    
+
 		#Retrieve repository data
 		repo_data = list(repository_data(github_repo, repo, repo_name, repo_dir))
 
-    #Retrieve all filenames for all directories
-    files_path = []
-	
+	#Retrieve all filenames for all directories
+	files_path = []
+
 	if repo_remote:
 		for root, dirs, files in walk(repo_dir):
 			f_path = root.split(path.basename(repo_name) + "\\")[-1]
@@ -76,34 +76,34 @@ def app_interface():
 		for (_, _, filenames) in walk(repo_dir):
 			for f in filenames:
 				files_path += [f]
+				
+	#Get a list of data points for each file
+	avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
 
-    #Get a list of data points for each file.
-    avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
+	#Separate file names from avgs
+	file_names = []
+	avgs_final = []
+	for a in avgs:
+		file_names.append(a[0])
+		avgs_final.append(a[1:])
 
-    #Separate file names from avgs
-    file_names = []
-    avgs_final = []
-    for a in avgs:
-        file_names.append(a[0])
-        avgs_final.append(a[1:])
-    
-    #Collect data together into a single list
-    final_data = []
-	
+	#Collect data together into a single list
+	final_data = []
+
 	#If this is a remote repo, we need to add the repo data, otherwise use averages
 	if repo_remote:
 		for af in avgs_final:
 			final_data.append(af + repo_data[1:])
 	else:
 		final_data = avgs_final
-	       
-    #Predict and print results data to std out
-    results = predict(final_data)
-    
-    #Final results output
-    for i, f in enumerate(file_names):
-        print(f + "," + str(results[i][0]))
+
+	#Predict and print results data to std out
+	results = predict(final_data)
+	
+	#Final results output
+	for i, f in enumerate(file_names):
+		print(f + "," + str(results[i][0]))
 
 #Main - delete later?
 if __name__ == "__main__":
-    app_interface()
+	app_interface()
