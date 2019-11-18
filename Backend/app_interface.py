@@ -1,5 +1,5 @@
 '''
-Authors: Thomas Serrano, Curtis Helsel
+Authors: Thomas Serrano, Curtis Helsel, Baran Barut
 Last Updated: NOV-18-2019
 '''
 from config import *   #Application stuff
@@ -39,27 +39,28 @@ def app_interface():
 	repo_dir = sys.argv[1]
 	repo = Repo(repo_dir)
     
-	#Repo name is required for remote & public repos.
+	#Repo name is required for all remote repos.
 	if argc > 2:
 		repo_remote = True
 		repo_name = sys.argv[2]
 		
-		#Repo data should be retrieved here...?
-		
-		#Login information is required for remote & private repos.
+		#Login information is required for private repos.
 		if argc > 3:
 			repo_private = True
 			username = sys.argv[3]
 			password = sys.argv[4]
-			
-			#Get Github access
+
+		#Get Github access, use login if applicable.
+		if repo_private:
 			git = Github(username, password)
-			
-			#Grabs repo object for data collection
-			github_repo = git.get_repo(repo_name, lazy=False)
+		else:
+			git = Github(None, None)
+
+		#Grabs repo object for data collection.
+		github_repo = git.get_repo(repo_name, lazy=False)
     
-			#Retrieve repository data
-			repo_data = list(repository_data(github_repo, repo, repo_name, repo_dir))
+		#Retrieve repository data.
+		repo_data = list(repository_data(github_repo, repo, repo_name, repo_dir))
 
     #Retrieve all filenames for all directories
     files_path = []
