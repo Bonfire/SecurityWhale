@@ -1,6 +1,6 @@
 '''
 Authors: Thomas Serrano, Curtis Helsel
-Last Updated: OCT-29-2019
+Last Updated: NOV-18-2019
 '''
 from config import *   #Application stuff
 from predictor import *                    #ML stuff
@@ -14,25 +14,53 @@ from os import walk, path         #For parsing through directories
 Provides an interface to connect the application with the machine learning model
 '''
 def app_interface():
-    #Get command-line arguments
-    username = sys.argv[1]
-    password = sys.argv[2]
-    repo_name = sys.argv[3]
-    repo_dir = sys.argv[4]
-    
-    #print("Starting interface...")
-    #print("Arguments:\n" + username + " / " + password + " / " + repo_name + " / " + repo_dir)
-    
-    #Get Github access
-    git = Github(username, password)
 
-    #Grabs repo object for data collection
-    github_repo = git.get_repo(repo_name, lazy=False)
-    repo = Repo(repo_dir)
+	#Get number of command-line arguments
+	argc = len(sys.argv)
+	
+	'''
+	print("Starting interface...")
+	print(argc)
+	for a in sys.argv:
+		print(a)
+	'''
+	
+	#Must have 1, 2, or 4 arguments (program name is the first argument)
+	if argc not in [2, 3, 5]:
+		print("\n\tERROR: INCORRECT NUMBER OF ARGUMENTS PASSED")
+		exit()
+	
+	#Used for flow control for different types of repos
+	repo_remote = False
+	repo_private = False
+	
+	#The first argument is the repo directory. This is required for all repos, and is the only
+	#argument for local repos.
+	repo_dir = sys.argv[1]
+	repo = Repo(repo_dir)
     
-    #Retrieve repository data
-    repo_data = list(repository_data(github_repo, repo, repo_name, repo_dir))
+	#Repo name is required for remote & public repos.
+	if argc > 2:
+		repo_remote = True
+		repo_name = sys.argv[2]
+		
+		#Repo data should be retrieved here...?
+		
+		#Login information is required for remote & private repos.
+		if argc > 3:
+			repo_private = True
+			username = sys.argv[3]
+			password = sys.argv[4]
+			
+			#Get Github access
+			git = Github(username, password)
+			
+			#Grabs repo object for data collection
+			github_repo = git.get_repo(repo_name, lazy=False)
     
+			#Retrieve repository data
+			repo_data = list(repository_data(github_repo, repo, repo_name, repo_dir))
+
     #Retrieve all filenames for all directories
     files_path = []
     for root, dirs, files in walk(repo_dir):
@@ -54,8 +82,13 @@ def app_interface():
     
     #Collect data together into a single list
     final_data = []
-    for af in avgs_final:
-        final_data.append(af + repo_data[1:])
+	
+	#If this is a remote repo, we need to add the repo data, otherwise use averages
+	if repo_remote:
+		for af in avgs_final:
+			final_data.append(af + repo_data[1:])
+	else:
+		final_data = avgs_final
 	       
     #Predict and print results data to std out
     results = predict(final_data)
