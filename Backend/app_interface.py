@@ -39,37 +39,43 @@ def app_interface():
 	repo_dir = sys.argv[1]
 	repo = Repo(repo_dir)
     
-	#Repo name is required for all remote repos.
+	#Repo name is required for remote & public repos.
 	if argc > 2:
 		repo_remote = True
 		repo_name = sys.argv[2]
 		
-		#Login information is required for private repos.
+		#Login information is required for remote & private repos.
 		if argc > 3:
 			repo_private = True
 			username = sys.argv[3]
 			password = sys.argv[4]
 
-		#Get Github access, use login if applicable.
+		#Get Github access. Use login if applicable.
 		if repo_private:
 			git = Github(username, password)
 		else:
 			git = Github(None, None)
 
-		#Grabs repo object for data collection.
+		#Grabs repo object for data collection
 		github_repo = git.get_repo(repo_name, lazy=False)
     
-		#Retrieve repository data.
+		#Retrieve repository data
 		repo_data = list(repository_data(github_repo, repo, repo_name, repo_dir))
 
     #Retrieve all filenames for all directories
     files_path = []
-    for root, dirs, files in walk(repo_dir):
-        f_path = root.split(path.basename(repo_name) + "\\")[-1]
-        if f_path is not "":
-            f_path += "/"
-        files_path += [str(f_path + f) for f in files if not f[0] == '.']
-        dirs[:] = [d for d in dirs if not d[0] == '.']
+	
+	if repo_remote:
+		for root, dirs, files in walk(repo_dir):
+			f_path = root.split(path.basename(repo_name) + "\\")[-1]
+			if f_path is not "":
+				f_path += "/"
+			files_path += [str(f_path + f) for f in files if not f[0] == '.']
+			dirs[:] = [d for d in dirs if not d[0] == '.']
+	else:
+		for (_, _, filenames) in walk(repo_dir):
+			for f in filenames:
+				files_path += [f]
 
     #Get a list of data points for each file
     avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
