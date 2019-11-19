@@ -550,7 +550,7 @@
             this.aboutHeaderLabel.Size = new System.Drawing.Size(380, 22);
             this.aboutHeaderLabel.TabIndex = 9;
             this.aboutHeaderLabel.Text = "SecurityWhale - https://psv-ucf.ddns.net/";
-            this.aboutHeaderLabel.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked_1);
+            this.aboutHeaderLabel.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.aboutHeaderLabel_LinkClicked);
             // 
             // aboutModelLabel
             // 
@@ -582,7 +582,7 @@
             this.aboutDevelopersRTB.Size = new System.Drawing.Size(790, 130);
             this.aboutDevelopersRTB.TabIndex = 5;
             this.aboutDevelopersRTB.Text = resources.GetString("aboutDevelopersRTB.Text");
-            this.aboutDevelopersRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
+            this.aboutDevelopersRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.aboutDevelopersRTB_LinkClicked);
             // 
             // aboutLicenseLabel
             // 

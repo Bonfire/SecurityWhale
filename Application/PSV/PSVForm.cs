@@ -51,6 +51,8 @@ namespace PSV
                     gitHubLoginForm.ShowDialog();
                     githubUsername = gitHubLoginForm.GetUsername();
                     githubPassword = gitHubLoginForm.GetPassword();
+
+                    gitHubLoginForm.Dispose();
                 }
 
                 return false;
@@ -216,15 +218,14 @@ namespace PSV
 
         }
 
-        private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
+        private void aboutHeaderLabel_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(e.LinkText);
         }
 
-        private void richTextBox1_LinkClicked_1(object sender, LinkClickedEventArgs e)
+        private void aboutDevelopersRTB_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(e.LinkText);
-
         }
 
         private void localBrowserButton_Click(object sender, EventArgs e)
@@ -235,7 +236,6 @@ namespace PSV
                 localPathTextbox.Text = folderBrowserDialog.SelectedPath;
             }
         }
-
 
         // Begin the scan by calling the data script which calls the ML predictor
         private void BeginScanButton_Click(object sender, EventArgs e)
@@ -333,6 +333,8 @@ namespace PSV
                     faultChart.Series[0].Values.Add(faultProbability);
                 }
             }
+
+            outputReader.Dispose();
 
         }
 

@@ -26,7 +26,7 @@ namespace PSV
             this.Close();
         }
 
-        private async void LogInButton_Click(object sender, EventArgs e)
+        private void LogInButton_Click(object sender, EventArgs e)
         {
             gitHubCredentials = new UsernamePasswordCredentials()
             {
