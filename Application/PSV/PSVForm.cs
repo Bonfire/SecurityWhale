@@ -247,21 +247,57 @@ namespace PSV
             // Setup the base for our python environment and scripts
             string pythonInterpreter = "python";
             string pythonScript = @"..\..\..\..\Backend\app_interface.py";
-            string repoURL = projectURLTextBox.Text;
-            string[] splitRepoURL = repoURL.Split('/');
-            string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
+            ProcessStartInfo pythonStartInfo;
 
-            // Get the repo path from the repo name
-            string repoPath = repoName.Split('/')[1];
-            string combinedPath = Path.Combine(pathToCloneTextBox.Text, repoPath);
-
-            ProcessStartInfo pythonStartInfo = new ProcessStartInfo
+            // If we're working with a local repo
+            if (localRadio.Checked)
             {
-                FileName = pythonInterpreter,
-                Arguments = string.Format("{0} {1} {2} {3} {4}", pythonScript, githubUsername, githubPassword, repoName, combinedPath),
-                UseShellExecute = false,
-                RedirectStandardOutput = true
-            };
+                pythonStartInfo = new ProcessStartInfo
+                {
+                    FileName = pythonInterpreter,
+                    // Use the localPathTextbox here because the repo is already cloned
+                    Arguments = string.Format("{0} {1}", pythonScript, localPathTextbox.Text),
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true
+                };
+            }
+            // Else we're working with a remote repo
+            else
+            {
+                string repoURL = projectURLTextBox.Text;
+                string[] splitRepoURL = repoURL.Split('/');
+
+                // This is in the format of "Bonfire/PSV"
+                string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
+
+                // Get the repo path from the repo name
+                string repoPath = repoName.Split('/')[1];
+                string combinedPath = Path.Combine(pathToCloneTextBox.Text, repoPath);
+
+                // If we're working with a non-private, remote repo by checking if the username/password are set
+                // Supply the path that the repo is located, and the name of the repo
+                if (String.IsNullOrEmpty(githubUsername) || String.IsNullOrEmpty(githubPassword))
+                {
+                    pythonStartInfo = new ProcessStartInfo
+                    {
+                        FileName = pythonInterpreter,
+                        Arguments = string.Format("{0} {1} {2}", pythonScript, combinedPath, repoName),
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true
+                    };
+                }
+                // Else we have a private, remote repo, so supply the path, the name, username, and password
+                else
+                {
+                    pythonStartInfo = new ProcessStartInfo
+                    {
+                        FileName = pythonInterpreter,
+                        Arguments = string.Format("{0} {1} {2} {3} {4}", pythonScript, combinedPath, repoName, githubUsername, githubPassword),
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true
+                    };
+                }
+            }
 
             Process pythonProcess = Process.Start(pythonStartInfo);
             StreamReader pythonOutStream = pythonProcess.StandardOutput;

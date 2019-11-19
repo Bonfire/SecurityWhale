@@ -73,20 +73,20 @@
             this.probColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.graphTab = new System.Windows.Forms.TabPage();
             this.faultChart = new LiveCharts.WinForms.CartesianChart();
+            this.aboutTab = new System.Windows.Forms.TabPage();
+            this.aboutHeaderLabel = new System.Windows.Forms.RichTextBox();
+            this.aboutModelLabel = new System.Windows.Forms.Label();
+            this.aboutHelpersRTB = new System.Windows.Forms.RichTextBox();
+            this.aboutDevelopersRTB = new System.Windows.Forms.RichTextBox();
+            this.aboutLicenseLabel = new System.Windows.Forms.Label();
+            this.aboutProgramLabel = new System.Windows.Forms.Label();
+            this.aboutPicture = new System.Windows.Forms.PictureBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.provideDataToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.includeHiddenItemsToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileNamesToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.fileExtensionToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.foldersToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.aboutTab = new System.Windows.Forms.TabPage();
-            this.aboutPicture = new System.Windows.Forms.PictureBox();
-            this.aboutProgramLabel = new System.Windows.Forms.Label();
-            this.aboutLicenseLabel = new System.Windows.Forms.Label();
-            this.aboutDevelopersRTB = new System.Windows.Forms.RichTextBox();
-            this.aboutHelpersRTB = new System.Windows.Forms.RichTextBox();
-            this.aboutModelLabel = new System.Windows.Forms.Label();
-            this.aboutHeaderLabel = new System.Windows.Forms.RichTextBox();
             this.tabControl.SuspendLayout();
             this.scanPage.SuspendLayout();
             this.settingsGroupBox.SuspendLayout();
@@ -541,47 +541,26 @@
             this.aboutTab.Text = "About";
             this.aboutTab.UseVisualStyleBackColor = true;
             // 
-            // aboutPicture
+            // aboutHeaderLabel
             // 
-            this.aboutPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.aboutPicture.Image = global::PSV.Properties.Resources.Bug_Icon_3;
-            this.aboutPicture.Location = new System.Drawing.Point(6, 6);
-            this.aboutPicture.Name = "aboutPicture";
-            this.aboutPicture.Size = new System.Drawing.Size(100, 100);
-            this.aboutPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.aboutPicture.TabIndex = 0;
-            this.aboutPicture.TabStop = false;
+            this.aboutHeaderLabel.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.aboutHeaderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutHeaderLabel.Location = new System.Drawing.Point(116, 7);
+            this.aboutHeaderLabel.Name = "aboutHeaderLabel";
+            this.aboutHeaderLabel.Size = new System.Drawing.Size(380, 22);
+            this.aboutHeaderLabel.TabIndex = 9;
+            this.aboutHeaderLabel.Text = "SecurityWhale - https://psv-ucf.ddns.net/";
+            this.aboutHeaderLabel.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked_1);
             // 
-            // aboutProgramLabel
+            // aboutModelLabel
             // 
-            this.aboutProgramLabel.AutoSize = true;
-            this.aboutProgramLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutProgramLabel.Location = new System.Drawing.Point(112, 58);
-            this.aboutProgramLabel.Name = "aboutProgramLabel";
-            this.aboutProgramLabel.Size = new System.Drawing.Size(170, 20);
-            this.aboutProgramLabel.TabIndex = 2;
-            this.aboutProgramLabel.Text = "Program Version: 1.0.0";
-            // 
-            // aboutLicenseLabel
-            // 
-            this.aboutLicenseLabel.AutoSize = true;
-            this.aboutLicenseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutLicenseLabel.Location = new System.Drawing.Point(112, 32);
-            this.aboutLicenseLabel.Name = "aboutLicenseLabel";
-            this.aboutLicenseLabel.Size = new System.Drawing.Size(384, 20);
-            this.aboutLicenseLabel.TabIndex = 3;
-            this.aboutLicenseLabel.Text = "Licensed under the GNU General Public License v3.0";
-            // 
-            // aboutDevelopersRTB
-            // 
-            this.aboutDevelopersRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.aboutDevelopersRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutDevelopersRTB.Location = new System.Drawing.Point(6, 112);
-            this.aboutDevelopersRTB.Name = "aboutDevelopersRTB";
-            this.aboutDevelopersRTB.Size = new System.Drawing.Size(790, 130);
-            this.aboutDevelopersRTB.TabIndex = 5;
-            this.aboutDevelopersRTB.Text = resources.GetString("aboutDevelopersRTB.Text");
-            this.aboutDevelopersRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
+            this.aboutModelLabel.AutoSize = true;
+            this.aboutModelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutModelLabel.Location = new System.Drawing.Point(112, 84);
+            this.aboutModelLabel.Name = "aboutModelLabel";
+            this.aboutModelLabel.Size = new System.Drawing.Size(153, 20);
+            this.aboutModelLabel.TabIndex = 8;
+            this.aboutModelLabel.Text = "Model Version: 1.0.0";
             // 
             // aboutHelpersRTB
             // 
@@ -594,26 +573,47 @@
             this.aboutHelpersRTB.Text = "With Help From:\n\t• Dr. Mark Heinrich\t\t-\tSenior Design Professor\n\t• Dr. Paul Gazzi" +
     "llo\t\t-\tAdvisor\n\t• Dr. Elaine Weyuker\t-\tContributor";
             // 
-            // aboutModelLabel
+            // aboutDevelopersRTB
             // 
-            this.aboutModelLabel.AutoSize = true;
-            this.aboutModelLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutModelLabel.Location = new System.Drawing.Point(112, 84);
-            this.aboutModelLabel.Name = "aboutModelLabel";
-            this.aboutModelLabel.Size = new System.Drawing.Size(153, 20);
-            this.aboutModelLabel.TabIndex = 8;
-            this.aboutModelLabel.Text = "Model Version: 1.0.0";
+            this.aboutDevelopersRTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.aboutDevelopersRTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutDevelopersRTB.Location = new System.Drawing.Point(6, 112);
+            this.aboutDevelopersRTB.Name = "aboutDevelopersRTB";
+            this.aboutDevelopersRTB.Size = new System.Drawing.Size(790, 130);
+            this.aboutDevelopersRTB.TabIndex = 5;
+            this.aboutDevelopersRTB.Text = resources.GetString("aboutDevelopersRTB.Text");
+            this.aboutDevelopersRTB.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked);
             // 
-            // aboutHeaderLabel
+            // aboutLicenseLabel
             // 
-            this.aboutHeaderLabel.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.aboutHeaderLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.aboutHeaderLabel.Location = new System.Drawing.Point(116, 7);
-            this.aboutHeaderLabel.Name = "aboutHeaderLabel";
-            this.aboutHeaderLabel.Size = new System.Drawing.Size(380, 22);
-            this.aboutHeaderLabel.TabIndex = 9;
-            this.aboutHeaderLabel.Text = "SecurityWhale - https://psv-ucf.ddns.net/";
-            this.aboutHeaderLabel.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.richTextBox1_LinkClicked_1);
+            this.aboutLicenseLabel.AutoSize = true;
+            this.aboutLicenseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutLicenseLabel.Location = new System.Drawing.Point(112, 32);
+            this.aboutLicenseLabel.Name = "aboutLicenseLabel";
+            this.aboutLicenseLabel.Size = new System.Drawing.Size(384, 20);
+            this.aboutLicenseLabel.TabIndex = 3;
+            this.aboutLicenseLabel.Text = "Licensed under the GNU General Public License v3.0";
+            // 
+            // aboutProgramLabel
+            // 
+            this.aboutProgramLabel.AutoSize = true;
+            this.aboutProgramLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aboutProgramLabel.Location = new System.Drawing.Point(112, 58);
+            this.aboutProgramLabel.Name = "aboutProgramLabel";
+            this.aboutProgramLabel.Size = new System.Drawing.Size(170, 20);
+            this.aboutProgramLabel.TabIndex = 2;
+            this.aboutProgramLabel.Text = "Program Version: 1.0.0";
+            // 
+            // aboutPicture
+            // 
+            this.aboutPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.aboutPicture.Image = global::PSV.Properties.Resources.Bug_Icon_3;
+            this.aboutPicture.Location = new System.Drawing.Point(6, 6);
+            this.aboutPicture.Name = "aboutPicture";
+            this.aboutPicture.Size = new System.Drawing.Size(100, 100);
+            this.aboutPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.aboutPicture.TabIndex = 0;
+            this.aboutPicture.TabStop = false;
             // 
             // PSVForm
             // 
