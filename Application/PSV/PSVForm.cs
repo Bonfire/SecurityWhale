@@ -268,7 +268,7 @@ namespace PSV
                 string[] splitRepoURL = repoURL.Split('/');
 
                 // This is in the format of "Bonfire/PSV"
-                string repoName = splitRepoURL[splitRepoURL.Count() - 2] + "/" + splitRepoURL[splitRepoURL.Count() - 1].Split('.')[0];
+                string repoName = splitRepoURL[splitRepoURL.Length - 2] + "/" + splitRepoURL[splitRepoURL.Length - 1].Split('.')[0];
 
                 // Get the repo path from the repo name
                 string repoPath = repoName.Split('/')[1];
