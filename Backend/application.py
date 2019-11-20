@@ -320,6 +320,18 @@ def indentation_depth(file_path):
 
 	return deepest
 
+def num_files(path):
+	files = []
+# runs through the complete repository directory to get number of files
+	for (_, _, filenames) in walk(path):
+		for filename in [f for f in filenames]:
+			files.extend(filenames)
+			break
+	return max(0, len(files))
+
+def avg_files_per_dir(path):
+	return num_files(path) / num_subdirs(path) 
+
 
 def update_db(update_files, github_name, repo_dir, repo):
 	git = access_github()
