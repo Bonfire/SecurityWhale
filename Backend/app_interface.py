@@ -1,6 +1,6 @@
 '''
 Authors: Thomas Serrano, Curtis Helsel, Baran Barut
-Last Updated: NOV-18-2019
+Last Updated: NOV-20-2019
 '''
 from config import *   #Application stuff
 from predictor import *                    #ML stuff
@@ -9,6 +9,31 @@ import sys                  #For command-line arguments
 from git import Repo
 from github import Github
 from os import walk, path         #For parsing through directories
+
+'''
+Gets a list of filenames for a given file palth.
+base_dir is used to exclude the common base director
+'''
+def get_filenames(base_dir, file_path, file_names):
+
+	for cur in listdir(file_path):
+		
+		#Full path is needed to test whether cur is a directory
+		#full_path = path.join(file_path, cur)
+		full_path = file_path + '/' + cur
+		
+		#Gets the name of the current directory, then joins with the current filename before appending
+		directory = path.split(file_path)[-1]
+		final_name = full_path.replace(base_dir, '')[1:]
+		
+		#If file...
+		if not path.isdir(full_path):
+			#Filter out stuff like .gitignore etc
+			if final_name[0] != '.':
+				file_names.append(final_name)
+		#If directory, recursively got through it
+		else:
+			get_filenames(base_dir, full_path, file_names)
 
 '''
 Provides an interface to connect the application with the machine learning model
@@ -64,18 +89,7 @@ def app_interface():
 
 	#Retrieve all filenames for all directories
 	files_path = []
-
-	if repo_remote:
-		for root, dirs, files in walk(repo_dir):
-			f_path = root.split(path.basename(repo_name) + "\\")[-1]
-			if f_path is not "":
-				f_path += "/"
-			files_path += [str(f_path + f) for f in files if not f[0] == '.']
-			dirs[:] = [d for d in dirs if not d[0] == '.']
-	else:
-		for (_, _, filenames) in walk(repo_dir):
-			for f in filenames:
-				files_path += [f]
+	get_filenames(repo_dir, repo_dir, filepaths)
 				
 	#Get a list of data points for each file
 	avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
