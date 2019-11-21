@@ -22,8 +22,7 @@ def get_filenames(base_dir, file_path, file_names):
 		#full_path = path.join(file_path, cur)
 		full_path = file_path + '/' + cur
 		
-		#Gets the name of the current directory, then joins with the current filename before appending
-		directory = path.split(file_path)[-1]
+		#Removes the directory for the project from the filename, so we only get 'local' dirs in it.
 		final_name = full_path.replace(base_dir, '')[1:]
 		
 		#If file...
