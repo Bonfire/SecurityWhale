@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PSV
@@ -245,10 +246,6 @@ namespace PSV
         // Begin the scan by calling the data script which calls the ML predictor
         private void BeginScanButton_Click(object sender, EventArgs e)
         {
-
-            faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
-
             // Setup the base for our python environment and scripts
             string pythonInterpreter = "python";
             string pythonScript = @"..\..\..\..\Backend\app_interface.py";
@@ -339,6 +336,8 @@ namespace PSV
                 }
             }
 
+            faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             outputReader.Dispose();
 
         }
