@@ -84,6 +84,11 @@ namespace PSV
                 string combinedPath = Path.Combine(pathToCloneTextBox.Text, repoName);
 
                 Repository.Clone(projectURLTextBox.Text, combinedPath);
+
+                new Thread(new ThreadStart(delegate
+                {
+                    MessageBox.Show("Repository cloned successfully! You may now load the project.", "Cloned Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                })).Start();
             }
         }
 
