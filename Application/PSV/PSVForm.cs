@@ -340,6 +340,11 @@ namespace PSV
             faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             outputReader.Dispose();
 
+            new Thread(new ThreadStart(delegate
+            {
+                MessageBox.Show("Project scan complete! You may view the results under the \"View\" tab.", "Scan Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            })).Start();
+
         }
 
     // Update our scan/exclusion settings set by the user

@@ -491,6 +491,7 @@
             this.faultListView.Location = new System.Drawing.Point(6, 6);
             this.faultListView.Name = "faultListView";
             this.faultListView.Size = new System.Drawing.Size(770, 367);
+            this.faultListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.faultListView.TabIndex = 0;
             this.faultListView.UseCompatibleStateImageBehavior = false;
             this.faultListView.View = System.Windows.Forms.View.Details;
