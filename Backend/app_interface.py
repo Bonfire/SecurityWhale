@@ -32,28 +32,7 @@ def get_filenames(base_dir, file_path, file_names):
 				file_names.append(final_name)
 		#If directory, recursively got through it
 		else:
-			get_filenames(base_dir, full_path, file_names)
-
-'''
-Takes a repo directory, an array of file names in that repo, and a repo object.
-Returns various data points about each file in that repository.
-'''
-def get_file_features(repo_dir, file_names, repo):
-	#Initialize data with averages data for each file
-	data = get_averages(file_names, repo.head.commit.hexsha, repo)
-	
-	#Go through each row in data
-	for i, d in enumerate(data):
-		
-		#We need the full file path for the functions. We also know that data and file_names have the same order,
-		#i.e. data[0] represents the file file_names[0]
-		full_path = path.join(repo_dir, file_names[i])
-		
-		d.extend(fileLineCount(full_path), fileWordCount(full_path),fileCharacterCount(full_path),
-			 fileAvgWordsPerLine(full_path), fileAvgCharPerLine(full_path), indent_parser(full_path),
-			 indented_lines(full_path), indentation_depth(full_path))
-				 
-	return data			
+			get_filenames(base_dir, full_path, file_names)		
 			
 '''
 Provides an interface to connect the application with the machine learning model
