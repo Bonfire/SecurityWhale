@@ -24,6 +24,43 @@ def access_github():
 	"""
 	return Github(git_access)
 
+# Takes a path to a directory and returns the total amount of subdirectories it contains.
+def num_subdirs(path):
+	return max(0, len([dirName for _, dirName, _ in walk(path)]) - 1)
+
+# Takes a path to a directory and returns the deepest level of subdirectories as an int.
+# Uses a recursive depth-first search. The current directory is considered to have a depth of 0.
+def max_subdirs(file_path, depth=0):
+	max_depth = depth
+
+	# Go through each thing in this directory and find it's depth.
+	for cur in listdir(file_path):
+
+		'''
+		Concatenates the file path with what we're currently looking at to get the full
+		path of the object we're looking at (note that these are NOT strings).
+		ex: 'C:/Users/Desktop/example/' + 'file1.txt' = 'C:/Users/Desktop/example/file1.txt'
+		'''
+		full_path = path.join(file_path, cur)
+
+		# If this thing is a directory, parse through it with a recursive call to max_subdirs,
+		# incrementing depth as we're going another layer deep.
+		if path.isdir(full_path):
+			max_depth = max(max_depth, max_subdirs(full_path, depth + 1))
+
+	return max_depth
+
+def num_files(path):
+	files = []
+# runs through the complete repository directory to get number of files
+	for (_, _, filenames) in walk(path):
+		for filename in [f for f in filenames]:
+			files.extend(filenames)
+			break
+	return max(0, len(files))
+
+def avg_files_per_dir(path):
+	return num_files(path) / num_subdirs(path) 
 
 def repository_data(git_repo, repository, repository_name, repository_dir):
 	"""
@@ -92,16 +129,20 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
 					commit_deletion_count += change_value
 				if type_of_change == "lines":
 					commit_lines_changed_count += change_value
-
+	#Additional features:
+	subdirs_count = num_subdirs(repository_dir)
+	subdirs_depth = max_subdirs(repository_dir)
+	files_count = num_files(repository_dir)
+	files_avgs = avg_files_per_dir(repository_dir)
+	
 	# used for passing to database and/or to training module
 	repo_data = (repository_name, assignees, size, commits, events, forks, branches, contributors,
 	             labels, language_count, language_size, milestone, issues, refs, stargazer, subscribers, watchers,
 	             network_count, count_open_issues, pulls, number_of_files_in_project, commit_size_sum,
 	             commit_files_count, commit_insertion_count,
-	             commit_deletion_count, commit_lines_changed_count)
+	             commit_deletion_count, commit_lines_changed_count, subdirs_count, subdirs_depth, files_count, files_avgs)
 
 	return repo_data
-
 
 def file_data(data):
 	return tuple(data)
@@ -128,7 +169,6 @@ def make_query(table_name, cursor):
 	query = query[:-2] + ")"
 
 	return query
-
 
 def parse_dic(dic):
 	"""
@@ -211,35 +251,6 @@ def get_averages(file_list, commit_hash, repo):
 
 	return file_totals
 
-
-# Takes a path to a directory and returns the total amount of subdirectories it contains.
-def num_subdirs(path):
-	return max(0, len([dirName for _, dirName, _ in walk(path)]) - 1)
-
-
-# Takes a path to a directory and returns the deepest level of subdirectories as an int.
-# Uses a recursive depth-first search. The current directory is considered to have a depth of 0.
-def max_subdirs(file_path, depth=0):
-	max_depth = depth
-
-	# Go through each thing in this directory and find it's depth.
-	for cur in listdir(file_path):
-
-		'''
-		Concatenates the file path with what we're currently looking at to get the full
-		path of the object we're looking at (note that these are NOT strings).
-		ex: 'C:/Users/Desktop/example/' + 'file1.txt' = 'C:/Users/Desktop/example/file1.txt'
-		'''
-		full_path = path.join(file_path, cur)
-
-		# If this thing is a directory, parse through it with a recursive call to max_subdirs,
-		# incrementing depth as we're going another layer deep.
-		if path.isdir(full_path):
-			max_depth = max(max_depth, max_subdirs(full_path, depth + 1))
-
-	return max_depth
-
-
 def fileLineCount(path):
 	with open(path) as pathFile:
 		return sum(1 for _ in pathFile)
@@ -319,19 +330,6 @@ def indentation_depth(file_path):
 	deepest = max(depths)
 
 	return deepest
-
-def num_files(path):
-	files = []
-# runs through the complete repository directory to get number of files
-	for (_, _, filenames) in walk(path):
-		for filename in [f for f in filenames]:
-			files.extend(filenames)
-			break
-	return max(0, len(files))
-
-def avg_files_per_dir(path):
-	return num_files(path) / num_subdirs(path) 
-
 
 def update_db(update_files, github_name, repo_dir, repo):
 	git = access_github()
