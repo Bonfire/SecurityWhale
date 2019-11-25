@@ -99,7 +99,7 @@ namespace PSV
             TreeNode directoryNode = new TreeNode(directoryInfo.Name);
             foreach (DirectoryInfo directory in directoryInfo.GetDirectories())
                 // Use LINQ to see if the folder is excluded by name
-                if (!folderExclusions.Contains(directory.Name))
+                if (!folderExclusions.Contains(directory.Name) && !directory.Name.Contains("_git"))
                 {
                     // Check to see if the folder is hidden and add it if the 'include hidden files' setting is checked
                     if (directory.Attributes.HasFlag(FileAttributes.Hidden))
