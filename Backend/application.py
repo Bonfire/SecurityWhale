@@ -346,9 +346,9 @@ def get_file_features(repo_dir, file_names, repo):
 		#i.e. data[0] represents the file file_names[0]
 		full_path = path.join(repo_dir, file_names[i])
 		
-		d.extend(fileLineCount(full_path), fileWordCount(full_path),fileCharacterCount(full_path),
+		d.extend([fileLineCount(full_path), fileWordCount(full_path),fileCharacterCount(full_path),
 			 fileAvgWordsPerLine(full_path), fileAvgCharPerLine(full_path), indent_parser(full_path),
-			 indented_lines(full_path), indentation_depth(full_path))
+			 indented_lines(full_path), indentation_depth(full_path)])
 				 
 	return data	
 
