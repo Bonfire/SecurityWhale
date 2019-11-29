@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace PSV.Tests
 {
@@ -34,13 +35,30 @@ namespace PSV.Tests
             // Delete the directory
             // Test that the non-existant directory is indeed non-existent
             testDirectory.Delete(true);
-            _ = Assert.ThrowsException<DirectoryNotFoundException>(() => testForm.IsPathValid());
+            Assert.IsFalse(testForm.IsPathValid());
         }
 
         [TestMethod()]
         public void AreScanSettingsValidTest()
         {
-            // TODO: Implement test method
+            PSVForm testForm = new PSVForm();
+
+            // Test valid settings
+            testForm.fileNamesBox.Text = "file1.txt, file2.c, file3.java";
+            testForm.fileExtensionsBox.Text = ".cpp, .h, .bat";
+            testForm.foldersBox.Text = "folder1, folder2, folder3";
+
+            // Set the local path
+            testForm.localRadio.Checked = true;
+            testForm.localPathTextbox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            Debug.WriteLine("Path: " + testForm.localPathTextbox.Text);
+
+            testForm.UpdateScanSettings();
+
+            // Verify settings
+            Assert.IsTrue(string.Join(",", testForm.fileNameExclusions).Length == testForm.fileNamesBox.Text.Length);
+            Assert.IsTrue(string.Join(",", testForm.fileExtensionExclusions).Length == testForm.fileExtensionsBox.Text.Length);
+            Assert.IsTrue(string.Join(",", testForm.folderExclusions).Length == testForm.foldersBox.Text.Length);
         }
 
         [TestMethod()]

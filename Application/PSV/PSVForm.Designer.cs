@@ -670,12 +670,9 @@
 		public System.Windows.Forms.TextBox pathToCloneTextBox;
         private System.Windows.Forms.GroupBox exclusionGroupBox;
         private System.Windows.Forms.Label foldersLabel;
-        private System.Windows.Forms.TextBox fileNamesBox;
         private System.Windows.Forms.Label fileNamesLabel;
-        private System.Windows.Forms.TextBox fileExtensionsBox;
         private System.Windows.Forms.Label fileExtensionsLabel;
         private System.Windows.Forms.CheckBox includeHiddenCheck;
-        private System.Windows.Forms.TextBox foldersBox;
         private System.Windows.Forms.Button loadProjectButton;
         private System.Windows.Forms.Label localSeparatorRight;
         private System.Windows.Forms.Label localSeparatorLeft;
@@ -684,10 +681,7 @@
         private System.Windows.Forms.Label localRepoLabel;
         private System.Windows.Forms.Label remoteRepoLabel;
         private System.Windows.Forms.Button localBrowserButton;
-        private System.Windows.Forms.TextBox localPathTextbox;
         private System.Windows.Forms.Label localPathLabel;
-        private System.Windows.Forms.RadioButton remoteRadio;
-        private System.Windows.Forms.RadioButton localRadio;
         private System.Windows.Forms.Label repoTypeSeparatorRight;
         private System.Windows.Forms.Label repoTypeSeparatorLeft;
         private System.Windows.Forms.Label repoTypeLabel;
@@ -706,6 +700,12 @@
         private System.Windows.Forms.Label aboutProgramLabel;
         private System.Windows.Forms.Label aboutModelLabel;
         private System.Windows.Forms.RichTextBox aboutHeaderLabel;
+        public System.Windows.Forms.TextBox fileNamesBox;
+        public System.Windows.Forms.TextBox fileExtensionsBox;
+        public System.Windows.Forms.TextBox foldersBox;
+        public System.Windows.Forms.TextBox localPathTextbox;
+        public System.Windows.Forms.RadioButton remoteRadio;
+        public System.Windows.Forms.RadioButton localRadio;
     }
 }
 

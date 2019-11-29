@@ -14,8 +14,8 @@ namespace PSV
     public partial class PSVForm : Form
     {
         // Our user's exclusion lists
-        public String[] fileNameExclusions, fileExtensionExclusions, folderExclusions;
-        public Boolean isRepoPrivate = false;
+        public string[] fileNameExclusions, fileExtensionExclusions, folderExclusions;
+        public bool isRepoPrivate = false;
 
         // User Credential Manager
         public string githubUsername, githubPassword;
@@ -155,6 +155,11 @@ namespace PSV
         }
 
         private void LoadProjectButton_Click(object sender, EventArgs e)
+        {
+            loadProject();
+        }
+
+        public void loadProject()
         {
             // Update our scan settings and exclusions
             UpdateScanSettings();
