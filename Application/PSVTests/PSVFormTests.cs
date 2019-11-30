@@ -79,7 +79,18 @@ namespace PSV.Tests
         [TestMethod()]
         public void VulnerableTableTest()
         {
+            // Perform the full process for scanning
+            PSVForm testForm = new PSVForm();
+            testForm.remoteRadio.Checked = true;
+            testForm.projectURLTextBox.Text = "https://github.com/Bonfire/Legionary.git";
+            testForm.pathToCloneTextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            testForm.cloneProject();
+            testForm.loadProject();
+            testForm.beginScan();
 
+            // Arbitrary file and prediction
+            Assert.IsTrue(testForm.faultListView.Items[2].Text == "Pipfile");
+            Assert.IsTrue(Convert.ToDouble(testForm.faultListView.Items[2].SubItems[1].Text) == 0.24834655);
         }
 
         [TestCategory("Unit")]

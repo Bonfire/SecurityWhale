@@ -69,6 +69,11 @@ namespace PSV
         // Open the project in the application (this is NOT the scan)
         private void CloneProjectButton_Click(object sender, EventArgs e)
         {
+            cloneProject();
+        }
+
+        public void cloneProject()
+        {
             // Perform our two validation checks
             if (!IsPathValid())
             {
@@ -185,7 +190,7 @@ namespace PSV
             scanTree.Nodes.Add(CreateDirectoryNode(rootDirectoryInfo));
 
             // Expand the root (top) node to show the user that it loaded properly
-            scanTree.TopNode.Expand();
+            // scanTree.TopNode.Expand();
 
             // Allow the user to scan
             beginScanButton.Enabled = true;
@@ -250,6 +255,11 @@ namespace PSV
 
         // Begin the scan by calling the data script which calls the ML predictor
         private void BeginScanButton_Click(object sender, EventArgs e)
+        {
+            beginScan();
+        }
+
+        public void beginScan()
         {
             // Setup the base for our python environment and scripts
             string pythonInterpreter = "python";
@@ -349,7 +359,6 @@ namespace PSV
             {
                 MessageBox.Show("Project scan complete! You may view the results under the \"View\" tab.", "Scan Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
             })).Start();
-
         }
 
     // Update our scan/exclusion settings set by the user

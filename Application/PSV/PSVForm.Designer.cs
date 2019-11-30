@@ -449,6 +449,7 @@
             this.scanTree.Name = "scanTree";
             this.scanTree.Size = new System.Drawing.Size(427, 382);
             this.scanTree.TabIndex = 0;
+            this.scanTree.Tag = "Root";
             // 
             // viewPage
             // 
@@ -661,7 +662,6 @@
 		private System.Windows.Forms.TabControl infoTabControl;
 		private System.Windows.Forms.TabPage tableTab;
 		private System.Windows.Forms.TabPage graphTab;
-		private System.Windows.Forms.ListView faultListView;
 		private System.Windows.Forms.Label projectNameLabel;
 		private System.Windows.Forms.Button openFolderButton;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
@@ -706,6 +706,7 @@
         public System.Windows.Forms.TextBox localPathTextbox;
         public System.Windows.Forms.RadioButton remoteRadio;
         public System.Windows.Forms.RadioButton localRadio;
+        public System.Windows.Forms.ListView faultListView;
     }
 }
 
