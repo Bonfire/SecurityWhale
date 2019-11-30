@@ -72,5 +72,28 @@ namespace PSV.Tests
             IsPathValidTest();
             AreScanSettingsValidTest();
         }
+
+        // Second Half of Tests
+
+        [TestCategory("Unit")]
+        [TestMethod()]
+        public void VulnerableTableTest()
+        {
+
+        }
+
+        [TestCategory("Unit")]
+        [TestMethod()]
+        public void VulnerableGraphTest()
+        {
+
+        }
+
+        [TestCategory("Integration")]
+        [TestMethod()]
+        public void ScanAndOutputTest()
+        {
+
+        }
     }
 }
