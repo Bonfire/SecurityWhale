@@ -252,12 +252,12 @@ def get_averages(file_list, commit_hash, repo):
 	return file_totals
 
 def fileLineCount(path):
-	with open(path, 'rb') as pathFile:
+	with open(path) as pathFile:
 		return sum(1 for _ in pathFile)
 
 
 def fileWordCount(path):
-	with open(path, 'rb') as pathFile:
+	with open(path) as pathFile:
 		return len(pathFile.read().split())
 
 
