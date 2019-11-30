@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace PSV.Tests
 {
@@ -114,7 +115,9 @@ namespace PSV.Tests
         [TestMethod()]
         public void ScanAndOutputTest()
         {
-
+            VulnerableTableTest();
+            MessageBox.Show("Delete path", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            VulnerableGraphTest();
         }
     }
 }
