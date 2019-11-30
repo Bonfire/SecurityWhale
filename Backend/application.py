@@ -339,6 +339,13 @@ def get_file_features(repo_dir, file_names, repo):
 	#Initialize data with averages data for each file
 	data = get_averages(file_names, repo.head.commit.hexsha, repo)
 	
+	'''
+	Some files will cause the file feature functions to throw exceptions. This seems to be because it's,
+	for instance, trying to find the number of character or indents in a .png. In order to work around
+	this, we simply delete those files later. kill_list keeps track of the indices of these - see below.
+	'''
+	kill_list = []
+	
 	#Go through each row in data
 	for i, d in enumerate(data):
 		
@@ -346,9 +353,25 @@ def get_file_features(repo_dir, file_names, repo):
 		#i.e. data[0] represents the file file_names[0]
 		full_path = path.join(repo_dir, file_names[i])
 		
-		d.extend([fileLineCount(full_path), fileWordCount(full_path),fileCharacterCount(full_path),
-			 fileAvgWordsPerLine(full_path), fileAvgCharPerLine(full_path), indent_parser(full_path),
-			 indented_lines(full_path), indentation_depth(full_path)])
+		#In my experience, if one of these fails on a certain file, they all will.
+		try:
+			#If there are no errors, we add all these features to this element of data[].
+			d.extend([fileLineCount(full_path), fileWordCount(full_path),fileCharacterCount(full_path),
+			 fileAvgWordsPerLine(full_path), fileAvgCharPerLine(full_path), indented_lines(full_path), 
+			 indentation_depth(full_path)])
+		except:
+			#If not, we need to note that it should be deleted
+			kill_list.append(i)
+	
+	'''
+	If we attempt to delete faulty files in order, it won't work properly.
+	This is because when you delete an element, everything after it is moved up one index.
+	If you delete in reverse order, the elements before the deleted one retain their original index
+	and the elements after the deleted index have already been passed over.
+	'''
+	kill_list.reverse()
+	for k in kill_list:
+		del data[k]
 				 
 	return data	
 
