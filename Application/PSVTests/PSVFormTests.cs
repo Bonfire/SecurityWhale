@@ -9,6 +9,7 @@ namespace PSV.Tests
     [TestClass()]
     public class PSVFormTests
     {
+        [TestCategory("Unit")]
         [TestMethod()]
         public void IsGitURLValidTest()
         {
@@ -19,6 +20,7 @@ namespace PSV.Tests
             Assert.IsFalse(testForm.IsGitURLValid());
         }
 
+        [TestCategory("Unit")]
         [TestMethod()]
         public void IsPathValidTest()
         {
@@ -38,6 +40,7 @@ namespace PSV.Tests
             Assert.IsFalse(testForm.IsPathValid());
         }
 
+        [TestCategory("Unit")]
         [TestMethod()]
         public void AreScanSettingsValidTest()
         {
@@ -61,10 +64,13 @@ namespace PSV.Tests
             Assert.IsTrue(string.Join(",", testForm.folderExclusions).Length == testForm.foldersBox.Text.Length);
         }
 
+        [TestCategory("Integration")]
         [TestMethod()]
         public void BeginScanTest()
         {
-            // TODO: Implement test method
+            IsGitURLValidTest();
+            IsPathValidTest();
+            AreScanSettingsValidTest();
         }
     }
 }
