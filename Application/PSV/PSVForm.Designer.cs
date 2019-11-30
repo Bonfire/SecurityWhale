@@ -691,7 +691,6 @@
         private System.Windows.Forms.ToolTip fileExtensionToolTip;
         private System.Windows.Forms.ToolTip foldersToolTip;
         private System.Windows.Forms.ColumnHeader probColumn;
-        private LiveCharts.WinForms.CartesianChart faultChart;
         private System.Windows.Forms.TabPage aboutTab;
         private System.Windows.Forms.PictureBox aboutPicture;
         private System.Windows.Forms.RichTextBox aboutHelpersRTB;
@@ -707,6 +706,7 @@
         public System.Windows.Forms.RadioButton remoteRadio;
         public System.Windows.Forms.RadioButton localRadio;
         public System.Windows.Forms.ListView faultListView;
+        public LiveCharts.WinForms.CartesianChart faultChart;
     }
 }
 

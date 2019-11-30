@@ -97,7 +97,17 @@ namespace PSV.Tests
         [TestMethod()]
         public void VulnerableGraphTest()
         {
+            // Perform the full process for scanning
+            PSVForm testForm = new PSVForm();
+            testForm.remoteRadio.Checked = true;
+            testForm.projectURLTextBox.Text = "https://github.com/Bonfire/Legionary.git";
+            testForm.pathToCloneTextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            testForm.cloneProject();
+            testForm.loadProject();
+            testForm.beginScan();
 
+            // Assert that there were 4 files scanned and populated
+            Assert.IsTrue(testForm.faultChart.Series[0].Values.Count == 4);
         }
 
         [TestCategory("Integration")]
