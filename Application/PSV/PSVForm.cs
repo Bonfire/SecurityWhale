@@ -368,8 +368,7 @@ namespace PSV
             faultChart.AxisX.Add(new Axis
             {
                 Title = "File Names",
-                Labels = fileNameList.ToArray(),
-                LabelsRotation = 15,
+                Labels = fileNameList.ToArray()
             });;
 
             faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
