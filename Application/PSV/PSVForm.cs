@@ -318,17 +318,11 @@ namespace PSV
                 }
             }
 
-            Process pythonProcess = Process.Start(pythonStartInfo);
-            StreamReader pythonOutStream = pythonProcess.StandardOutput;
-
-            // Wait until the scan is finished
-            pythonProcess.WaitForExit();
-
-            faultChart.Series = new SeriesCollection
+                        faultChart.Series = new SeriesCollection
             {
                 new ColumnSeries
                 {
-                    Title = "Fault Probability",
+                    Title = "Fault Likelihood",
                     Values = new ChartValues<double> { }
                 }
             };
@@ -339,6 +333,14 @@ namespace PSV
                 Title = "Fault Likelihood",
                 LabelFormatter = value => value.ToString("P2", percentageFormat)
             });
+
+
+            Process pythonProcess = Process.Start(pythonStartInfo);
+            StreamReader pythonOutStream = pythonProcess.StandardOutput;
+
+            // Wait until the scan is finished
+            pythonProcess.WaitForExit();
+
 
             List<string> fileNameList = new List<string>();
             
