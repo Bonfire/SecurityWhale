@@ -3,7 +3,9 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -326,11 +328,20 @@ namespace PSV
             {
                 new ColumnSeries
                 {
-                    Title = "Fault Probabilities",
+                    Title = "Fault Probability",
                     Values = new ChartValues<double> { }
                 }
             };
 
+            NumberFormatInfo percentageFormat = new NumberFormatInfo { PercentPositivePattern = 1, PercentNegativePattern = 1 };
+            faultChart.AxisY.Add(new Axis
+            {
+                Title = "Fault Likelihood",
+                LabelFormatter = value => value.ToString("P2", percentageFormat)
+            });
+
+            List<string> fileNameList = new List<string>();
+            
             // Remove the single-quotes and split the string
             StringReader outputReader = new StringReader(pythonOutStream.ReadToEnd());
             string outputLine;
@@ -340,7 +351,7 @@ namespace PSV
                 {
                     string[] splitResult = outputLine.Trim().Split(',');
                     string fileName = splitResult[0];
-                    double faultProbability = Double.Parse(splitResult[1]);
+                    double faultProbability = double.Parse(splitResult[1]);
 
                     string[] newRow = { fileName, splitResult[1] };
                     ListViewItem newItem = new ListViewItem(newRow);
@@ -348,8 +359,16 @@ namespace PSV
 
                     // Add the value to our fault chart
                     faultChart.Series[0].Values.Add(faultProbability);
+                    fileNameList.Add(fileName);
                 }
             }
+
+            faultChart.AxisX.Add(new Axis
+            {
+                Title = "File Names",
+                Labels = fileNameList.ToArray(),
+                LabelsRotation = 15,
+            });;
 
             faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             faultListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
