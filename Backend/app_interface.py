@@ -78,7 +78,7 @@ def app_interface():
 		if repo_private:
 			git = Github(username, password)
 		else:
-			git = Github(None, None)
+			git = Github(git_access)
 
 		#Grabs repo object for data collection
 		github_repo = git.get_repo(repo_name, lazy=False)
