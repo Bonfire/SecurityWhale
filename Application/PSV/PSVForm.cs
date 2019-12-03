@@ -3,6 +3,7 @@ using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -318,7 +319,19 @@ namespace PSV
                 }
             }
 
-                        faultChart.Series = new SeriesCollection
+            // Clear the the table and graph in case we are scanning more than one repo
+            faultChart.Series.Clear();
+            faultChart.AxisX.Clear();
+            faultChart.AxisY.Clear();
+
+            foreach (var series in faultChart.Series)
+            {
+                series.Values.Clear();
+            }
+
+            faultListView.Items.Clear();
+
+            faultChart.Series = new SeriesCollection
             {
                 new ColumnSeries
                 {
@@ -354,8 +367,9 @@ namespace PSV
                     string[] splitResult = outputLine.Trim().Split(',');
                     string fileName = splitResult[0];
                     double faultProbability = double.Parse(splitResult[1]);
+                    string probabilityPercent = faultProbability.ToString("P2", percentageFormat);
 
-                    string[] newRow = { fileName, splitResult[1] };
+                    string[] newRow = { fileName, probabilityPercent };
                     ListViewItem newItem = new ListViewItem(newRow);
                     faultListView.Items.Add(newItem);
 

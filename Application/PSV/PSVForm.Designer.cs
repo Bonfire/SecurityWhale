@@ -499,7 +499,7 @@
             // 
             // fileColumn
             // 
-            this.fileColumn.Text = "Filename";
+            this.fileColumn.Text = "File Name";
             this.fileColumn.Width = 620;
             // 
             // probColumn
