@@ -32,8 +32,8 @@ def get_filenames(base_dir, file_path, file_names):
 				file_names.append(final_name)
 		#If directory, recursively got through it
 		else:
-			get_filenames(base_dir, full_path, file_names)
-
+			get_filenames(base_dir, full_path, file_names)		
+			
 '''
 Provides an interface to connect the application with the machine learning model
 '''
@@ -91,30 +91,30 @@ def app_interface():
 	get_filenames(repo_dir, repo_dir, files_path)
 				
 	#Get a list of data points for each file
-	avgs = get_averages(files_path, repo.head.commit.hexsha, repo)
+	features = get_file_features(repo_dir, files_path, repo)
 
 	#Separate file names from avgs
-	file_names = []
-	avgs_final = []
-	for a in avgs:
-		file_names.append(a[0])
-		avgs_final.append(a[1:])
+	#file_names = []
+	features_final = []
+	for f in features:
+		#file_names.append(a[0])
+		features_final.append(f[1:])
 
 	#Collect data together into a single list
 	final_data = []
 
 	#If this is a remote repo, we need to add the repo data, otherwise use averages
 	if repo_remote:
-		for af in avgs_final:
-			final_data.append(af + repo_data[1:])
+		for ff in features_final:
+			final_data.append(ff + repo_data[1:])
 	else:
-		final_data = avgs_final
+		final_data = features_final
 
 	#Predict and print results data to std out
 	results = predict(final_data)
 	
 	#Final results output
-	for i, f in enumerate(file_names):
+	for i, f in enumerate(files_path):
 		print(f + "," + str(results[i][0]))
 
 #Main - delete later?

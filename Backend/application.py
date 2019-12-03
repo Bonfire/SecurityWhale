@@ -24,6 +24,43 @@ def access_github():
 	"""
 	return Github(git_access)
 
+# Takes a path to a directory and returns the total amount of subdirectories it contains.
+def num_subdirs(path):
+	return max(0, len([dirName for _, dirName, _ in walk(path)]) - 1)
+
+# Takes a path to a directory and returns the deepest level of subdirectories as an int.
+# Uses a recursive depth-first search. The current directory is considered to have a depth of 0.
+def max_subdirs(file_path, depth=0):
+	max_depth = depth
+
+	# Go through each thing in this directory and find it's depth.
+	for cur in listdir(file_path):
+
+		'''
+		Concatenates the file path with what we're currently looking at to get the full
+		path of the object we're looking at (note that these are NOT strings).
+		ex: 'C:/Users/Desktop/example/' + 'file1.txt' = 'C:/Users/Desktop/example/file1.txt'
+		'''
+		full_path = path.join(file_path, cur)
+
+		# If this thing is a directory, parse through it with a recursive call to max_subdirs,
+		# incrementing depth as we're going another layer deep.
+		if path.isdir(full_path):
+			max_depth = max(max_depth, max_subdirs(full_path, depth + 1))
+
+	return max_depth
+
+def num_files(path):
+	files = []
+# runs through the complete repository directory to get number of files
+	for (_, _, filenames) in walk(path):
+		for filename in [f for f in filenames]:
+			files.extend(filenames)
+			break
+	return max(0, len(files))
+
+def avg_files_per_dir(path):
+	return num_files(path) / num_subdirs(path) 
 
 def repository_data(git_repo, repository, repository_name, repository_dir):
 	"""
@@ -92,16 +129,20 @@ def repository_data(git_repo, repository, repository_name, repository_dir):
 					commit_deletion_count += change_value
 				if type_of_change == "lines":
 					commit_lines_changed_count += change_value
-
+	#Additional features:
+	subdirs_count = num_subdirs(repository_dir)
+	subdirs_depth = max_subdirs(repository_dir)
+	files_count = num_files(repository_dir)
+	files_avgs = avg_files_per_dir(repository_dir)
+	
 	# used for passing to database and/or to training module
 	repo_data = (repository_name, assignees, size, commits, events, forks, branches, contributors,
 	             labels, language_count, language_size, milestone, issues, refs, stargazer, subscribers, watchers,
 	             network_count, count_open_issues, pulls, number_of_files_in_project, commit_size_sum,
 	             commit_files_count, commit_insertion_count,
-	             commit_deletion_count, commit_lines_changed_count)
+	             commit_deletion_count, commit_lines_changed_count, subdirs_count, subdirs_depth, files_count, files_avgs)
 
 	return repo_data
-
 
 def file_data(data):
 	return tuple(data)
@@ -128,7 +169,6 @@ def make_query(table_name, cursor):
 	query = query[:-2] + ")"
 
 	return query
-
 
 def parse_dic(dic):
 	"""
@@ -211,35 +251,6 @@ def get_averages(file_list, commit_hash, repo):
 
 	return file_totals
 
-
-# Takes a path to a directory and returns the total amount of subdirectories it contains.
-def num_subdirs(path):
-	return max(0, len([dirName for _, dirName, _ in walk(path)]) - 1)
-
-
-# Takes a path to a directory and returns the deepest level of subdirectories as an int.
-# Uses a recursive depth-first search. The current directory is considered to have a depth of 0.
-def max_subdirs(file_path, depth=0):
-	max_depth = depth
-
-	# Go through each thing in this directory and find it's depth.
-	for cur in listdir(file_path):
-
-		'''
-		Concatenates the file path with what we're currently looking at to get the full
-		path of the object we're looking at (note that these are NOT strings).
-		ex: 'C:/Users/Desktop/example/' + 'file1.txt' = 'C:/Users/Desktop/example/file1.txt'
-		'''
-		full_path = path.join(file_path, cur)
-
-		# If this thing is a directory, parse through it with a recursive call to max_subdirs,
-		# incrementing depth as we're going another layer deep.
-		if path.isdir(full_path):
-			max_depth = max(max_depth, max_subdirs(full_path, depth + 1))
-
-	return max_depth
-
-
 def fileLineCount(path):
 	with open(path) as pathFile:
 		return sum(1 for _ in pathFile)
@@ -320,18 +331,49 @@ def indentation_depth(file_path):
 
 	return deepest
 
-def num_files(path):
-	files = []
-# runs through the complete repository directory to get number of files
-	for (_, _, filenames) in walk(path):
-		for filename in [f for f in filenames]:
-			files.extend(filenames)
-			break
-	return max(0, len(files))
-
-def avg_files_per_dir(path):
-	return num_files(path) / num_subdirs(path) 
-
+'''
+Takes a repo directory, an array of file names in that repo, and a repo object.
+Returns various data points about each file in that repository.
+'''
+def get_file_features(repo_dir, file_names, repo):
+	#Initialize data with averages data for each file
+	data = get_averages(file_names, repo.head.commit.hexsha, repo)
+	
+	'''
+	Some files will cause the file feature functions to throw exceptions. This seems to be because it's,
+	for instance, trying to find the number of character or indents in a .png. In order to work around
+	this, we simply delete those files later. kill_list keeps track of the indices of these - see below.
+	'''
+	kill_list = []
+	
+	#Go through each row in data
+	for i, d in enumerate(data):
+		
+		#We need the full file path for the functions. We also know that data and file_names have the same order,
+		#i.e. data[0] represents the file file_names[0]
+		full_path = path.join(repo_dir, file_names[i])
+		
+		#In my experience, if one of these fails on a certain file, they all will.
+		try:
+			#If there are no errors, we add all these features to this element of data[].
+			d.extend([fileLineCount(full_path), fileWordCount(full_path),fileCharacterCount(full_path),
+			 fileAvgWordsPerLine(full_path), fileAvgCharPerLine(full_path), indented_lines(full_path), 
+			 indentation_depth(full_path)])
+		except:
+			#If not, we need to note that it should be deleted
+			kill_list.append(i)
+	
+	'''
+	If we attempt to delete faulty files in order, it won't work properly.
+	This is because when you delete an element, everything after it is moved up one index.
+	If you delete in reverse order, the elements before the deleted one retain their original index
+	and the elements after the deleted index have already been passed over.
+	'''
+	kill_list.reverse()
+	for k in kill_list:
+		del data[k]
+				 
+	return data	
 
 def update_db(update_files, github_name, repo_dir, repo):
 	git = access_github()
