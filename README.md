@@ -46,14 +46,14 @@ To wit, we utilize cutting-edge machine learning technology for our statistical 
   * Scikit Learn
   
  # Application:
- * Programming Languages:
-  * C#
- * Libraries:
-  * LibGit2Sharp
-  * OctoKit
-  * LiveCharts
- * CI/CD:
-  * Travis CI
+* Programming Languages:
+	* C#
+* Libraries:
+	* LibGit2Sharp
+	* OctoKit
+	* LiveCharts
+* CI/CD:
+	* Travis CI
 * Integrated Development Environment (IDE):
   * Visual Studio 2019
 * Testing Framework:
@@ -71,15 +71,20 @@ To wit, we utilize cutting-edge machine learning technology for our statistical 
   * The top 20% of predicted problematic files contained between 71% and 92% of the faults that were actually detected, with the overall average being 83%
 * Showed it is possible to predict faults with intensive efforts to map faults with metadata
 
+# Authors
+[Baran Barut](https://github.com/Bonfire) - Front-End Application, Testing Plan
 
+[Michael Harris](https://github.com/mmph87) - Project Manager, Backend
 
-# Contributors
-Kyle Reid - https://github.com/kyReid
+[Curtis Helsel](https://github.com/curtishelsel) - Machine Learning
 
-Baran Barut - https://github.com/Bonfire
+[Kyle Reid](https://github.com/kyReid) - Data Acquisition
 
-Michael Harris - https://github.com/mmph87
+[Thomas Serrano](https://github.com/TomSerrano) - Data Acquisition, Application-Backend Interface
 
-Curtis Helsel - https://github.com/curtishelsel
+# Other Contributors
+Dr. Paul Gazzillo - Project Sponsor and Advisor
 
-Thomas Serrano - https://github.com/TomSerrano
+Dr. Elaine Weyuker - Previous Work and Advising
+
+Dr. Mark Heinrich - Senior Design II Professor and Advising
