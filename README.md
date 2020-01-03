@@ -1,5 +1,5 @@
 # SecurityWhale
-Predicting Security Vulnerabilities using Code Metrics and Machine Learning
+Predicting Security Vulnerabilities using Code Metrics and Machine Learning. This project was created for the [University of Central Florida's Computer Science Senior Design](http://www.eecs.ucf.edu/cssd/) class for Spring 2019 to Fall 2019.
 
 # Project Summary
 Code is inherently insecure, with both security vulnerabilities and other faults in production systems decreasing the reliability and performance of code that runs the modern world. Our project connects a world-class front-end Application, driven by a machine learning backend that has been trained on publicly available metadata about the development cycle, in order to allow developers to make accurate predictions about where to find potential code faults within a software package. This will allow developers, both small and large, to be informed on where problematic areas in their software projects are likely to occur. Resolving issues before they are released using this tool will save time and money.
