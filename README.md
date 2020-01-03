@@ -47,7 +47,7 @@ To wit, we utilize cutting-edge machine learning technology for our statistical 
   * Tensorflow
   * Scikit Learn
   
- # Application:
+## Application:
 * Programming Languages:
 	* C#
 * Libraries:
